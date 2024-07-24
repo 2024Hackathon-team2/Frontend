@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import styled from "styled-components";
 
 const GoalPage = () => {
   const [selections, setSelections] = useState([{ drink: "", amount: "" }]);
@@ -31,31 +32,29 @@ const GoalPage = () => {
   };
 
   return (
-    <div style={{ width: "390px", height: "844px" }}>
-      <header style={headerStyle}>음주 목표 설정</header>
-      <div style={{ padding: "20px" }}>
-        <div style={questionStyle}>한 달에 얼마를 목표로 하시나요?</div>
+    <Container>
+      <Header>음주 목표 설정</Header>
+      <Content>
+        <Question>한 달에 얼마를 목표로 하시나요?</Question>
         {selections.map((selection, index) => (
-          <div key={index} style={{ display: "flex", marginBottom: "10px" }}>
-            <select
+          <DropdownWrapper key={index}>
+            <Dropdown
               value={selection.drink}
               onChange={(e) =>
                 handleSelectionChange(index, "drink", e.target.value)
               }
-              style={{ marginRight: "10px", width: "45%" }}
             >
               <option value="">주종</option>
               <option value="소주">소주</option>
               <option value="맥주">맥주</option>
               <option value="막걸리">막걸리</option>
               <option value="와인">와인</option>
-            </select>
-            <select
+            </Dropdown>
+            <Dropdown
               value={selection.amount}
               onChange={(e) =>
                 handleSelectionChange(index, "amount", e.target.value)
               }
-              style={{ marginRight: "10px", width: "45%" }}
             >
               <option value="">N잔</option>
               {drinksOptions[selection.drink].map((opt, i) => (
@@ -63,71 +62,86 @@ const GoalPage = () => {
                   {opt}
                 </option>
               ))}
-            </select>
-          </div>
+            </Dropdown>
+          </DropdownWrapper>
         ))}
-        {message && (
-          <div style={{ color: "red", marginBottom: "10px" }}>{message}</div>
-        )}
-        <button onClick={handleAddClick} style={buttonStyle}>
-          추가
-        </button>
-      </div>
-      <footer style={footerStyle}>
-        <button onClick={handleSubmit} style={submitButtonStyle}>
-          목표 설정 완료
-        </button>
-      </footer>
-    </div>
+        {message && <ErrorMessage>{message}</ErrorMessage>}
+        <Button onClick={handleAddClick}>추가</Button>
+      </Content>
+      <Footer>
+        <SubmitButton onClick={handleSubmit}>목표 설정 완료</SubmitButton>
+      </Footer>
+    </Container>
   );
 };
 
-const headerStyle = {
-  width: "390px",
-  height: "54px",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  fontFamily: "Pretendard",
-  fontSize: "18px",
-  fontWeight: 600,
-  lineHeight: "22px",
-  letterSpacing: "-0.408px",
-  textAlign: "center",
-  color: "#000",
-};
-
-const questionStyle = {
-  fontFamily: "Pretendard",
-  fontSize: "15.246px",
-  fontWeight: 600,
-  color: "#000",
-  marginBottom: "10px",
-};
-
-const buttonStyle = {
-  backgroundColor: "#000",
-  color: "#fff",
-  padding: "10px 20px",
-  border: "none",
-  cursor: "pointer",
-};
-
-const footerStyle = {
-  width: "100%",
-  height: "54px",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  backgroundColor: "#e0e0e0",
-};
-
-const submitButtonStyle = {
-  backgroundColor: "#555",
-  color: "#fff",
-  padding: "10px 20px",
-  border: "none",
-  cursor: "pointer",
-};
-
 export default GoalPage;
+
+// Styled components
+const Container = styled.div`
+  width: 390px;
+  height: 844px;
+`;
+
+const Header = styled.header`
+  width: 390px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Pretendard, sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 22px;
+  letter-spacing: -0.408px;
+  text-align: center;
+  color: #000;
+`;
+
+const Content = styled.div`
+  padding: 20px;
+`;
+
+const Question = styled.div`
+  font-family: Pretendard, sans-serif;
+  font-size: 15.246px;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 10px;
+`;
+
+const DropdownWrapper = styled.div`
+  display: flex;
+  margin-bottom: 10px;
+`;
+
+const Dropdown = styled.select`
+  margin-right: 10px;
+  width: 45%;
+`;
+
+const ErrorMessage = styled.div`
+  color: red;
+  margin-bottom: 10px;
+`;
+
+const Button = styled.button`
+  background-color: #000;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+`;
+
+const Footer = styled.footer`
+  width: 100%;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e0e0e0;
+`;
+
+const SubmitButton = styled(Button)`
+  background-color: #555;
+`;
