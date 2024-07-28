@@ -2,17 +2,21 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import backButtonImage from "./images/back.png";
+import SojuImage from "./images/소주.png";
+import BeerImage from "./images/맥주.png";
+import MakgeolliImage from "./images/막걸리.png";
+import WineImage from "./images/와인.png";
 
 const RecordPage = () => {
   const today = new Date();
 
   const year = today.getFullYear();
-  const month = today.getMonth() + 1; //인덱스 값에 +1
+  const month = today.getMonth() + 1;
   const date = today.getDate();
-  const dayIndex = today.getDay(); // 요일의 인덱스를 가져옴 (0: 일요일, 6: 토요일)
+  const dayIndex = today.getDay();
 
   const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
-  const day = daysOfWeek[dayIndex]; // 요일을 문자열로 변환
+  const day = daysOfWeek[dayIndex];
 
   const [selectedDrink, setSelectedDrink] = useState("");
   const [amount, setAmount] = useState("");
@@ -78,20 +82,20 @@ const RecordPage = () => {
 
   const handleDrinkSelect = (drink) => {
     setSelectedDrink(drink);
-    setAmount(""); // Reset amount when drink type changes
-    setLabelColor("black"); // Change label color back to black
+    setAmount("");
+    setLabelColor("black");
   };
 
   const handleRecord = () => {
     if (!selectedDrink) {
-      setLabelColor("#FF9B9B"); // Change label color to red if no drink selected
+      setLabelColor("#FF9B9B");
       return;
     }
     if (selectedDrink && amount) {
       setRecords([...records, { drink: selectedDrink, amount }]);
       setSelectedDrink("");
       setAmount("");
-      setLabelColor("black"); // Reset label color
+      setLabelColor("black");
     }
   };
 
@@ -102,6 +106,21 @@ const RecordPage = () => {
 
   const handleSubmit = () => {
     navigate("/recorddone");
+  };
+
+  const getDrinkImage = (drink) => {
+    switch (drink) {
+      case "소주":
+        return SojuImage;
+      case "맥주":
+        return BeerImage;
+      case "막걸리":
+        return MakgeolliImage;
+      case "와인":
+        return WineImage;
+      default:
+        return null;
+    }
   };
 
   return (
@@ -131,7 +150,11 @@ const RecordPage = () => {
                   selected={selectedDrink === drink}
                   onClick={() => handleDrinkSelect(drink)}
                 >
-                  {drink}
+                  <img
+                    src={getDrinkImage(drink)}
+                    alt={drink}
+                    style={{ width: "30px", height: "45px" }}
+                  />
                 </DrinkButton>
               ))}
           </DrinkButtons>
@@ -157,6 +180,15 @@ const RecordPage = () => {
             {records.map((record, index) => (
               <RecordItem key={index}>
                 <div>
+                  <img
+                    src={getDrinkImage(record.drink)}
+                    alt={record.drink}
+                    style={{
+                      width: "30px",
+                      height: "45px",
+                      marginRight: "10px",
+                    }}
+                  />
                   {record.drink} {record.amount}
                 </div>
                 <DeleteButton onClick={() => handleDelete(index)}>
@@ -194,7 +226,6 @@ export default RecordPage;
 // Styled components
 const Container = styled.div`
   width: 390px;
-
   margin: 0 auto;
   background-color: white;
 `;
@@ -209,21 +240,21 @@ const Header = styled.header`
   flex-shrink: 0;
   color: #000;
   text-align: center;
-
   font-family: Pretendard;
   font-size: 18px;
   font-style: normal;
   font-weight: 600;
   line-height: 22px;
   letter-spacing: -0.408px;
-  box-shadow: 0px 4px 10px -12px gray;
-
+  box-shadow: 0px 4px 10px -12px black;
+  background-color: white;
   div {
     margin-right: 20px;
     width: 25px;
     height: 25px;
   }
 `;
+
 const BackButton = styled.button`
   width: 25px;
   height: 25px;
@@ -242,9 +273,8 @@ const BackButton = styled.button`
 const Content = styled.div`
   padding: 20px;
   padding-top: 82px;
-  height: 652px; // 최대 높이를 설정합니다.
-  overflow-y: auto; // 세로 스크롤을 허용합니다.
-  /* 스크롤바 숨기기 */
+  height: 652px;
+  overflow-y: auto;
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -267,14 +297,12 @@ const Content = styled.div`
     justify-content: space-between;
   }
 
-  /* 스크롤바 숨기기 (크롬, 사파리 등) */
   ::-webkit-scrollbar {
     display: none;
   }
 
-  /* Firefox에서 스크롤바 숨기기 */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE 10+ */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 `;
 
 const DateRecord = styled.div`
@@ -325,17 +353,13 @@ const DrinkButtons = styled.div`
 
 const DrinkButton = styled.button`
   width: 48px;
-  height: 43px;
-  background-color: ${(props) => (props.selected ? "#575757" : "#FFF")};
+  height: 73px;
+  background-color: ${(props) => (props.selected ? "#575757" : "#F9F9F9")};
   border-radius: 10px;
-  border: 1px solid #c7c7c7;
-
-  color: ${(props) => (props.selected ? "#FFF" : "black")};
-  font-family: Pretendard;
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
+  border: ${(props) => (props.selected ? "1px solid #c7c7c7" : "none")};
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
 `;
 
@@ -393,11 +417,8 @@ const RecordList = styled.div``;
 
 const RecordItem = styled.div`
   display: flex;
-  flex-direction: row;
-  margin-top: 24px;
-
-  justify-content: space-between;
   align-items: center;
+  margin-top: 24px;
   color: #7e7e7e;
   font-family: Pretendard;
   font-size: 14px;
@@ -411,7 +432,10 @@ const RecordItem = styled.div`
   background: #f9f9f9;
 
   div {
-    padding-left: 22px;
+    padding-left: 31px;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
   }
 `;
 
@@ -432,6 +456,7 @@ const Footer = styled.footer`
   background: var(--unnamed, gray);
   box-shadow: 0px 4px 8.4px 0px rgba(0, 0, 0, 0.02);
 `;
+
 const SubmitButton = styled.button`
   width: 350px;
   height: 52px;

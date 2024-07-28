@@ -199,7 +199,8 @@ const Header = styled.header`
   font-weight: 600;
   line-height: 22px;
   letter-spacing: -0.408px;
-  box-shadow: 0px 4px 10px -12px gray;
+  box-shadow: 0px 4px 10px -12px black;
+  background-color: white;
 
   div {
     margin-right: 20px;
