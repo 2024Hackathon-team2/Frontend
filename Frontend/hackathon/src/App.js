@@ -7,9 +7,9 @@ import MainPage from "./pages/MainPage";
 import GoalPage from "./pages/GoalPage";
 import RecordPage from "./pages/RecordPage";
 import RecordDonePage from "./pages/RecordDonePage";
-import MainPage from "./pages/MainPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
+import MyPage from "./pages/MyPage";
 import "./App.css";
 
 function App() {
@@ -23,6 +23,7 @@ function App() {
           <Route path="/recorddone" element={<RecordDonePage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/mypage" element={<MyPage />} />
         </Routes>
       </Router>
     </>

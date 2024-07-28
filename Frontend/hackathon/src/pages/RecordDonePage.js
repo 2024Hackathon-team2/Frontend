@@ -4,6 +4,16 @@ import styled from "styled-components";
 import backButtonImage from "./images/back.png";
 
 const RecordDonePage = () => {
+  const today = new Date();
+
+  const year = today.getFullYear();
+  const month = today.getMonth() + 1; //인덱스 값에 +1
+  const date = today.getDate();
+  const dayIndex = today.getDay(); // 요일의 인덱스를 가져옴 (0: 일요일, 6: 토요일)
+
+  const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
+  const day = daysOfWeek[dayIndex]; // 요일을 문자열로 변환
+
   const [selectedDrink, setSelectedDrink] = useState("");
   const [amount, setAmount] = useState("");
   const [records, setRecords] = useState([]);
@@ -105,8 +115,10 @@ const RecordDonePage = () => {
       </Header>
       <Content>
         <RecordBox>
-          <DateRecord>2024년 7월 22일 월요일</DateRecord>
-          <RecordTitle>7월의 N 번째 음주기록</RecordTitle>
+          <DateRecord>
+            {year}년 {month}월 {date}일 {day}요일
+          </DateRecord>
+          <RecordTitle>{month}월의 N 번째 음주기록</RecordTitle>
         </RecordBox>
         <DoneMessage1>오늘의 음주 기록 완료!</DoneMessage1>
         <DoneMessage2>잦은 음주는 피해 주세요!</DoneMessage2>
