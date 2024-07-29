@@ -11,6 +11,7 @@ import RecordDonePage from "./pages/RecordDonePage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import MyPage from "./pages/MyPage";
+import SocialPage from "./pages/SocialPage";
 import "./App.css";
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/mypage" element={<MyPage />} />
+          <Route path="/social" element={<SocialPage />} />
         </Routes>
       </Router>
     </>
