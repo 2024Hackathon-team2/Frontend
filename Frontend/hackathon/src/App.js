@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 //pages
 
 import MainPage from "./pages/MainPage";
+import HomePage from "./pages/HomePage";
 import GoalPage from "./pages/GoalPage";
 import HomePage from "./pages/HomePage";
 import RecordPage from "./pages/RecordPage";

@@ -14,12 +14,12 @@ const HomePage = () => {
     <>
       <GlobalStyle />
       <Container>
-        <Title>서비스명</Title>
+        <Header>서비스명</Header>
         <Content>
-          <Header>
+          <Title>
             <div>00님의 7월 음주 목표</div>
             <button>수정</button>
-          </Header>
+          </Title>
           <GoalReach>
             <div>잔 수</div>
             <div>2잔/13잔</div>
@@ -33,7 +33,9 @@ const HomePage = () => {
             <HomeCalendar></HomeCalendar>
           </DrinkingCalendar>
         </Content>
-        <Navbar></Navbar>
+        <Footer>
+          <Navbar></Navbar>
+        </Footer>
       </Container>
     </>
   );
@@ -41,35 +43,47 @@ const HomePage = () => {
 
 export default HomePage;
 
+// Styled components
 const Container = styled.div`
   width: 390px;
   margin: 0 auto;
   background-color: white;
 `;
 
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  width: 390px;
+  height: 54px;
+  flex-shrink: 0;
+  color: #000;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 22px;
+  letter-spacing: -0.408px;
+  box-shadow: 0px 4px 10px -12px black;
+  background-color: white;
+`;
+
 const Content = styled.div`
-  height: 800px; // 최대 높이를 설정합니다.
+  padding: 20px;
+  padding-top: 10px;
+  height: 724px; // 최대 높이를 설정합니다.
+  overflow-y: auto; // 세로 스크롤을 허용합니다.
+  /* 스크롤바 숨기기 */
   background-color: white;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
 `;
 
 const Title = styled.div`
-  display: flex;
-  width: 151px;
-  height: 27px;
-  padding: 10px;
-  color: #000;
-  text-align: center;
-  font-family: Pretendard;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 133.8%; /* 26.76px */
-`;
-
-const Header = styled.div`
   font-family: Pretendard;
   display: flex;
   width: 90%;
@@ -106,4 +120,15 @@ const DrinkingCalendar = styled.div`
     margin-bottom: 20px;
     font-family: Pretendard-Medium;
   }
+`;
+
+const Footer = styled.footer`
+  display: flex;
+  width: 390px;
+  height: 84px;
+  flex-direction: column;
+  align-items: center;
+  gap: 19.6px;
+  background: white;
+  box-shadow: 0px 4px 8.4px 0px rgba(0, 0, 0, 0.02);
 `;

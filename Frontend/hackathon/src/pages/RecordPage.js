@@ -1,18 +1,29 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import backButtonImage from "./images/back.png";
+import SojuImage from "./images/소주.png";
+import BeerImage from "./images/맥주.png";
+import MakgeolliImage from "./images/막걸리.png";
+import WineImage from "./images/와인.png";
+import Navbar from "../components/Navbar";
+
+const GlobalStyle = createGlobalStyle`
+  html {
+    background-color: whitesmoke;
+  }
+`;
 
 const RecordPage = () => {
   const today = new Date();
 
   const year = today.getFullYear();
-  const month = today.getMonth() + 1; //인덱스 값에 +1
+  const month = today.getMonth() + 1;
   const date = today.getDate();
-  const dayIndex = today.getDay(); // 요일의 인덱스를 가져옴 (0: 일요일, 6: 토요일)
+  const dayIndex = today.getDay();
 
   const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
-  const day = daysOfWeek[dayIndex]; // 요일을 문자열로 변환
+  const day = daysOfWeek[dayIndex];
 
   const [selectedDrink, setSelectedDrink] = useState("");
   const [amount, setAmount] = useState("");
@@ -78,20 +89,20 @@ const RecordPage = () => {
 
   const handleDrinkSelect = (drink) => {
     setSelectedDrink(drink);
-    setAmount(""); // Reset amount when drink type changes
-    setLabelColor("black"); // Change label color back to black
+    setAmount("");
+    setLabelColor("black");
   };
 
   const handleRecord = () => {
     if (!selectedDrink) {
-      setLabelColor("#FF9B9B"); // Change label color to red if no drink selected
+      setLabelColor("#FF9B9B");
       return;
     }
     if (selectedDrink && amount) {
       setRecords([...records, { drink: selectedDrink, amount }]);
       setSelectedDrink("");
       setAmount("");
-      setLabelColor("black"); // Reset label color
+      setLabelColor("black");
     }
   };
 
@@ -104,88 +115,121 @@ const RecordPage = () => {
     navigate("/recorddone");
   };
 
+  const getDrinkImage = (drink) => {
+    switch (drink) {
+      case "소주":
+        return SojuImage;
+      case "맥주":
+        return BeerImage;
+      case "막걸리":
+        return MakgeolliImage;
+      case "와인":
+        return WineImage;
+      default:
+        return null;
+    }
+  };
+
   return (
-    <Container>
-      <Header>
-        <BackButton>
-          <img src={backButtonImage} alt="Back" />
-        </BackButton>
-        나의 음주 기록
-        <div></div>
-      </Header>
-      <Content>
-        <div className="up">
-          <div className="dayBox">
-            <DateRecord>
-              {year}년 {month}월 {date}일 {day}요일
-            </DateRecord>
-            <RecordTitle>{month}월의 N 번째 음주기록</RecordTitle>
-          </div>
-          <Label color={labelColor}>주종을 선택해 주세요.</Label>
-          <DrinkButtons>
-            {Object.keys(drinkOptions)
-              .slice(1)
-              .map((drink, index) => (
-                <DrinkButton
-                  key={index}
-                  selected={selectedDrink === drink}
-                  onClick={() => handleDrinkSelect(drink)}
-                >
-                  {drink}
-                </DrinkButton>
-              ))}
-          </DrinkButtons>
-          <Label className="amount">얼마나 마셨나요?</Label>
-          <div className="underAmount">
-            <Select
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              defaultValue=""
-            >
-              <option value="" disabled hidden>
-                잔 또는 병 수를 선택해 주세요.
-              </option>
-              {drinkOptions[selectedDrink]?.map((option, index) => (
-                <Option key={index} value={option}>
-                  {option}
-                </Option>
-              ))}
-            </Select>
-            <Button onClick={handleRecord}>기록</Button>
-          </div>
-          <RecordList>
-            {records.map((record, index) => (
-              <RecordItem key={index}>
-                <div>
-                  {record.drink} {record.amount}
-                </div>
-                <DeleteButton onClick={() => handleDelete(index)}>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="17"
-                    height="4"
-                    viewBox="0 0 17 4"
-                    fill="none"
+    <>
+      <GlobalStyle />
+      <Container>
+        <Header>
+          <BackButton>
+            <img src={backButtonImage} alt="Back" />
+          </BackButton>
+          나의 음주 기록
+          <div></div>
+        </Header>
+        <Content>
+          <div className="up">
+            <div className="dayBox">
+              <DateRecord>
+                {year}년 {month}월 {date}일 {day}요일
+              </DateRecord>
+              <RecordTitle>{month}월의 N 번째 음주기록</RecordTitle>
+            </div>
+            <Label color={labelColor}>주종을 선택해 주세요.</Label>
+            <DrinkButtons>
+              {Object.keys(drinkOptions)
+                .slice(1)
+                .map((drink, index) => (
+                  <DrinkButton
+                    key={index}
+                    selected={selectedDrink === drink}
+                    onClick={() => handleDrinkSelect(drink)}
                   >
-                    <path
-                      d="M2 2L15 2"
-                      stroke="#A0A0A0"
-                      strokeWidth="2.55882"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
+                    <img
+                      src={getDrinkImage(drink)}
+                      alt={drink}
+                      style={{ width: "30px", height: "45px" }}
                     />
-                  </svg>
-                </DeleteButton>
-              </RecordItem>
-            ))}
-          </RecordList>
-        </div>
-        <div className="bottom">
-          <SubmitButton onClick={handleSubmit}>음주 기록 완료</SubmitButton>
-        </div>
-      </Content>
-      <Footer></Footer>
-    </Container>
+                  </DrinkButton>
+                ))}
+            </DrinkButtons>
+            <Label className="amount">얼마나 마셨나요?</Label>
+            <div className="underAmount">
+              <Select
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                defaultValue=""
+              >
+                <option value="" disabled hidden>
+                  잔 또는 병 수를 선택해 주세요.
+                </option>
+                {drinkOptions[selectedDrink]?.map((option, index) => (
+                  <Option key={index} value={option}>
+                    {option}
+                  </Option>
+                ))}
+              </Select>
+              <Button onClick={handleRecord}>기록</Button>
+            </div>
+            <RecordList>
+              {records.map((record, index) => (
+                <RecordItem key={index}>
+                  <div>
+                    <img
+                      src={getDrinkImage(record.drink)}
+                      alt={record.drink}
+                      style={{
+                        width: "30px",
+                        height: "45px",
+                        marginRight: "10px",
+                      }}
+                    />
+                    {record.drink} {record.amount}
+                  </div>
+                  <DeleteButton onClick={() => handleDelete(index)}>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="17"
+                      height="4"
+                      viewBox="0 0 17 4"
+                      fill="none"
+                    >
+                      <path
+                        d="M2 2L15 2"
+                        stroke="#A0A0A0"
+                        strokeWidth="2.55882"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </DeleteButton>
+                </RecordItem>
+              ))}
+            </RecordList>
+          </div>
+          <div className="bottom">
+            <SubmitButton onClick={handleSubmit}>음주 기록 완료</SubmitButton>
+          </div>
+        </Content>
+        <Footer>
+          <Navbar></Navbar>
+        </Footer>
+      </Container>
+    </>
   );
 };
 
@@ -194,7 +238,6 @@ export default RecordPage;
 // Styled components
 const Container = styled.div`
   width: 390px;
-
   margin: 0 auto;
   background-color: white;
 `;
@@ -209,21 +252,21 @@ const Header = styled.header`
   flex-shrink: 0;
   color: #000;
   text-align: center;
-
   font-family: Pretendard;
   font-size: 18px;
   font-style: normal;
   font-weight: 600;
   line-height: 22px;
   letter-spacing: -0.408px;
-  box-shadow: 0px 4px 10px -12px gray;
-
+  box-shadow: 0px 4px 10px -12px black;
+  background-color: white;
   div {
     margin-right: 20px;
     width: 25px;
     height: 25px;
   }
 `;
+
 const BackButton = styled.button`
   width: 25px;
   height: 25px;
@@ -242,9 +285,8 @@ const BackButton = styled.button`
 const Content = styled.div`
   padding: 20px;
   padding-top: 82px;
-  height: 652px; // 최대 높이를 설정합니다.
-  overflow-y: auto; // 세로 스크롤을 허용합니다.
-  /* 스크롤바 숨기기 */
+  height: 652px;
+  overflow-y: auto;
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -267,14 +309,12 @@ const Content = styled.div`
     justify-content: space-between;
   }
 
-  /* 스크롤바 숨기기 (크롬, 사파리 등) */
   ::-webkit-scrollbar {
     display: none;
   }
 
-  /* Firefox에서 스크롤바 숨기기 */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE 10+ */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 `;
 
 const DateRecord = styled.div`
@@ -325,17 +365,13 @@ const DrinkButtons = styled.div`
 
 const DrinkButton = styled.button`
   width: 48px;
-  height: 43px;
-  background-color: ${(props) => (props.selected ? "#575757" : "#FFF")};
+  height: 73px;
+  background-color: ${(props) => (props.selected ? "#575757" : "#F9F9F9")};
   border-radius: 10px;
-  border: 1px solid #c7c7c7;
-
-  color: ${(props) => (props.selected ? "#FFF" : "black")};
-  font-family: Pretendard;
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
+  border: ${(props) => (props.selected ? "1px solid #c7c7c7" : "none")};
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
 `;
 
@@ -393,11 +429,8 @@ const RecordList = styled.div``;
 
 const RecordItem = styled.div`
   display: flex;
-  flex-direction: row;
-  margin-top: 24px;
-
-  justify-content: space-between;
   align-items: center;
+  margin-top: 24px;
   color: #7e7e7e;
   font-family: Pretendard;
   font-size: 14px;
@@ -411,7 +444,10 @@ const RecordItem = styled.div`
   background: #f9f9f9;
 
   div {
-    padding-left: 22px;
+    padding-left: 31px;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
   }
 `;
 
@@ -429,9 +465,10 @@ const Footer = styled.footer`
   flex-direction: column;
   align-items: center;
   gap: 19.6px;
-  background: var(--unnamed, gray);
+  background: white;
   box-shadow: 0px 4px 8.4px 0px rgba(0, 0, 0, 0.02);
 `;
+
 const SubmitButton = styled.button`
   width: 350px;
   height: 52px;

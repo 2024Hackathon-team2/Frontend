@@ -1,38 +1,38 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const GlobalStyle = createGlobalStyle`
+  html {
+    background-color: whitesmoke;
+  }
+`;
+
 const LoginPage = () => {
   const navigate = useNavigate();
-  const [email, setID] = useState();
-  const [pw, setPW] = useState();
+  const [email, setEmail] = useState("");
+  const [pw, setPW] = useState("");
 
   const BASE_URL = " ";
 
   const goLogin = async () => {
     await axios({
       method: "POST",
-      url: "/account/signin/",
+      url: "/accounts/login/", // Updated endpoint
       data: {
-        username: email,
+        email: email, // Changed from 'username' to 'email'
         password: pw,
       },
     })
       .then((response) => {
         console.log(response.data);
 
-        localStorage.setItem("userName", response.data.data.nickname);
-        localStorage.setItem("token", response.data.data.access_token);
-
-        const tokenFromLs = localStorage.getItem("token");
-        console.log(tokenFromLs);
-        const nicknameFromLs = localStorage.getItem("userName");
-        console.log(nicknameFromLs);
+        localStorage.setItem("refreshToken", response.data.refresh); // Store refresh token
+        localStorage.setItem("accessToken", response.data.access); // Store access token
 
         navigate("/mypage");
       })
-
       .catch((error) => {
         console.log(error);
         throw new Error(error);
@@ -40,31 +40,34 @@ const LoginPage = () => {
   };
 
   return (
-    <Container>
-      <Content>
-        <Title>로고/ 서비스 이름</Title>
-        <InputWrapper>
-          <div>아이디</div>
-          <input
-            placeholder="이메일 주소를 입력해 주세요"
-            onChange={(e) => setID(e.target.value)}
-          ></input>
-          <div>비밀번호</div>
-          <input
-            type="password"
-            placeholder="비밀번호를 입력해 주세요"
-            onChange={(e) => setPW(e.target.value)}
-          ></input>
-          <button onClick={goLogin}>로그인</button>
-        </InputWrapper>
-        <More>
-          <button onClick={() => navigate("/signup")}>비밀번호 찾기</button>
-          <div className="division">|</div>
-          <button onClick={() => navigate("/signup")}>회원가입</button>
-        </More>
-      </Content>
-      <Footer></Footer>
-    </Container>
+    <>
+      <GlobalStyle />
+      <Container>
+        <Content>
+          <Title>로고/ 서비스 이름</Title>
+          <InputWrapper>
+            <div>아이디</div>
+            <input
+              placeholder="이메일 주소를 입력해 주세요"
+              onChange={(e) => setEmail(e.target.value)}
+            ></input>
+            <div>비밀번호</div>
+            <input
+              type="password"
+              placeholder="비밀번호를 입력해 주세요"
+              onChange={(e) => setPW(e.target.value)}
+            ></input>
+            <button onClick={goLogin}>로그인</button>
+          </InputWrapper>
+          <More>
+            <button onClick={() => navigate("/signup")}>비밀번호 찾기</button>
+            <div className="division">|</div>
+            <button onClick={() => navigate("/signup")}>회원가입</button>
+          </More>
+        </Content>
+        <Footer></Footer>
+      </Container>
+    </>
   );
 };
 
@@ -81,7 +84,7 @@ const Container = styled.div`
 const Content = styled.div`
   padding: 16px;
   padding-top: 82px;
-  height: 652px; // 최대 높이를 설정합니다.
+  height: 656px; // 최대 높이를 설정합니다.
 
   /* 스크롤바 숨기기 */
   background-color: white;
@@ -130,7 +133,7 @@ const InputWrapper = styled.div`
 
   input {
     padding: 0px;
-    width: 358px;
+    width: 343px;
     height: 48px;
     flex-shrink: 0;
     border-radius: 8px;
@@ -142,10 +145,10 @@ const InputWrapper = styled.div`
     font-style: normal;
     font-weight: 400;
     line-height: 133.8%; /* 20.07px */
+    padding-left: 15px;
   }
 
   input::placeholder {
-    padding-left: 15px;
     color: #d5d5d5;
     font-family: Pretendard;
     font-size: 15px;
