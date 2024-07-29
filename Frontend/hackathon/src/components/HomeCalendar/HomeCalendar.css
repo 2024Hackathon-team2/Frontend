@@ -1,0 +1,117 @@
+.CalendarContainer {
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.CalendarWrapper {
+  position: relative;
+}
+.react-calendar {
+  font-family: Pretendard, sans-serif;
+  border-radius: 14px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  border: none;
+}
+.react-calendar__navigation {
+  position: relative;
+}
+.react-calendar__month-view__weekdays abbr {
+  text-decoration: none;
+  font-weight: 800;
+  color: #3c3c43;
+  opacity: 0.4;
+}
+.react-calendar__tile {
+  color: black;
+  position: relative;
+}
+.react-calendar__month-view__days__day--weekend {
+  color: black;
+}
+.react-calendar__tile--active {
+  background-color: #eeecec;
+  color: #ff9b9b;
+}
+.react-calendar__tile--hasActive {
+  background-color: #eeecec;
+}
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+  background-color: #eeecec;
+}
+.react-calendar__tile--now {
+  background-color: white;
+}
+.react-calendar__tile--now:enabled:hover,
+.react-calendar__tile--now:enabled:focus {
+  background: #eeecec;
+}
+.react-calendar__month-view__days__day--neighboringMonth {
+  color: #9a9a9a;
+}
+.react-calendar__navigation__label > span {
+  font-family: Pretendard, sans-serif;
+}
+.react-calendar__navigation__arrow {
+  margin: 0 5px; /* 화살표 간격을 조정 */
+}
+.react-calendar__navigation {
+  display: flex;
+  justify-content: center;
+}
+.react-calendar__navigation__label {
+  flex-grow: 0 !important; /* flex-grow 속성을 0으로 설정 */
+}
+.GotoDrinkingRecord {
+  position: absolute;
+  right: 2%;
+  top: 4%;
+  font-size: 14px;
+
+  cursor: pointer;
+
+  font-weight: bold; /* Adjust as needed */
+}
+.SelectedDateWrapper {
+  width: 100%;
+  height: 83px;
+  background-color: #f9f9f9;
+  border-radius: 14px;
+  margin-top: 20px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  font-size: 15px;
+}
+.SelectedDateWrapper.hidden {
+  display: none;
+}
+
+.SelectedDateWrapper.visible {
+  display: flex;
+}
+.SelectedDate {
+  font-family: Pretendard, sans-serif;
+}
+.dot {
+  height: 5px;
+  width: 5px;
+  background-color: #ff9b9b;
+  border-radius: 50%;
+  text-align: center;
+  margin-top: 3px;
+  position: absolute;
+  top: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.today {
+  font-size: 10px;
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translateX(-50%);
+}

@@ -5,34 +5,28 @@ import axios from "axios";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const [email, setID] = useState();
-  const [pw, setPW] = useState();
+  const [email, setEmail] = useState("");
+  const [pw, setPW] = useState("");
 
   const BASE_URL = " ";
 
   const goLogin = async () => {
     await axios({
       method: "POST",
-      url: "/account/signin/",
+      url: "/accounts/login/", // Updated endpoint
       data: {
-        username: email,
+        email: email, // Changed from 'username' to 'email'
         password: pw,
       },
     })
       .then((response) => {
         console.log(response.data);
 
-        localStorage.setItem("userName", response.data.data.nickname);
-        localStorage.setItem("token", response.data.data.access_token);
-
-        const tokenFromLs = localStorage.getItem("token");
-        console.log(tokenFromLs);
-        const nicknameFromLs = localStorage.getItem("userName");
-        console.log(nicknameFromLs);
+        localStorage.setItem("refreshToken", response.data.refresh); // Store refresh token
+        localStorage.setItem("accessToken", response.data.access); // Store access token
 
         navigate("/mypage");
       })
-
       .catch((error) => {
         console.log(error);
         throw new Error(error);
@@ -47,7 +41,7 @@ const LoginPage = () => {
           <div>아이디</div>
           <input
             placeholder="이메일 주소를 입력해 주세요"
-            onChange={(e) => setID(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           ></input>
           <div>비밀번호</div>
           <input
@@ -81,7 +75,7 @@ const Container = styled.div`
 const Content = styled.div`
   padding: 16px;
   padding-top: 82px;
-  height: 652px; // 최대 높이를 설정합니다.
+  height: 656px; // 최대 높이를 설정합니다.
 
   /* 스크롤바 숨기기 */
   background-color: white;
@@ -130,7 +124,7 @@ const InputWrapper = styled.div`
 
   input {
     padding: 0px;
-    width: 358px;
+    width: 343px;
     height: 48px;
     flex-shrink: 0;
     border-radius: 8px;
@@ -142,10 +136,10 @@ const InputWrapper = styled.div`
     font-style: normal;
     font-weight: 400;
     line-height: 133.8%; /* 20.07px */
+    padding-left: 15px;
   }
 
   input::placeholder {
-    padding-left: 15px;
     color: #d5d5d5;
     font-family: Pretendard;
     font-size: 15px;

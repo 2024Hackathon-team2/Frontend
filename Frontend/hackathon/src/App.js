@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 //pages
 
 import MainPage from "./pages/MainPage";
+import HomePage from "./pages/HomePage";
 import GoalPage from "./pages/GoalPage";
 import RecordPage from "./pages/RecordPage";
 import RecordDonePage from "./pages/RecordDonePage";
@@ -19,6 +20,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/goal" element={<GoalPage />} />
+          <Route path="/home" element={<HomePage />} />
           <Route path="/record" element={<RecordPage />} />
           <Route path="/recorddone" element={<RecordDonePage />} />
           <Route path="/signup" element={<SignupPage />} />
