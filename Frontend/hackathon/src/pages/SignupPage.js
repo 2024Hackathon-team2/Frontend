@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+
+const GlobalStyle = createGlobalStyle`
+  html {
+    background-color: whitesmoke;
+  }
+`;
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -43,52 +49,55 @@ const SignupPage = () => {
   };
 
   return (
-    <Container>
-      <Content>
-        <Title>회원가입</Title>
-        <SubTitle>가입을 위해 아이디와 비밀번호를 설정해주세요.</SubTitle>
-        <InputWrapper>
-          <div>아이디</div>
-          <input
-            placeholder="이메일 주소를 입력해 주세요"
-            onChange={(e) => setEmail(e.target.value)}
-          ></input>
-          <div>비밀번호</div>
-          <input
-            type="password"
-            placeholder="비밀번호를 입력해 주세요"
-            onChange={(e) => setPW(e.target.value)}
-          ></input>
-          <div>비밀번호 확인</div>
-          <input
-            type="password"
-            placeholder="비밀번호를 다시 입력해 주세요"
-            onChange={(e) => setPW2(e.target.value)}
-            style={{ borderColor: isPwMatch ? "#ccc" : "red" }}
-          ></input>
-          {!isPwMatch && (
-            <ErrorMessage
-              style={{ position: "absolute", top: "245px", width: "358px" }}
-              visible={!isPwMatch}
-            >
-              비밀번호가 일치하지 않습니다
-            </ErrorMessage>
-          )}
+    <>
+      <GlobalStyle />
+      <Container>
+        <Content>
+          <Title>회원가입</Title>
+          <SubTitle>가입을 위해 아이디와 비밀번호를 설정해주세요.</SubTitle>
+          <InputWrapper>
+            <div>아이디</div>
+            <input
+              placeholder="이메일 주소를 입력해 주세요"
+              onChange={(e) => setEmail(e.target.value)}
+            ></input>
+            <div>비밀번호</div>
+            <input
+              type="password"
+              placeholder="비밀번호를 입력해 주세요"
+              onChange={(e) => setPW(e.target.value)}
+            ></input>
+            <div>비밀번호 확인</div>
+            <input
+              type="password"
+              placeholder="비밀번호를 다시 입력해 주세요"
+              onChange={(e) => setPW2(e.target.value)}
+              style={{ borderColor: isPwMatch ? "#ccc" : "red" }}
+            ></input>
+            {!isPwMatch && (
+              <ErrorMessage
+                style={{ position: "absolute", top: "245px", width: "358px" }}
+                visible={!isPwMatch}
+              >
+                비밀번호가 일치하지 않습니다
+              </ErrorMessage>
+            )}
 
-          <button
-            onClick={goSignup}
-            disabled={!isButtonActive}
-            style={{
-              backgroundColor: isButtonActive ? "#ccc" : "white",
-              color: isButtonActive ? "white" : "#ccc",
-            }}
-          >
-            가입 완료
-          </button>
-        </InputWrapper>
-      </Content>
-      <Footer></Footer>
-    </Container>
+            <button
+              onClick={goSignup}
+              disabled={!isButtonActive}
+              style={{
+                backgroundColor: isButtonActive ? "#ccc" : "white",
+                color: isButtonActive ? "white" : "#ccc",
+              }}
+            >
+              가입 완료
+            </button>
+          </InputWrapper>
+        </Content>
+        <Footer></Footer>
+      </Container>
+    </>
   );
 };
 

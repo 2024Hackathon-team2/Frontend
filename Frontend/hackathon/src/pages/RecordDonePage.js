@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import backButtonImage from "./images/back.png";
+
+const GlobalStyle = createGlobalStyle`
+  html {
+    background-color: whitesmoke;
+  }
+`;
 
 const RecordDonePage = () => {
   const today = new Date();
@@ -105,26 +111,29 @@ const RecordDonePage = () => {
   };
 
   return (
-    <Container>
-      <Header>
-        <BackButton onClick={goToBack}>
-          <img src={backButtonImage} alt="Back" />
-        </BackButton>
-        나의 음주 기록
-        <div></div>
-      </Header>
-      <Content>
-        <RecordBox>
-          <DateRecord>
-            {year}년 {month}월 {date}일 {day}요일
-          </DateRecord>
-          <RecordTitle>{month}월의 N 번째 음주기록</RecordTitle>
-        </RecordBox>
-        <DoneMessage1>오늘의 음주 기록 완료!</DoneMessage1>
-        <DoneMessage2>잦은 음주는 피해 주세요!</DoneMessage2>
-      </Content>
-      <Footer></Footer>
-    </Container>
+    <>
+      <GlobalStyle />
+      <Container>
+        <Header>
+          <BackButton onClick={goToBack}>
+            <img src={backButtonImage} alt="Back" />
+          </BackButton>
+          나의 음주 기록
+          <div></div>
+        </Header>
+        <Content>
+          <RecordBox>
+            <DateRecord>
+              {year}년 {month}월 {date}일 {day}요일
+            </DateRecord>
+            <RecordTitle>{month}월의 N 번째 음주기록</RecordTitle>
+          </RecordBox>
+          <DoneMessage1>오늘의 음주 기록 완료!</DoneMessage1>
+          <DoneMessage2>잦은 음주는 피해 주세요!</DoneMessage2>
+        </Content>
+        <Footer></Footer>
+      </Container>
+    </>
   );
 };
 

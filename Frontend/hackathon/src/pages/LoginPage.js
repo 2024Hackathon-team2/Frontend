@@ -1,7 +1,13 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+
+const GlobalStyle = createGlobalStyle`
+  html {
+    background-color: whitesmoke;
+  }
+`;
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -34,31 +40,34 @@ const LoginPage = () => {
   };
 
   return (
-    <Container>
-      <Content>
-        <Title>로고/ 서비스 이름</Title>
-        <InputWrapper>
-          <div>아이디</div>
-          <input
-            placeholder="이메일 주소를 입력해 주세요"
-            onChange={(e) => setEmail(e.target.value)}
-          ></input>
-          <div>비밀번호</div>
-          <input
-            type="password"
-            placeholder="비밀번호를 입력해 주세요"
-            onChange={(e) => setPW(e.target.value)}
-          ></input>
-          <button onClick={goLogin}>로그인</button>
-        </InputWrapper>
-        <More>
-          <button onClick={() => navigate("/signup")}>비밀번호 찾기</button>
-          <div className="division">|</div>
-          <button onClick={() => navigate("/signup")}>회원가입</button>
-        </More>
-      </Content>
-      <Footer></Footer>
-    </Container>
+    <>
+      <GlobalStyle />
+      <Container>
+        <Content>
+          <Title>로고/ 서비스 이름</Title>
+          <InputWrapper>
+            <div>아이디</div>
+            <input
+              placeholder="이메일 주소를 입력해 주세요"
+              onChange={(e) => setEmail(e.target.value)}
+            ></input>
+            <div>비밀번호</div>
+            <input
+              type="password"
+              placeholder="비밀번호를 입력해 주세요"
+              onChange={(e) => setPW(e.target.value)}
+            ></input>
+            <button onClick={goLogin}>로그인</button>
+          </InputWrapper>
+          <More>
+            <button onClick={() => navigate("/signup")}>비밀번호 찾기</button>
+            <div className="division">|</div>
+            <button onClick={() => navigate("/signup")}>회원가입</button>
+          </More>
+        </Content>
+        <Footer></Footer>
+      </Container>
+    </>
   );
 };
 
