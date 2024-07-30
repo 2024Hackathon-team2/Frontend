@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
+import backButtonImage from "./images/back.png";
 import basicImage from "./images/기본프로필이미지.png";
+import divImage from "./images/구분선.png";
+import widthLineImage from "./images/widthline.png";
 
 const GlobalStyle = createGlobalStyle`
   html {
@@ -12,87 +15,38 @@ const GlobalStyle = createGlobalStyle`
 const RecordDonePage = () => {
   const navigate = useNavigate();
 
-  const goToProfileSetting = () => {
-    navigate("/profilesetting");
+  const goToBack = () => {
+    navigate("/mypage");
   };
 
-  const goToFriend = () => {
-    navigate("/profilesetting");
-  };
-
-  const goToDelete = () => {};
   return (
     <>
       <GlobalStyle />
       <Container>
-        <Header>마이페이지</Header>
+        <Header>
+          <BackButton onClick={goToBack}>
+            <img src={backButtonImage} alt="Back" />
+          </BackButton>
+          프로필 변경
+          <div></div>
+        </Header>
         <Content>
-          <Profile>
-            <img src={basicImage} />
-            <Name>abcdef</Name>
-            <Email>abcdef@gmail.com</Email>
-          </Profile>
-          <PageButton>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="352"
-              height="2"
-              viewBox="0 0 352 2"
-              fill="none"
-            >
-              <path
-                d="M1 1H351"
-                stroke="#CCCCCC"
-                stroke-opacity="0.3"
-                stroke-linecap="round"
-              />
-            </svg>
-            <button onClick={goToProfileSetting}>프로필 변경</button>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="352"
-              height="2"
-              viewBox="0 0 352 2"
-              fill="none"
-            >
-              <path
-                d="M1 1H351"
-                stroke="#CCCCCC"
-                stroke-opacity="0.3"
-                stroke-linecap="round"
-              />
-            </svg>
-            <button onClick={goToFriend}>친구 관리</button>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="352"
-              height="2"
-              viewBox="0 0 352 2"
-              fill="none"
-            >
-              <path
-                d="M1 1H351"
-                stroke="#CCCCCC"
-                stroke-opacity="0.3"
-                stroke-linecap="round"
-              />
-            </svg>
-            <button onClick={goToDelete}>탈퇴하기</button>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="352"
-              height="2"
-              viewBox="0 0 352 2"
-              fill="none"
-            >
-              <path
-                d="M1 1H351"
-                stroke="#CCCCCC"
-                stroke-opacity="0.3"
-                stroke-linecap="round"
-              />
-            </svg>
-          </PageButton>
+          <ProfileImage>
+            <img className="profileimg" src={basicImage} />
+            <div>
+              <button>이미지 선택</button>
+              <img className="divimg" src={divImage} />
+              <button>이미지 삭제</button>
+            </div>
+          </ProfileImage>
+          <SetName>
+            <img src={widthLineImage} />
+            <p>이름</p>
+            <div>
+              <input placeholder="이름을 입력해 주세요."></input>
+              <button>변경</button>
+            </div>
+          </SetName>
         </Content>
         <Footer></Footer>
       </Container>
@@ -113,7 +67,7 @@ const Container = styled.div`
 const Header = styled.header`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   position: fixed;
   width: 390px;
   height: 54px;
@@ -129,6 +83,26 @@ const Header = styled.header`
   letter-spacing: -0.408px;
   box-shadow: 0px 4px 10px -12px black;
   background-color: white;
+
+  div {
+    margin-right: 20px;
+    width: 25px;
+    height: 25px;
+  }
+`;
+const BackButton = styled.button`
+  width: 25px;
+  height: 25px;
+  border: none;
+  margin-left: 20px;
+  cursor: pointer;
+  flex-shrink: 0;
+  background-color: white;
+
+  img {
+    width: 25px;
+    height: 25px;
+  }
 `;
 
 const Content = styled.div`
@@ -144,63 +118,97 @@ const Content = styled.div`
   align-items: center;
 `;
 
-const Profile = styled.div`
+const ProfileImage = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  img {
+  button {
+    height: 15px;
+    padding: 0px;
+    border: none;
+    background-color: white;
+    color: rgba(204, 204, 204, 0.8);
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 100%; /* 13px */
+    margin: 0px;
+    margin-top: 22px;
+  }
+
+  .profileimg {
     width: 175px;
     height: 175px;
   }
+
+  .divimg {
+    width: 0.5px;
+    height: 15px;
+    margin-left: 17px;
+    margin-right: 17px;
+    padding: 0px;
+    margin-top: 22px;
+  }
 `;
 
-const Name = styled.div`
-  margin-top: 32px;
-  color: #000;
-  text-align: center;
-  font-family: Pretendard;
-  font-size: 22px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 100%; /* 22px */
-`;
-
-const Email = styled.div`
-  margin-top: 8px;
-  color: #ccc;
-  text-align: center;
-  font-family: Pretendard;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 100%; /* 12px */
-`;
-
-const PageButton = styled.div`
-  margin-top: 59px;
-  width: 350px;
+const SetName = styled.div`
   display: flex;
   flex-direction: column;
 
-  button {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
+  img {
     width: 350px;
-    height: 55px;
-    background-color: white;
+    height: 0px;
+    flex-shrink: 0;
+  }
+
+  p {
     color: #000;
     font-family: Pretendard;
-    font-size: 16px;
+    font-size: 12px;
     font-style: normal;
-    font-weight: 600;
-    line-height: 100%; /* 16px */
-    border: none;
-    cursor: pointer;
+    font-weight: 400;
+    line-height: 100%; /* 12px */
+  }
+
+  input {
+    padding: 0px;
+    width: 343px;
+    height: 48px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    color: black;
+    font-family: Pretendard;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 133.8%;
+    padding-left: 15px;
+  }
+  input::placeholder {
+    display: flex;
+    width: 335.119px;
+    height: 40px;
+    flex-direction: column;
+    justify-content: center;
+    flex-shrink: 0;
+
+    color: #d5d5d5;
+    font-family: Pretendard;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 133.8%; /* 20.07px */
+  }
+
+  div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
   }
 `;
+
 const Footer = styled.footer`
   display: flex;
   width: 390px;
