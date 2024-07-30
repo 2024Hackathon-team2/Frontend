@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Navbar from "../components/Navbar";
 
 const GlobalStyle = createGlobalStyle`
   html {
@@ -95,7 +96,9 @@ const SignupPage = () => {
             </button>
           </InputWrapper>
         </Content>
-        <Footer></Footer>
+        <Footer>
+          <Navbar></Navbar>
+        </Footer>
       </Container>
     </>
   );

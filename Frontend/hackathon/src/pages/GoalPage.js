@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import backButtonImage from "./images/back.png";
+import Navbar from "../components/Navbar";
 
 const GoalPage = () => {
   const [selections, setSelections] = useState([{ drink: "", amount: "" }]);
@@ -168,7 +169,9 @@ const GoalPage = () => {
           <SubmitButton onClick={handleSubmit}>목표 설정 완료</SubmitButton>
         </div>
       </Content>
-      <Footer></Footer>
+      <Footer>
+        <Navbar></Navbar>
+      </Footer>
     </Container>
   );
 };

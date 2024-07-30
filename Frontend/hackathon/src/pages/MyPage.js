@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import backButtonImage from "./images/back.png";
+import Navbar from "../components/Navbar";
 
 const RecordDonePage = () => {
   return (
     <Container>
       <Header>마이페이지</Header>
       <Content></Content>
-      <Footer></Footer>
+      <Footer>
+        <Navbar></Navbar>
+      </Footer>
     </Container>
   );
 };

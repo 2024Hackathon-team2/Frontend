@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 import backButtonImage from "./images/back.png";
+import Navbar from "../components/Navbar";
 
 const GlobalStyle = createGlobalStyle`
   html {
@@ -131,7 +132,9 @@ const RecordDonePage = () => {
           <DoneMessage1>오늘의 음주 기록 완료!</DoneMessage1>
           <DoneMessage2>잦은 음주는 피해 주세요!</DoneMessage2>
         </Content>
-        <Footer></Footer>
+        <Footer>
+          <Navbar></Navbar>
+        </Footer>
       </Container>
     </>
   );
