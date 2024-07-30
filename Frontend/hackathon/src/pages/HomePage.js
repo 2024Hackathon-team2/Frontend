@@ -52,6 +52,7 @@ const Container = styled.div`
 
 const Header = styled.header`
   display: flex;
+  display: flex;
   align-items: center;
   justify-content: space-between;
   position: fixed;
