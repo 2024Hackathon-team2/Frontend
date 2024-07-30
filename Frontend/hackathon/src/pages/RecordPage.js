@@ -195,9 +195,13 @@ const RecordPage = () => {
                       src={getDrinkImage(record.drink)}
                       alt={record.drink}
                       style={{
-                        width: "30px",
-                        height: "45px",
+                        width: "30.24px",
+                        height: "30.591px",
                         marginRight: "10px",
+                        backgroundColor: "white",
+                        border: "1px solid #AEAEAE",
+                        borderRadius: "10px",
+                        padding: "10px",
                       }}
                     />
                     {record.drink} {record.amount}
@@ -368,11 +372,11 @@ const DrinkButtons = styled.div`
 `;
 
 const DrinkButton = styled.button`
-  width: 48px;
+  width: 60px;
   height: 73px;
-  background-color: ${(props) => (props.selected ? "#575757" : "#F9F9F9")};
+  border: 1px solid #c7c7c7;
+  background-color: ${(props) => (props.selected ? "#575757" : "white")};
   border-radius: 10px;
-  border: ${(props) => (props.selected ? "1px solid #c7c7c7" : "none")};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -415,8 +419,8 @@ const Button = styled.button`
   flex-shrink: 0;
   border-radius: 7px;
   border: none;
-  background: #d9d9d9;
-  color: #000;
+  background: #4f82f7;
+  color: white;
   text-align: center;
   font-family: Pretendard;
   font-size: 16px;
@@ -448,7 +452,7 @@ const RecordItem = styled.div`
   background: #f9f9f9;
 
   div {
-    padding-left: 31px;
+    padding-left: 18px;
     flex-grow: 1;
     display: flex;
     align-items: center;
@@ -480,7 +484,7 @@ const SubmitButton = styled.button`
   height: 52px;
   flex-shrink: 0;
   border-radius: 9px;
-  background: #7e7e7e;
+  background: #4f82f7;
   border: none;
   color: #fff;
   font-family: Pretendard;

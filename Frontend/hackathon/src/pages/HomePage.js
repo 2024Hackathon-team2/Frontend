@@ -2,6 +2,7 @@ import React from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import HomeCalendar from "../components/HomeCalendar/HomeCalendar";
 import Navbar from "../components/Navbar";
+import { useNavigate } from "react-router-dom";
 
 const GlobalStyle = createGlobalStyle`
   html {
@@ -10,6 +11,11 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const HomePage = () => {
+  const navigate = useNavigate();
+  const goToGoal = () => {
+    navigate("/goal");
+  };
+
   return (
     <>
       <GlobalStyle />
@@ -18,7 +24,7 @@ const HomePage = () => {
         <Content>
           <Title>
             <div>00님의 7월 음주 목표</div>
-            <button>수정</button>
+            <button onClick={goToGoal}>수정</button>
           </Title>
           <GoalReach>
             <div>잔 수</div>

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import backButtonImage from "./images/back.png";
 import Navbar from "../components/Navbar";
+import { useNavigate } from "react-router-dom";
 
 const GoalPage = () => {
   const [selections, setSelections] = useState([{ drink: "", amount: "" }]);
@@ -82,10 +83,15 @@ const GoalPage = () => {
     console.log("Selections:", selections);
   };
 
+  const navigate = useNavigate();
+  const goToGoal = () => {
+    navigate("/home");
+  };
+
   return (
     <Container>
       <Header>
-        <BackButton>
+        <BackButton onClick={goToGoal}>
           <img src={backButtonImage} alt="Back" />
         </BackButton>
         음주 목표 설정
