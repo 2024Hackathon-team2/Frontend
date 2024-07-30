@@ -11,6 +11,9 @@ import RecordDonePage from "./pages/RecordDonePage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import MyPage from "./pages/MyPage";
+import ProfileSettingPage from "./pages/ProfileSettingPage.js";
+import FriendPage from "./pages/FriendPage";
+
 import "./App.css";
 
 function App() {
@@ -26,6 +29,8 @@ function App() {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/mypage" element={<MyPage />} />
+          <Route path="/profilesetting" element={<ProfileSettingPage />} />
+          <Route path="/friend" element={<FriendPage />} />
         </Routes>
       </Router>
     </>

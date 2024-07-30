@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import logoImage from "./images/logo.png";
 
 const GlobalStyle = createGlobalStyle`
   html {
@@ -44,7 +45,9 @@ const LoginPage = () => {
       <GlobalStyle />
       <Container>
         <Content>
-          <Title>로고/ 서비스 이름</Title>
+          <Title>
+            <img src={logoImage} />
+          </Title>
           <InputWrapper>
             <div>아이디</div>
             <input
@@ -110,6 +113,11 @@ const Title = styled.div`
   font-style: normal;
   font-weight: 700;
   line-height: 133.8%; /* 26.76px */
+
+  img {
+    width: 144px;
+    height: 59.005px;
+  }
 `;
 
 const InputWrapper = styled.div`
