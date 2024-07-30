@@ -12,6 +12,9 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import MyPage from "./pages/MyPage";
 import SocialPage from "./pages/SocialPage";
+import ProfileSettingPage from "./pages/ProfileSettingPage.js";
+import FriendPage from "./pages/FriendPage";
+
 import "./App.css";
 
 function App() {
@@ -28,6 +31,8 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/social" element={<SocialPage />} />
+          <Route path="/profilesetting" element={<ProfileSettingPage />} />
+          <Route path="/friend" element={<FriendPage />} />
         </Routes>
       </Router>
     </>
