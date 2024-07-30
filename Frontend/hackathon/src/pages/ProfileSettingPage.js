@@ -5,6 +5,7 @@ import backButtonImage from "./images/back.png";
 import basicImage from "./images/기본프로필이미지.png";
 import divImage from "./images/구분선.png";
 import widthLineImage from "./images/widthline.png";
+import Navbar from "../components/Navbar";
 
 const GlobalStyle = createGlobalStyle`
   html {
@@ -48,7 +49,9 @@ const RecordDonePage = () => {
             </div>
           </SetName>
         </Content>
-        <Footer></Footer>
+        <Footer>
+          <Navbar></Navbar>
+        </Footer>
       </Container>
     </>
   );
@@ -216,6 +219,6 @@ const Footer = styled.footer`
   flex-direction: column;
   align-items: center;
   gap: 19.6px;
-  background: var(--unnamed, gray);
+  background: white;
   box-shadow: 0px 4px 8.4px 0px rgba(0, 0, 0, 0.02);
 `;
