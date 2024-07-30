@@ -1,28 +1,33 @@
 import React from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import Images from "../images/Navbar/임시아이콘.png";
+import HomeIcon from "../images/Navbar/홈.png";
+import SocialIcon from "../images/Navbar/소셜챌린저.png";
+import TestIcon from "../images/Navbar/테스트.png";
+import TimerIcon from "../images/Navbar/타이머.png";
+import MyIcon from "../images/Navbar/마이페이지.png";
 
 const Navbar = () => {
   return (
     <Wrapper>
       <NavItem>
-        <Image src={Images} />
+        <img src={HomeIcon} />
         <Text>홈</Text>
       </NavItem>
       <NavItem>
-        <Image src={Images} />
+        <img src={SocialIcon} />
         <Text>소셜</Text>
       </NavItem>
       <NavItem>
-        <Image src={Images} />
+        <img src={TestIcon} />
         <Text>테스트</Text>
       </NavItem>
       <NavItem>
-        <Image src={Images} />
+        <img src={TimerIcon} />
         <Text>타이머</Text>
       </NavItem>
       <NavItem>
-        <Image src={Images} />
+        <img src={MyIcon} />
         <Text>MY</Text>
       </NavItem>
     </Wrapper>

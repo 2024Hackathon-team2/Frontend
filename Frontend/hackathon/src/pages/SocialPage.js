@@ -5,7 +5,7 @@ import BeerImage from "../images/SocialPage/맥주.png";
 import SojuImage from "../images/SocialPage/소주.png";
 import MakgeolliImage from "../images/SocialPage/막걸리.png";
 import WineImage from "../images/SocialPage/와인.png";
-
+import { useNavigate } from "react-router-dom";
 import ProgressBar from "../components/Progressbar_Goal";
 import { FriendList, getFriendList } from "../components/FriendList";
 import Navbar from "../components/Navbar";
@@ -69,7 +69,7 @@ const SocialPage = ({ userId }) => {
                 <div className="img">
                   <img src={BeerImage}></img>
                 </div>
-                <div>맥주</div>
+                <div className="drinksName">맥주</div>
                 <div>
                   <ProgressBar percentage={percentage} />
                 </div>
@@ -82,7 +82,7 @@ const SocialPage = ({ userId }) => {
                 <div className="img">
                   <img src={SojuImage}></img>
                 </div>
-                <div>소주</div>
+                <div className="drinksName">소주</div>
                 <div>
                   <ProgressBar percentage={percentage} />
                 </div>
@@ -95,7 +95,7 @@ const SocialPage = ({ userId }) => {
                 <div className="img">
                   <img src={MakgeolliImage}></img>
                 </div>
-                <div>막걸리</div>
+                <div className="drinksName">막걸리</div>
                 <div>
                   <ProgressBar percentage={percentage} />
                 </div>
@@ -108,7 +108,7 @@ const SocialPage = ({ userId }) => {
                 <div className="img">
                   <img src={WineImage}></img>
                 </div>
-                <div>와인</div>
+                <div className="drinksName">와인</div>
                 <div>
                   <ProgressBar percentage={percentage} />
                 </div>
@@ -123,7 +123,7 @@ const SocialPage = ({ userId }) => {
             </div>
           </Goal>
           <Friends>
-            <div>친구의 달성률</div>
+            <div className="friendTitle">친구의 달성률</div>
             <FriendList friends={friends} />
           </Friends>
         </Content>
@@ -165,6 +165,7 @@ const Header = styled.header`
 `;
 
 const Content = styled.div`
+  font-family: Pretendard;
   padding: 20px;
   padding-top: 70px;
   height: 652px; // 최대 높이를 설정합니다.
@@ -177,19 +178,27 @@ const Content = styled.div`
 `;
 const Goal = styled.div`
   width: 100%;
+  .goalTitle {
+    margin-bottom: 20px;
+    font-family: Pretendard;
+  }
+
   .userName {
-    font-family: "Pretendard-Bold";
-    src: url("../styles/Pretendard-Bold.woff") format("woff");
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 5px;
   }
   .CheerNumber {
     display: flex;
     font-size: 12px;
-    font-family: Pretendard-Medium;
+    font-family: Pretendard;
     justify-content: end;
+    margin-bottom: 5px;
   }
   .GoalSpecificButton {
     display: flex;
     justify-content: center;
+    cursor: pointer;
     div {
       width: 164px;
       height: 35px;
@@ -207,13 +216,18 @@ const DrinkingGoals = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
   .Drinks {
     width: 95%;
     display: grid;
-    grid-template-columns: 43px 50px 220px;
-    justify-items: end;
+    grid-template-columns: 50px 50px 220px;
     align-items: center;
     margin-bottom: 15px;
+  }
+  .drinksName {
+    font-size: 13px;
+    font-family: Pretendard;
+    font-weight: medium;
   }
   .img {
     grid-row: 1/3;
@@ -222,11 +236,18 @@ const DrinkingGoals = styled.div`
     grid-column: 3/4;
     font-family: Pretendard-Medium;
     font-size: 10px;
+    justify-self: end;
   }
 `;
 
 const Friends = styled.div`
   width: 100%;
+  .friendTitle {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
+  }
 `;
 const Footer = styled.footer`
   display: flex;
@@ -235,6 +256,6 @@ const Footer = styled.footer`
   flex-direction: column;
   align-items: center;
   gap: 19.6px;
-  background: var(--unnamed, gray);
+  background: white;
   box-shadow: 0px 4px 8.4px 0px rgba(0, 0, 0, 0.02);
 `;

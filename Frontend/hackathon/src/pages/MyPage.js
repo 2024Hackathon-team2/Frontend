@@ -1,10 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-<<<<<<< HEAD
-import backButtonImage from "./images/back.png";
-import Navbar from "../components/Navbar";
-=======
->>>>>>> 5e5d345eb1f5a06f30226c45f9657f838b472524
 import styled, { createGlobalStyle } from "styled-components";
 import basicImage from "./images/기본프로필이미지.png";
 import Navbar from "../components/Navbar";
