@@ -15,7 +15,13 @@ const RecordDonePage = () => {
     <>
       <GlobalStyle />
       <Container>
-        <Header>정상 간 타이머</Header>
+        <Header>
+          <BackButton>
+            <img src={backButtonImage} alt="Back" />
+          </BackButton>
+          음주 정도 테스트
+          <div></div>
+        </Header>
         <Content></Content>
         <Footer>
           <Navbar></Navbar>

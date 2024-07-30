@@ -182,6 +182,7 @@ export default GoalPage;
 const Container = styled.div`
   width: 390px;
   margin: 0 auto;
+  height: 100vh;
   background-color: white;
 `;
 
@@ -344,6 +345,8 @@ const SubmitButton = styled(Button)`
 `;
 
 const Footer = styled.footer`
+  position: fixed;
+  bottom: 0%;
   display: flex;
   width: 390px;
   height: 84px;

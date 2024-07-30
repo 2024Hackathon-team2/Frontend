@@ -238,6 +238,8 @@ export default RecordPage;
 // Styled components
 const Container = styled.div`
   width: 390px;
+  height: 100vh;
+
   margin: 0 auto;
   background-color: white;
 `;
@@ -459,6 +461,8 @@ const DeleteButton = styled.button`
 `;
 
 const Footer = styled.footer`
+  position: fixed;
+  bottom: 0%;
   display: flex;
   width: 390px;
   height: 84px;
