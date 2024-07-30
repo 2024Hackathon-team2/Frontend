@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import ProgressBar from "../components/Progressbar_Goal";
 import { FriendList, getFriendList } from "../components/FriendList";
 import Navbar from "../components/Navbar";
+
 const GlobalStyle = createGlobalStyle`
   html {
     background-color: whitesmoke;
@@ -44,6 +45,8 @@ const SocialPage = ({ userId }) => {
 
     fetchFriends();
   }, [userId]);
+
+  const navigate = useNavigate();
 
   return (
     <>
@@ -118,7 +121,12 @@ const SocialPage = ({ userId }) => {
               </div>
             </DrinkingGoals>
 
-            <div className="GoalSpecificButton">
+            <div
+              className="GoalSpecificButton"
+              onClick={() => {
+                navigate("/home");
+              }}
+            >
               <div>목표 자세히 보기</div>
             </div>
           </Goal>
@@ -144,6 +152,7 @@ const Container = styled.div`
 
   margin: 0 auto;
   background-color: white;
+  height: 100vh;
 `;
 
 const Header = styled.header`
@@ -252,6 +261,8 @@ const Friends = styled.div`
   }
 `;
 const Footer = styled.footer`
+  position: fixed;
+  bottom: 0%;
   display: flex;
   position: fixed;
   bottom: 0%;
