@@ -85,7 +85,7 @@ const GoalPage = () => {
 
   const navigate = useNavigate();
   const goToGoal = () => {
-    navigate("/home");
+    navigate("/");
   };
 
   return (
