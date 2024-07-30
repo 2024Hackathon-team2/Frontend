@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import backButtonImage from "./images/back.png";
-import Navbar from "../components/Navbar";
 import styled, { createGlobalStyle } from "styled-components";
 import basicImage from "./images/기본프로필이미지.png";
+import Navbar from "../components/Navbar";
 
 const GlobalStyle = createGlobalStyle`
   html {
@@ -111,7 +109,9 @@ const RecordDonePage = () => {
             </svg>
           </PageButton>
         </Content>
-        <Footer></Footer>
+        <Footer>
+          <Navbar></Navbar>
+        </Footer>
       </Container>
       {isModalOpen && (
         <ModalOverlay>
@@ -250,16 +250,6 @@ const PageButton = styled.div`
     cursor: pointer;
   }
 `;
-const Footer = styled.footer`
-  display: flex;
-  width: 390px;
-  height: 84px;
-  flex-direction: column;
-  align-items: center;
-  gap: 19.6px;
-  background: var(--unnamed, gray);
-  box-shadow: 0px 4px 8.4px 0px rgba(0, 0, 0, 0.02);
-`;
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -353,4 +343,15 @@ const ModalContent = styled.div`
     line-height: 100%; /* 12px */
     margin-top: 8px;
   }
+`;
+
+const Footer = styled.footer`
+  display: flex;
+  width: 390px;
+  height: 84px;
+  flex-direction: column;
+  align-items: center;
+  gap: 19.6px;
+  background: white;
+  box-shadow: 0px 4px 8.4px 0px rgba(0, 0, 0, 0.02);
 `;

@@ -262,6 +262,6 @@ const Footer = styled.footer`
   flex-direction: column;
   align-items: center;
   gap: 19.6px;
-  background: var(--unnamed, gray);
+  background: white;
   box-shadow: 0px 4px 8.4px 0px rgba(0, 0, 0, 0.02);
 `;

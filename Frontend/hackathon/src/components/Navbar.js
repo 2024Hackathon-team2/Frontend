@@ -32,7 +32,6 @@ const Navbar = () => {
 export default Navbar;
 
 const Wrapper = styled.div`
-  position: fixed;
   bottom: 0;
   display: flex;
   justify-content: space-evenly;
