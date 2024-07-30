@@ -48,6 +48,7 @@ const Container = styled.div`
   width: 390px;
   margin: 0 auto;
   background-color: white;
+  height: 100vh;
 `;
 
 const Header = styled.header`
@@ -78,7 +79,7 @@ const Content = styled.div`
   // 세로 스크롤을 허용합니다.
   /* 스크롤바 숨기기 */
   height: 652px;
-  overflow-y: scroll;
+  overflow-y: auto;
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -126,6 +127,8 @@ const DrinkingCalendar = styled.div`
 `;
 
 const Footer = styled.footer`
+  position: fixed;
+  bottom: 0%;
   display: flex;
   width: 390px;
   height: 84px;
