@@ -148,6 +148,8 @@ export default SocialPage;
 // Styled components
 const Container = styled.div`
   width: 390px;
+  height: 100vh;
+
   margin: 0 auto;
   background-color: white;
   height: 100vh;
@@ -262,6 +264,8 @@ const Footer = styled.footer`
   position: fixed;
   bottom: 0%;
   display: flex;
+  position: fixed;
+  bottom: 0%;
   width: 390px;
   height: 84px;
   flex-direction: column;

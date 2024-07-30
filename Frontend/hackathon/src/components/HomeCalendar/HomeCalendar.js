@@ -3,6 +3,7 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import moment from "moment";
 import "moment/locale/ko"; // 한국어 로케일 추가
+import { useNavigate } from "react-router-dom"; // Add this import
 import "../HomeCalendar/HomeCalendar.css";
 
 const HomeCalendar = () => {
@@ -11,8 +12,18 @@ const HomeCalendar = () => {
   const [activeStartDate, setActiveStartDate] = useState(new Date());
   const attendDay = ["2024-07-03", "2024-07-13"]; // 출석한 날짜 예시
 
+  const navigate = useNavigate(); // Initialize the navigate function
+
   const handleDateChange = (newDate) => {
     setDate(newDate);
+  };
+
+  const goToRecordPage = () => {
+    if (date) {
+      navigate("/record", { state: { selectedDate: date } }); // Pass the selected date
+    } else {
+      alert("날짜를 선택해주세요.");
+    }
   };
 
   useEffect(() => {
@@ -61,7 +72,9 @@ const HomeCalendar = () => {
             return <div className="tile">{html}</div>;
           }}
         />
-        <div className="GotoDrinkingRecord">음주기록+</div>
+        <div className="GotoDrinkingRecord" onClick={goToRecordPage}>
+          음주기록+
+        </div>
       </div>
       {date && ( // 날짜가 선택된 경우에만 보이기
         <div className="SelectedDateWrapper visible">

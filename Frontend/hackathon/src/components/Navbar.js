@@ -6,27 +6,45 @@ import SocialIcon from "../images/Navbar/소셜챌린저.png";
 import TestIcon from "../images/Navbar/테스트.png";
 import TimerIcon from "../images/Navbar/타이머.png";
 import MyIcon from "../images/Navbar/마이페이지.png";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
+  const goToHome = () => {
+    navigate("/home");
+  };
+  const goToSocial = () => {
+    navigate("/social");
+  };
+  const goToTest = () => {
+    navigate("/test");
+  };
+  const goToTimer = () => {
+    navigate("/timer");
+  };
+  const goToMypage = () => {
+    navigate("/mypage");
+  };
   return (
     <Wrapper>
-      <NavItem>
+      <NavItem onClick={goToHome}>
         <img src={HomeIcon} />
         <Text>홈</Text>
       </NavItem>
-      <NavItem>
+      <NavItem onClick={goToSocial}>
         <img src={SocialIcon} />
         <Text>소셜</Text>
       </NavItem>
-      <NavItem>
+      <NavItem onClick={goToTest}>
         <img src={TestIcon} />
         <Text>테스트</Text>
       </NavItem>
-      <NavItem>
+      <NavItem onClick={goToTimer}>
         <img src={TimerIcon} />
         <Text>타이머</Text>
       </NavItem>
-      <NavItem>
+      <NavItem onClick={goToMypage}>
         <img src={MyIcon} />
         <Text>MY</Text>
       </NavItem>
@@ -57,6 +75,7 @@ const NavItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  cursor: pointer;
 `;
 
 const Image = styled.div`

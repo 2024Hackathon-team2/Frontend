@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom"; // useLocation 추가
 import styled, { createGlobalStyle } from "styled-components";
 import backButtonImage from "./images/back.png";
 import SojuImage from "./images/소주.png";
@@ -15,7 +15,9 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const RecordPage = () => {
-  const today = new Date();
+  const location = useLocation(); // useLocation 훅 사용
+  const { selectedDate } = location.state || {}; // 선택된 날짜 받아오기
+  const today = new Date(selectedDate || Date.now()); // 선택된 날짜가 없으면 현재 날짜 사용
 
   const year = today.getFullYear();
   const month = today.getMonth() + 1;
@@ -238,6 +240,8 @@ export default RecordPage;
 // Styled components
 const Container = styled.div`
   width: 390px;
+  height: 100vh;
+
   margin: 0 auto;
   background-color: white;
 `;
@@ -459,6 +463,8 @@ const DeleteButton = styled.button`
 `;
 
 const Footer = styled.footer`
+  position: fixed;
+  bottom: 0%;
   display: flex;
   width: 390px;
   height: 84px;

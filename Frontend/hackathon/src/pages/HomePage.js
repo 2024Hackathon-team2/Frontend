@@ -46,6 +46,7 @@ export default HomePage;
 // Styled components
 const Container = styled.div`
   width: 390px;
+  height: 100vh;
   margin: 0 auto;
   background-color: white;
   height: 100vh;

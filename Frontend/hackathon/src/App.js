@@ -15,6 +15,7 @@ import SocialPage from "./pages/SocialPage";
 import ProfileSettingPage from "./pages/ProfileSettingPage.js";
 import FriendPage from "./pages/FriendPage";
 import TimerPage from "./pages/TimerPage";
+import TestPage from "./pages/TestPage";
 
 import "./App.css";
 
@@ -35,6 +36,7 @@ function App() {
           <Route path="/profilesetting" element={<ProfileSettingPage />} />
           <Route path="/friend" element={<FriendPage />} />
           <Route path="/timer" element={<TimerPage />} />
+          <Route path="/test" element={<TestPage />} />
         </Routes>
       </Router>
     </>
