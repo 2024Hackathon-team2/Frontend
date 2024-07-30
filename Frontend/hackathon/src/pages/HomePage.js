@@ -73,9 +73,11 @@ const Header = styled.header`
 const Content = styled.div`
   padding: 20px;
   padding-top: 10px;
-  height: 724px; // 최대 높이를 설정합니다.
-  overflow-y: auto; // 세로 스크롤을 허용합니다.
+  // 최대 높이를 설정합니다.
+  // 세로 스크롤을 허용합니다.
   /* 스크롤바 숨기기 */
+  height: 652px;
+  overflow-y: scroll;
   background-color: white;
   display: flex;
   flex-direction: column;
