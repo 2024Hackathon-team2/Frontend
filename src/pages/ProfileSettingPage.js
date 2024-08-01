@@ -12,7 +12,7 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const RecordDonePage = () => {
+const ProfileSettingPage = () => {
   const [isPwMatch, setIsPwMatch] = useState(true);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -180,7 +180,7 @@ const RecordDonePage = () => {
   );
 };
 
-export default RecordDonePage;
+export default ProfileSettingPage;
 
 // Styled components
 const Container = styled.div`
@@ -469,9 +469,9 @@ const SaveButton = styled.button`
   flex-shrink: 0;
   align-items: center;
   border-radius: 50px;
-  background-color: #ccc;
+  background-color: #17d6b5;
   border: none;
-  color: #000;
+  color: white;
   text-align: center;
   font-family: Pretendard;
   font-size: 16px;

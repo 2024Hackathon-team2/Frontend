@@ -88,7 +88,7 @@ const SignupPage = () => {
               onClick={goSignup}
               disabled={!isButtonActive}
               style={{
-                backgroundColor: isButtonActive ? "#ccc" : "white",
+                backgroundColor: isButtonActive ? "#17D6B5" : "white",
                 color: isButtonActive ? "white" : "#ccc",
               }}
             >
@@ -110,26 +110,32 @@ export default SignupPage;
 const Container = styled.div`
   width: 390px;
   height: 100vh;
-
   margin: 0 auto;
   background-color: white;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Content = styled.div`
   padding: 16px;
-  padding-top: 82px;
-  height: 656px;
-  background-color: white;
+  padding-bottom: 104px; /* Space for the fixed footer */
+  flex: 1;
+  overflow-y: auto; /* Allow vertical scrolling */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: white;
+
+  ::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for webkit browsers */
+  }
+
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  -ms-overflow-style: none; /* Hide scrollbar for Internet Explorer and Edge */
 `;
 
 const Title = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   width: 151px;
   height: 27px;
   margin-bottom: 16px;
@@ -138,7 +144,6 @@ const Title = styled.div`
   font-family: Pretendard;
   font-size: 20px;
   font-weight: 700;
-  line-height: 133.8%;
 `;
 
 const SubTitle = styled.div`
@@ -146,10 +151,8 @@ const SubTitle = styled.div`
   text-align: center;
   font-family: Pretendard;
   font-size: 14px;
-  font-style: normal;
   font-weight: 400;
-  line-height: 133.8%;
-  margin-bottom: 10.99px;
+  margin-bottom: 11px;
 `;
 
 const InputWrapper = styled.div`
@@ -160,28 +163,23 @@ const InputWrapper = styled.div`
   div {
     display: flex;
     flex-direction: column;
-    width: 97px;
-    height: 20px;
     color: #000;
     font-family: Pretendard;
     font-size: 13px;
     font-weight: 400;
-    line-height: 133.8%;
-    margin-top: 16.01px;
+    margin-top: 16px;
   }
 
   input {
-    padding: 0px;
     width: 343px;
     height: 48px;
     border-radius: 8px;
     border: 1px solid #ccc;
+    padding-left: 15px;
     color: black;
     font-family: Pretendard;
     font-size: 15px;
     font-weight: 400;
-    line-height: 133.8%;
-    padding-left: 15px;
   }
 
   input::placeholder {
@@ -189,27 +187,18 @@ const InputWrapper = styled.div`
     font-family: Pretendard;
     font-size: 15px;
     font-weight: 400;
-    line-height: 133.8%;
   }
 
   button {
     margin-top: 30px;
-    display: flex;
     width: 358px;
     height: 48px;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     border-radius: 8px;
     background-color: white;
-    flex-shrink: 0;
     color: #ccc;
-    text-align: center;
     font-family: Pretendard;
     font-size: 16px;
-    font-style: normal;
     font-weight: 700;
-    line-height: 133.8%; /* 21.408px */
     border: 1px solid #ccc;
     cursor: pointer;
   }
@@ -219,17 +208,25 @@ const InputWrapper = styled.div`
   }
 `;
 
-const ErrorMessage = styled.div``;
+const ErrorMessage = styled.div`
+  color: red;
+  font-family: Pretendard;
+  font-size: 13px;
+  font-weight: 400;
+  position: absolute;
+  top: 240px;
+  width: 358px;
+`;
 
 const Footer = styled.footer`
   position: fixed;
-  bottom: 0%;
+  bottom: 0;
   width: 390px;
   height: 84px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 19.6px;
   background: white;
   box-shadow: 0px 4px 8.4px 0px rgba(0, 0, 0, 0.02);
+  z-index: 10;
 `;

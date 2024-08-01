@@ -81,6 +81,7 @@ const GoalPage = () => {
 
   const handleSubmit = () => {
     console.log("Selections:", selections);
+    navigate("/");
   };
 
   const navigate = useNavigate();
@@ -175,9 +176,6 @@ const GoalPage = () => {
           <SubmitButton onClick={handleSubmit}>목표 설정 완료</SubmitButton>
         </div>
       </Content>
-      <Footer>
-        <Navbar></Navbar>
-      </Footer>
     </Container>
   );
 };
@@ -187,9 +185,11 @@ export default GoalPage;
 // Styled components
 const Container = styled.div`
   width: 390px;
-  margin: 0 auto;
   height: 100vh;
+  margin: 0 auto;
   background-color: white;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Header = styled.header`
@@ -197,20 +197,16 @@ const Header = styled.header`
   align-items: center;
   justify-content: space-between;
   position: fixed;
+  top: 0;
   width: 390px;
   height: 54px;
-  flex-shrink: 0;
   color: #000;
-  text-align: center;
-
   font-family: Pretendard;
   font-size: 18px;
-  font-style: normal;
   font-weight: 600;
-  line-height: 22px;
-  letter-spacing: -0.408px;
-  box-shadow: 0px 4px 10px -12px black;
   background-color: white;
+  box-shadow: 0px 4px 10px -12px black;
+  z-index: 10;
 
   div {
     margin-right: 20px;
@@ -225,7 +221,6 @@ const BackButton = styled.button`
   border: none;
   margin-left: 20px;
   cursor: pointer;
-  flex-shrink: 0;
   background-color: white;
 
   img {
@@ -236,21 +231,28 @@ const BackButton = styled.button`
 
 const Content = styled.div`
   padding: 20px;
-  padding-top: 82px;
-  height: 652px;
-  background-color: white;
+  padding-top: 74px; /* Space for the fixed header */
+  padding-bottom: 45px; /* Space for the fixed footer */
+  flex: 1;
+  overflow-y: auto; /* Allow vertical scrolling */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  background-color: white;
+
+  ::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for webkit browsers */
+  }
+
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  -ms-overflow-style: none; /* Hide scrollbar for Internet Explorer and Edge */
 `;
 
 const Question = styled.div`
   color: #000;
   font-family: Pretendard;
   font-size: 15.246px;
-  font-style: normal;
   font-weight: 600;
-  line-height: normal;
   padding-bottom: 20.08px;
 `;
 
@@ -262,103 +264,69 @@ const DropdownWrapper = styled.div`
 `;
 
 const Dropdown = styled.select`
-  width: ${({ isPrimary }) =>
-    isPrimary
-      ? "125px"
-      : "165px"}; /* 기본 드롭다운과 새 드롭다운의 너비 설정 */
+  width: ${({ isPrimary }) => (isPrimary ? "125px" : "165px")};
   height: 40px;
-  flex-shrink: 0;
   border-radius: 5px;
   border: 1px solid #d1d3d9;
   background: #fff;
-
-  padding: 5px;
-  padding-left: 14.29px;
-  color: #000;
+  padding: 5px 14.29px;
+  color: ${(props) => (props.value === "" ? "#C7C7C7" : "#292929")};
   font-family: Pretendard;
   font-size: 14px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
   cursor: pointer;
 
-  font-family: Pretendard;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  padding-left: 14.29px;
-  color: ${(props) => (props.value === "" ? "#C7C7C7" : "#292929")};
   option {
     color: #000;
     font-family: Pretendard;
     font-size: 14px;
-    font-style: normal;
     font-weight: 500;
-    line-height: normal;
   }
 `;
 
 const ErrorMessage = styled.div`
   display: flex;
-  flex-direction: row;
   justify-content: center;
   align-items: center;
   width: 350px;
   height: 40px;
-  flex-shrink: 0;
-  border-radius: 5px;
-  border: 1px solid #f2f3f6;
-  background: #f2f3f6;
-
-  color: #000;
+  border-radius: 13px;
+  border: 1px #f2f3f6;
+  background: #66646f;
+  color: white;
   font-family: Pretendard;
   font-size: 12px;
-  font-style: normal;
   font-weight: 600;
-  line-height: normal;
 `;
 
 const Button = styled.button`
   width: 76px;
   height: 40px;
-  flex-shrink: 0;
   border-radius: 5px;
   border: 1px solid #d1d3d9;
   background: #4d4d4d;
-
   color: #fff;
   font-family: Pretendard;
   font-size: 14px;
-  font-style: normal;
   font-weight: 600;
-  line-height: normal;
   cursor: pointer;
 `;
 
 const SubmitButton = styled(Button)`
   width: 350px;
   height: 52px;
-  flex-shrink: 0;
   border-radius: 9px;
-  background: #7e7e7e;
-  color: #fff;
-  font-family: Pretendard;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
+  background: #17d6b5;
 `;
 
 const Footer = styled.footer`
   position: fixed;
-  bottom: 0%;
-  display: flex;
+  bottom: 0;
   width: 390px;
   height: 84px;
-  flex-direction: column;
+  display: flex;
   align-items: center;
-  gap: 19.6px;
   background: white;
   box-shadow: 0px 4px 8.4px 0px rgba(0, 0, 0, 0.02);
+  z-index: 10;
 `;

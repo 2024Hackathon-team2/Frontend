@@ -111,6 +111,10 @@ const RecordDonePage = () => {
     navigate("/record");
   };
 
+  const goToHome = () => {
+    navigate("/");
+  };
+
   return (
     <>
       <GlobalStyle />
@@ -133,7 +137,7 @@ const RecordDonePage = () => {
           <DoneMessage2>잦은 음주는 피해 주세요!</DoneMessage2>
         </Content>
         <Footer>
-          <Navbar></Navbar>
+          <button onClick={goToHome}>홈으로 이동</button>
         </Footer>
       </Container>
     </>
@@ -146,9 +150,10 @@ export default RecordDonePage;
 const Container = styled.div`
   width: 390px;
   height: 100vh;
-
   margin: 0 auto;
   background-color: white;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Header = styled.header`
@@ -156,20 +161,17 @@ const Header = styled.header`
   align-items: center;
   justify-content: space-between;
   position: fixed;
+  top: 0;
   width: 390px;
   height: 54px;
-  flex-shrink: 0;
   color: #000;
   text-align: center;
-
   font-family: Pretendard;
   font-size: 18px;
-  font-style: normal;
   font-weight: 600;
-  line-height: 22px;
-  letter-spacing: -0.408px;
-  box-shadow: 0px 4px 10px -12px black;
   background-color: white;
+  box-shadow: 0px 4px 10px -12px black;
+  z-index: 10;
 
   div {
     margin-right: 20px;
@@ -177,13 +179,13 @@ const Header = styled.header`
     height: 25px;
   }
 `;
+
 const BackButton = styled.button`
   width: 25px;
   height: 25px;
   border: none;
   margin-left: 20px;
   cursor: pointer;
-  flex-shrink: 0;
   background-color: white;
 
   img {
@@ -194,36 +196,40 @@ const BackButton = styled.button`
 
 const Content = styled.div`
   padding: 20px;
-  padding-top: 82px;
-  height: 652px; // 최대 높이를 설정합니다.
-  overflow-y: auto; // 세로 스크롤을 허용합니다.
-  /* 스크롤바 숨기기 */
-  background-color: white;
+  padding-bottom: 84px; /* Space for the fixed footer */
+  flex: 1;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  background-color: white;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 `;
 
 const RecordBox = styled.div`
   width: 286px;
   height: 212px;
-  flex-shrink: 0;
   border-radius: 14px;
   background: #f9f9f9;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  flex-shrink: 0;
 `;
 
 const DateRecord = styled.div`
   color: #000;
   font-family: Pretendard;
   font-size: 15.246px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
 `;
 
 const RecordTitle = styled.div`
@@ -231,9 +237,7 @@ const RecordTitle = styled.div`
   color: #000;
   font-family: Pretendard;
   font-size: 20px;
-  font-style: normal;
   font-weight: 700;
-  line-height: normal;
 `;
 
 const DoneMessage1 = styled.div`
@@ -241,9 +245,7 @@ const DoneMessage1 = styled.div`
   color: #000;
   font-family: Pretendard;
   font-size: 18px;
-  font-style: normal;
   font-weight: 600;
-  line-height: normal;
 `;
 
 const DoneMessage2 = styled.div`
@@ -251,20 +253,38 @@ const DoneMessage2 = styled.div`
   color: #000;
   font-family: Pretendard;
   font-size: 18px;
-  font-style: normal;
   font-weight: 600;
-  line-height: normal;
 `;
 
 const Footer = styled.footer`
   position: fixed;
-  bottom: 0%;
-  display: flex;
+  bottom: 0;
   width: 390px;
   height: 84px;
-  flex-direction: column;
+  display: flex;
   align-items: center;
-  gap: 19.6px;
+  justify-content: center;
   background: white;
   box-shadow: 0px 4px 8.4px 0px rgba(0, 0, 0, 0.02);
+  z-index: 10;
+
+  button {
+    width: 350px;
+    height: 52px;
+    flex-shrink: 0;
+    border-radius: 9px;
+    background: #dcf9f4;
+    border: none;
+    color: var(
+      --button-color,
+      #17d6b5
+    ); /* Correct use of CSS variable with fallback */
+    font-family: Pretendard, sans-serif; /* Ensure fallback font */
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    cursor: pointer;
+    margin-bottom: 30px;
+  }
 `;

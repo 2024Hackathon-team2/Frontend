@@ -16,12 +16,12 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [pw, setPW] = useState("");
 
-  const BASE_URL = " ";
+  const BASE_URL = "https://drinkit.pythonanywhere.com/ ";
 
   const goLogin = async () => {
     await axios({
       method: "POST",
-      url: "/accounts/login/", // Updated endpoint
+      url: "https://drinkit.pythonanywhere.com/accounts/login/", // Updated endpoint
       data: {
         email: email, // Changed from 'username' to 'email'
         password: pw,
@@ -64,8 +64,6 @@ const LoginPage = () => {
             <button onClick={goLogin}>로그인</button>
           </InputWrapper>
           <More>
-            <button onClick={() => navigate("/signup")}>비밀번호 찾기</button>
-            <div className="division">|</div>
             <button onClick={() => navigate("/signup")}>회원가입</button>
           </More>
         </Content>
@@ -178,7 +176,7 @@ const InputWrapper = styled.div`
     justify-content: center;
     align-items: center;
     border-radius: 8px;
-    background: #ccc;
+    background: #7a7881;
     flex-shrink: 0;
     color: #fff;
     text-align: center;
@@ -215,7 +213,7 @@ const More = styled.div`
     background-color: white;
     justify-content: center;
     flex-shrink: 0;
-    color: #d5d5d5;
+    color: #7a7881;
     text-align: center;
     font-family: Pretendard;
     font-size: 12px;
