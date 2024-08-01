@@ -169,7 +169,7 @@ const RecordPage = () => {
                     <img
                       src={getDrinkImage(drink)}
                       alt={drink}
-                      style={{ width: "30px", height: "45px" }}
+                      style={{ width: "45px", height: "45px" }}
                     />
                   </DrinkButton>
                 ))}
@@ -381,6 +381,11 @@ const DrinkButton = styled.button`
   color: ${(props) => (props.selected ? "white" : "#000")};
   font-family: Pretendard;
   font-size: 12px;
+
+  img {
+    width: 42px;
+    height: 42px;
+  }
 `;
 
 const DrinkLabel = styled.div`
