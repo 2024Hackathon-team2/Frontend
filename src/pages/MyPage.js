@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 import basicImage from "./images/기본프로필이미지.png";
 import Navbar from "../components/Navbar";
+import axios from "axios";
 
 const GlobalStyle = createGlobalStyle`
   html {
@@ -10,10 +11,51 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const RecordDonePage = () => {
+const MyPage = () => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isDeleted, setIsDeleted] = useState(false); // 삭제 상태를 관리하는 변수
+  const [isDeleted, setIsDeleted] = useState(false);
+  const [nickname, setNickname] = useState("User");
+  const [email, setEmail] = useState("user@example.com");
+  const [profileImage, setProfileImage] = useState(basicImage);
+
+  // 사용자 정보 가져오기 함수
+  const fetchUserData = async () => {
+    try {
+      const response = await axios.get(
+        "https://drinkit.pythonanywhere.com/accounts/mypage/",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      const userData = response.data;
+      setNickname(userData.nickname || "User");
+      setEmail(
+        userData.email || localStorage.getItem("email") || "user@example.com"
+      );
+      setProfileImage(userData.image || basicImage);
+
+      // 로컬 스토리지에 최신 정보 저장
+      localStorage.setItem("nickname", userData.nickname || "User");
+      localStorage.setItem(
+        "email",
+        userData.email || localStorage.getItem("email") || "user@example.com"
+      );
+      localStorage.setItem("image", userData.image || basicImage);
+    } catch (error) {
+      console.error(
+        "사용자 정보 불러오기 오류:",
+        error.response ? error.response.data : error.message
+      );
+      alert("사용자 정보를 불러오는 중 오류가 발생했습니다.");
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
 
   const goToProfileSetting = () => {
     navigate("/profilesetting");
@@ -32,8 +74,28 @@ const RecordDonePage = () => {
     setIsDeleted(false); // 모달을 닫을 때 삭제 상태 초기화
   };
 
-  const handleDelete = () => {
-    setIsDeleted(true);
+  const handleDelete = async () => {
+    try {
+      const response = await axios({
+        method: "DELETE",
+        url: "https://drinkit.pythonanywhere.com/accounts/mypage/",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      if (response.status === 204) {
+        // 성공적으로 삭제된 경우
+        setIsDeleted(true);
+        localStorage.clear(); // 로컬 스토리지 데이터 삭제
+        // 추가로 로그아웃 처리나 리다이렉션 등 필요한 작업 수행
+      }
+    } catch (error) {
+      console.error(
+        "계정 삭제 오류:",
+        error.response ? error.response.data : error.message
+      );
+      alert("계정 삭제 중 오류가 발생했습니다.");
+    }
   };
 
   return (
@@ -43,9 +105,9 @@ const RecordDonePage = () => {
         <Header>마이페이지</Header>
         <Content>
           <Profile>
-            <img src={basicImage} />
-            <Name>abcdef</Name>
-            <Email>abcdef@gmail.com</Email>
+            <img src={profileImage} alt="Profile" />
+            <Name>{nickname}</Name>
+            <Email>{email}</Email>
           </Profile>
           <PageButton>
             <svg
@@ -119,7 +181,7 @@ const RecordDonePage = () => {
             {isDeleted ? (
               <>
                 <p>
-                  <strong>abcdef</strong>(abcdef@naver.com)님의
+                  <strong>{nickname}</strong>({email})님의
                 </p>
                 <p>계정이 삭제되었습니다.</p>
                 <button className="close" onClick={closeDeleteModal}>
@@ -149,7 +211,10 @@ const RecordDonePage = () => {
   );
 };
 
-export default RecordDonePage;
+// Styled components...
+// Container, Header, Content, Profile, Name, Email, PageButton, ModalOverlay, ModalContent, Footer 정의
+
+export default MyPage;
 
 // Styled components
 const Container = styled.div`
@@ -218,6 +283,7 @@ const Profile = styled.div`
   img {
     width: 175px;
     height: 175px;
+    border-radius: 100%;
   }
 `;
 

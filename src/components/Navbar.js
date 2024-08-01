@@ -12,7 +12,7 @@ const Navbar = () => {
   const location = useLocation();
 
   const goToHome = () => {
-    navigate("/");
+    navigate("/home");
   };
   const goToSocial = () => {
     navigate("/social");
@@ -33,7 +33,7 @@ const Navbar = () => {
 
   return (
     <Wrapper>
-      <NavItem onClick={goToHome} color={getColor("/")}>
+      <NavItem onClick={goToHome} color={getColor("/home")}>
         <img src={HomeIcon} alt="홈" />
       </NavItem>
       <NavItem onClick={goToSocial} color={getColor("/social")}>

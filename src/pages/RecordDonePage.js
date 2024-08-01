@@ -112,7 +112,7 @@ const RecordDonePage = () => {
   };
 
   const goToHome = () => {
-    navigate("/");
+    navigate("/home");
   };
 
   return (

@@ -118,7 +118,7 @@ const RecordPage = () => {
   };
 
   const goToHome = () => {
-    navigate("/");
+    navigate("/home");
   };
 
   const getDrinkImage = (drink) => {

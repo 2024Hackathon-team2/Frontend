@@ -18,7 +18,7 @@ const SignupPage = () => {
   const [isPwMatch, setIsPwMatch] = useState(true);
   const [isButtonActive, setIsButtonActive] = useState(false);
 
-  const BASE_URL = " ";
+  const BASE_URL = "https://drinkit.pythonanywhere.com/";
 
   useEffect(() => {
     // 비밀번호 일치 여부 확인
@@ -29,23 +29,30 @@ const SignupPage = () => {
 
   const goSignup = async () => {
     if (isButtonActive) {
-      await axios({
-        method: "POST",
-        url: "/account/signup/",
-        data: {
-          username: email,
-          password: pw,
-          password2: pw2,
-        },
-      })
-        .then((response) => {
-          console.log(response.data);
-          navigate("/login");
-        })
-        .catch((error) => {
-          console.log(error);
-          throw new Error(error);
+      try {
+        const response = await axios({
+          method: "POST",
+          url: "https://drinkit.pythonanywhere.com/accounts/signup/",
+          data: {
+            email: email, // 'username' 대신 'email' 사용
+            password: pw,
+            password2: pw2,
+          },
         });
+        console.log(response.data);
+        alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.");
+        navigate("/");
+      } catch (error) {
+        console.error(
+          "회원가입 오류:",
+          error.response ? error.response.data : error.message
+        );
+        alert(
+          error.response
+            ? error.response.data.detail
+            : "회원가입 중 오류가 발생했습니다."
+        );
+      }
     }
   };
 

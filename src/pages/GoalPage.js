@@ -81,12 +81,12 @@ const GoalPage = () => {
 
   const handleSubmit = () => {
     console.log("Selections:", selections);
-    navigate("/");
+    navigate("/home");
   };
 
   const navigate = useNavigate();
   const goToGoal = () => {
-    navigate("/");
+    navigate("/home");
   };
 
   return (
