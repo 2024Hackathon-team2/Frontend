@@ -16,29 +16,41 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [pw, setPW] = useState("");
 
-  const BASE_URL = " ";
+  const BASE_URL = "https://drinkit.pythonanywhere.com/";
 
+  // 로그인 성공 시 데이터 저장 부분
   const goLogin = async () => {
-    await axios({
-      method: "POST",
-      url: "/accounts/login/", // Updated endpoint
-      data: {
-        email: email, // Changed from 'username' to 'email'
-        password: pw,
-      },
-    })
-      .then((response) => {
-        console.log(response.data);
-
-        localStorage.setItem("refreshToken", response.data.refresh); // Store refresh token
-        localStorage.setItem("accessToken", response.data.access); // Store access token
-
-        navigate("/mypage");
-      })
-      .catch((error) => {
-        console.log(error);
-        throw new Error(error);
+    try {
+      const response = await axios({
+        method: "POST",
+        url: `${BASE_URL}accounts/login/`,
+        data: {
+          email: email, // 로그인 폼에서 입력된 이메일
+          password: pw,
+        },
       });
+      console.log(response.data);
+
+      const { refresh, access } = response.data;
+      const userEmail = email; // 사용자가 입력한 이메일 사용
+
+      localStorage.setItem("refreshToken", refresh);
+      localStorage.setItem("accessToken", access);
+      localStorage.setItem("email", userEmail);
+
+      alert("로그인에 성공했습니다.");
+      navigate("/mypage");
+    } catch (error) {
+      console.error(
+        "로그인 오류:",
+        error.response ? error.response.data : error.message
+      );
+      alert(
+        error.response
+          ? error.response.data.detail
+          : "로그인 중 오류가 발생했습니다."
+      );
+    }
   };
 
   return (
@@ -64,8 +76,6 @@ const LoginPage = () => {
             <button onClick={goLogin}>로그인</button>
           </InputWrapper>
           <More>
-            <button onClick={() => navigate("/signup")}>비밀번호 찾기</button>
-            <div className="division">|</div>
             <button onClick={() => navigate("/signup")}>회원가입</button>
           </More>
         </Content>
@@ -178,7 +188,7 @@ const InputWrapper = styled.div`
     justify-content: center;
     align-items: center;
     border-radius: 8px;
-    background: #ccc;
+    background: #7a7881;
     flex-shrink: 0;
     color: #fff;
     text-align: center;
@@ -215,7 +225,7 @@ const More = styled.div`
     background-color: white;
     justify-content: center;
     flex-shrink: 0;
-    color: #d5d5d5;
+    color: #7a7881;
     text-align: center;
     font-family: Pretendard;
     font-size: 12px;

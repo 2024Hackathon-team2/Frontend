@@ -5,6 +5,7 @@ import backButtonImage from "./images/back.png";
 import basicImage from "./images/기본프로필이미지.png";
 import divImage from "./images/구분선.png";
 import Navbar from "../components/Navbar";
+import axios from "axios";
 
 const GlobalStyle = createGlobalStyle`
   html {
@@ -12,21 +13,50 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const RecordDonePage = () => {
+const ProfileSettingPage = () => {
   const [isPwMatch, setIsPwMatch] = useState(true);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [nickname, setNickname] = useState("");
   const [imagePreview, setImagePreview] = useState(basicImage);
+  const [isImageRemoved, setIsImageRemoved] = useState(false);
   const navigate = useNavigate();
+
+  const fetchUserData = async () => {
+    try {
+      const response = await axios.get(
+        "https://drinkit.pythonanywhere.com/accounts/mypage/",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      const userData = response.data;
+      setNickname(userData.nickname || "");
+
+      if (userData.image) {
+        setImagePreview(userData.image);
+        setIsImageRemoved(false);
+      } else {
+        setImagePreview(basicImage);
+        setIsImageRemoved(true);
+      }
+    } catch (error) {
+      console.error("사용자 정보 불러오기 오류:", error);
+      alert("사용자 정보를 불러오는 중 오류가 발생했습니다.");
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
 
   const goToBack = () => {
     navigate("/mypage");
   };
 
   const handleSave = async () => {
-    navigate("/mypage");
-
     if (newPassword !== confirmPassword) {
       setIsPwMatch(false);
       return;
@@ -34,35 +64,49 @@ const RecordDonePage = () => {
 
     setIsPwMatch(true);
 
+    const formData = new FormData();
+    formData.append("nickname", nickname);
+
+    if (isImageRemoved) {
+      // 이미지 삭제 시 기본 이미지를 서버에 전송
+      const response = await fetch(basicImage);
+      const blob = await response.blob();
+      formData.append(
+        "image",
+        new File([blob], "basicImage.png", { type: "image/png" })
+      );
+    } else {
+      const fileInput = document.getElementById("imageUpload");
+      if (fileInput && fileInput.files.length > 0) {
+        formData.append("image", fileInput.files[0]);
+      }
+    }
+
     try {
-      const response = await fetch("/accounts/mypage/", {
+      const response = await axios({
         method: "PATCH",
+        url: "https://drinkit.pythonanywhere.com/accounts/mypage/",
         headers: {
-          Authorization: "Token your_access_token",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           "Content-Type": "multipart/form-data",
         },
-        body: JSON.stringify({
-          nickname: nickname,
-          image: null,
-        }),
+        data: formData,
       });
 
-      const result = await response.json();
-      if (response.ok) {
-        console.log(result);
-        // 성공 처리
+      if (response.status === 200) {
+        const updatedUser = response.data;
+        localStorage.setItem("nickname", updatedUser.nickname);
+        localStorage.setItem("image", updatedUser.image || basicImage);
+        setImagePreview(updatedUser.image || basicImage);
+        navigate("/mypage");
       } else {
-        // 실패 처리
-        console.error(result);
+        console.error("프로필 업데이트 실패:", response.data);
       }
     } catch (error) {
-      console.error(error);
+      console.error("프로필 업데이트 오류:", error);
+      alert("프로필 업데이트 중 오류가 발생했습니다.");
     }
   };
-
-  useEffect(() => {
-    setIsPwMatch(newPassword === confirmPassword);
-  }, [newPassword, confirmPassword]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -70,13 +114,17 @@ const RecordDonePage = () => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result);
+        setIsImageRemoved(false);
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleImageRemove = () => {
-    setImagePreview(basicImage);
+  const handleImageRemove = async () => {
+    const response = await fetch(basicImage);
+    const blob = await response.blob();
+    setImagePreview(URL.createObjectURL(blob));
+    setIsImageRemoved(true);
   };
 
   return (
@@ -131,6 +179,7 @@ const RecordDonePage = () => {
             <div>
               <input
                 placeholder="이름을 입력해 주세요."
+                value={nickname}
                 onChange={(e) => setNickname(e.target.value)}
               />
             </div>
@@ -180,7 +229,7 @@ const RecordDonePage = () => {
   );
 };
 
-export default RecordDonePage;
+export default ProfileSettingPage;
 
 // Styled components
 const Container = styled.div`
@@ -469,9 +518,9 @@ const SaveButton = styled.button`
   flex-shrink: 0;
   align-items: center;
   border-radius: 50px;
-  background-color: #ccc;
+  background-color: #17d6b5;
   border: none;
-  color: #000;
+  color: white;
   text-align: center;
   font-family: Pretendard;
   font-size: 16px;
@@ -479,6 +528,7 @@ const SaveButton = styled.button`
   font-weight: 600;
   line-height: 100%;
   margin-top: 56px;
+  cursor: pointer;
 `;
 
 const ErrorMessage = styled.div`

@@ -12,7 +12,7 @@ const Navbar = () => {
   const location = useLocation();
 
   const goToHome = () => {
-    navigate("/");
+    navigate("/home");
   };
   const goToSocial = () => {
     navigate("/social");
@@ -33,7 +33,7 @@ const Navbar = () => {
 
   return (
     <Wrapper>
-      <NavItem onClick={goToHome} color={getColor("/")}>
+      <NavItem onClick={goToHome} color={getColor("/home")}>
         <img src={HomeIcon} alt="홈" />
       </NavItem>
       <NavItem onClick={goToSocial} color={getColor("/social")}>
@@ -61,9 +61,10 @@ const Wrapper = styled.div`
   align-items: center;
   width: 390px;
   height: 84px;
-  border-top: 1px solid #d9d9d9;
+  border-top: 0.5px solid #d9d9d9;
+  box-shadow: 0px 4px 25.3px 10px rgba(0, 0, 0, 0.02);
   background-color: white;
-  border-radius: 20px 20px 0 0;
+
   color: #89919e;
   font-size: 9px;
   font-family: Pretendard-SemiBold;

@@ -24,12 +24,12 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/home" element={<HomePage />} />
           <Route path="/goal" element={<GoalPage />} />
           <Route path="/record" element={<RecordPage />} />
           <Route path="/recorddone" element={<RecordDonePage />} />
           <Route path="/signup" element={<SignupPage />} />
-          <Route path="/login" element={<LoginPage />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/social" element={<SocialPage />} />
           <Route path="/profilesetting" element={<ProfileSettingPage />} />
