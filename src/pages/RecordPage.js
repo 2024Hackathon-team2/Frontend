@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom"; // useLocation 추가
+import { useNavigate, useLocation } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 import backButtonImage from "./images/back.png";
 import SojuImage from "./images/소주.png";
@@ -15,9 +15,9 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const RecordPage = () => {
-  const location = useLocation(); // useLocation 훅 사용
-  const { selectedDate } = location.state || {}; // 선택된 날짜 받아오기
-  const today = new Date(selectedDate || Date.now()); // 선택된 날짜가 없으면 현재 날짜 사용
+  const location = useLocation();
+  const { selectedDate } = location.state || {};
+  const today = new Date(selectedDate || Date.now());
 
   const year = today.getFullYear();
   const month = today.getMonth() + 1;
@@ -117,6 +117,10 @@ const RecordPage = () => {
     navigate("/recorddone");
   };
 
+  const goToHome = () => {
+    navigate("/home");
+  };
+
   const getDrinkImage = (drink) => {
     switch (drink) {
       case "소주":
@@ -137,7 +141,7 @@ const RecordPage = () => {
       <GlobalStyle />
       <Container>
         <Header>
-          <BackButton>
+          <BackButton onClick={goToHome}>
             <img src={backButtonImage} alt="Back" />
           </BackButton>
           나의 음주 기록
@@ -161,10 +165,11 @@ const RecordPage = () => {
                     selected={selectedDrink === drink}
                     onClick={() => handleDrinkSelect(drink)}
                   >
+                    <DrinkLabel>{drink}</DrinkLabel>
                     <img
                       src={getDrinkImage(drink)}
                       alt={drink}
-                      style={{ width: "30px", height: "45px" }}
+                      style={{ width: "45px", height: "45px" }}
                     />
                   </DrinkButton>
                 ))}
@@ -231,9 +236,6 @@ const RecordPage = () => {
             <SubmitButton onClick={handleSubmit}>음주 기록 완료</SubmitButton>
           </div>
         </Content>
-        <Footer>
-          <Navbar></Navbar>
-        </Footer>
       </Container>
     </>
   );
@@ -241,13 +243,13 @@ const RecordPage = () => {
 
 export default RecordPage;
 
-// Styled components
 const Container = styled.div`
   width: 390px;
   height: 100vh;
-
   margin: 0 auto;
   background-color: white;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Header = styled.header`
@@ -255,19 +257,18 @@ const Header = styled.header`
   align-items: center;
   justify-content: space-between;
   position: fixed;
+  top: 0;
   width: 390px;
   height: 54px;
-  flex-shrink: 0;
   color: #000;
   text-align: center;
   font-family: Pretendard;
   font-size: 18px;
-  font-style: normal;
   font-weight: 600;
-  line-height: 22px;
-  letter-spacing: -0.408px;
-  box-shadow: 0px 4px 10px -12px black;
   background-color: white;
+  box-shadow: 0px 4px 10px -12px black;
+  z-index: 10;
+
   div {
     margin-right: 20px;
     width: 25px;
@@ -281,7 +282,6 @@ const BackButton = styled.button`
   border: none;
   margin-left: 20px;
   cursor: pointer;
-  flex-shrink: 0;
   background-color: white;
 
   img {
@@ -292,23 +292,24 @@ const BackButton = styled.button`
 
 const Content = styled.div`
   padding: 20px;
-  padding-top: 82px;
-  height: 652px;
+  padding-top: 74px; /* Space for the fixed header */
+  padding-bottom: 45px; /* Space for the fixed footer + extra space */
+  flex: 1;
   overflow-y: auto;
-  background-color: white;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  background-color: white;
 
   .dayBox {
     width: 350px;
     height: 83px;
-    flex-shrink: 0;
     border-radius: 14px;
     background: #f9f9f9;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin-bottom: 20px;
   }
 
   .underAmount {
@@ -330,9 +331,7 @@ const DateRecord = styled.div`
   color: #000;
   font-family: Pretendard;
   font-size: 15.246px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
 `;
 
 const RecordTitle = styled.div`
@@ -340,21 +339,17 @@ const RecordTitle = styled.div`
   color: #000;
   font-family: Pretendard;
   font-size: 20px;
-  font-style: normal;
   font-weight: 700;
-  line-height: normal;
 `;
 
 const Label = styled.div`
   font-family: Pretendard;
   font-size: 15.246px;
-  font-style: normal;
   font-weight: 600;
-  line-height: normal;
   color: ${(props) => props.color};
   margin-top: 31px;
 
-  .amount {
+  &.amount {
     margin-top: 25px;
   }
 `;
@@ -366,7 +361,6 @@ const DrinkButtons = styled.div`
   align-items: center;
   width: 350px;
   height: 95px;
-  flex-shrink: 0;
   border-radius: 14px;
   background: #f9f9f9;
 `;
@@ -378,15 +372,29 @@ const DrinkButton = styled.button`
   background-color: ${(props) => (props.selected ? "#575757" : "white")};
   border-radius: 10px;
   display: flex;
+  flex-direction: column; /* Stack image and text vertically */
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  padding: 5px 0;
+  text-align: center;
+  color: ${(props) => (props.selected ? "white" : "#000")};
+  font-family: Pretendard;
+  font-size: 12px;
+
+  img {
+    width: 42px;
+    height: 42px;
+  }
+`;
+
+const DrinkLabel = styled.div`
+  margin-top: 5px;
 `;
 
 const Select = styled.select`
   width: 278px;
   height: 43px;
-  flex-shrink: 0;
   border-radius: 10px;
   border: 1px solid #c7c7c7;
   background: #fff;
@@ -394,42 +402,30 @@ const Select = styled.select`
   margin-top: 14px;
   font-family: Pretendard;
   font-size: 14px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
   padding-left: 16.33px;
-  color: ${(props) =>
-    props.value === ""
-      ? "#C7C7C7"
-      : "#292929"}; /* 기본 설명일 때와 선택지일 때 색상 구분 */
+  color: ${(props) => (props.value === "" ? "#C7C7C7" : "#292929")};
 `;
 
 const Option = styled.option`
   color: #292929;
   font-family: Pretendard;
   font-size: 14px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
 `;
 
 const Button = styled.button`
   width: 65px;
   height: 43px;
-  flex-shrink: 0;
   border-radius: 7px;
   border: none;
-  background: #4f82f7;
+  background: #17d6b5;
   color: white;
   text-align: center;
   font-family: Pretendard;
   font-size: 16px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
-  padding: 0px;
   margin-top: 14px;
-
   cursor: pointer;
 `;
 
@@ -438,22 +434,20 @@ const RecordList = styled.div``;
 const RecordItem = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin-top: 24px;
   color: #7e7e7e;
   font-family: Pretendard;
   font-size: 14px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
   width: 350px;
   height: 77px;
-  flex-shrink: 0;
   border-radius: 14px;
   background: #f9f9f9;
+  border: 1px #d6d6d6;
 
   div {
     padding-left: 18px;
-    flex-grow: 1;
     display: flex;
     align-items: center;
   }
@@ -468,30 +462,26 @@ const DeleteButton = styled.button`
 
 const Footer = styled.footer`
   position: fixed;
-  bottom: 0%;
-  display: flex;
+  bottom: 0;
   width: 390px;
   height: 84px;
-  flex-direction: column;
+  display: flex;
   align-items: center;
-  gap: 19.6px;
   background: white;
   box-shadow: 0px 4px 8.4px 0px rgba(0, 0, 0, 0.02);
+  z-index: 10;
 `;
 
 const SubmitButton = styled.button`
   width: 350px;
   height: 52px;
-  flex-shrink: 0;
   border-radius: 9px;
-  background: #4f82f7;
+  background: #17d6b5;
   border: none;
   color: #fff;
   font-family: Pretendard;
   font-size: 14px;
-  font-style: normal;
   font-weight: 600;
-  line-height: normal;
   margin-top: 22px;
   cursor: pointer;
 `;

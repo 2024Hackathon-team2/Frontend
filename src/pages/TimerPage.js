@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
-import backButtonImage from "./images/back.png";
 import Navbar from "../components/Navbar";
+import BackgroundImage from "./images/배경.png";
+import StartImage from "./images/재생.png";
+import PauseImage from "./images/일시정지.png";
+import InitializationImage from "./images/초기화.png";
 
 const GlobalStyle = createGlobalStyle`
   html {
@@ -15,20 +18,59 @@ const RecordDonePage = () => {
   const [isRunning, setIsRunning] = useState(false);
 
   useEffect(() => {
+    // Retrieve saved data from local storage
+    const savedTimeLeft = parseInt(localStorage.getItem("timeLeft"), 10);
+    const savedIsRunning = localStorage.getItem("isRunning") === "true";
+    const savedStartTime = parseInt(localStorage.getItem("startTime"), 10);
+
+    if (savedTimeLeft && savedStartTime) {
+      const currentTime = Math.floor(Date.now() / 1000);
+      const elapsed = currentTime - savedStartTime;
+
+      if (elapsed >= savedTimeLeft) {
+        setTimeLeft(0);
+        setIsRunning(false);
+        localStorage.removeItem("timeLeft");
+        localStorage.removeItem("isRunning");
+        localStorage.removeItem("startTime");
+      } else {
+        setTimeLeft(savedTimeLeft - elapsed);
+        setIsRunning(savedIsRunning);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
     let timer = null;
     if (isRunning && timeLeft > 0) {
       timer = setInterval(() => {
         setTimeLeft((prevTime) => prevTime - 1);
       }, 1000);
-    } else if (timeLeft === 0) {
+    } else if (timeLeft <= 0) {
       setIsRunning(false);
     }
+
     return () => clearInterval(timer);
   }, [isRunning, timeLeft]);
+
+  useEffect(() => {
+    if (isRunning) {
+      localStorage.setItem("timeLeft", timeLeft);
+      localStorage.setItem("isRunning", isRunning);
+      if (!localStorage.getItem("startTime")) {
+        localStorage.setItem("startTime", Math.floor(Date.now() / 1000));
+      }
+    } else {
+      localStorage.removeItem("startTime");
+    }
+  }, [timeLeft, isRunning]);
 
   const resetTimer = () => {
     setIsRunning(false);
     setTimeLeft(7200);
+    localStorage.removeItem("startTime");
+    localStorage.removeItem("timeLeft");
+    localStorage.removeItem("isRunning");
   };
 
   const toggleTimer = () => {
@@ -36,28 +78,22 @@ const RecordDonePage = () => {
   };
 
   const formatTime = (time) => {
-    const hours = String(Math.floor(time / 3600)).padStart(2, "0");
+    if (time <= 0) return "00:00:00";
+    const hours = Math.floor(time / 3600);
     const minutes = String(Math.floor((time % 3600) / 60)).padStart(2, "0");
     const seconds = String(time % 60).padStart(2, "0");
     return `${hours}:${minutes}:${seconds}`;
   };
 
-  const progress = (timeLeft / 7200) * 100;
-
   return (
     <>
       <GlobalStyle />
       <Container>
-        <Header>
-          정상 간 타이머
-          <BackButton>
-            <img src={backButtonImage} alt="Back" />
-          </BackButton>
-        </Header>
         <Content>
+          <p>정상 간 타이머</p>
           <TimerWrapper>
             <TimerCircle>
-              <svg viewBox="0 0 36 36">
+              <svg viewBox="0 0 36 36" transform="scale(-1, 1)">
                 <defs>
                   <linearGradient
                     id="gradient"
@@ -68,11 +104,11 @@ const RecordDonePage = () => {
                   >
                     <stop
                       offset="0%"
-                      style={{ stopColor: "#7198F2", stopOpacity: 1 }}
+                      style={{ stopColor: "#6BD7FF", stopOpacity: 1 }}
                     />
                     <stop
                       offset="100%"
-                      style={{ stopColor: "#C8D9FF", stopOpacity: 1 }}
+                      style={{ stopColor: "#C3FBF9", stopOpacity: 1 }}
                     />
                   </linearGradient>
                   <filter
@@ -82,7 +118,7 @@ const RecordDonePage = () => {
                     width="140%"
                     height="140%"
                   >
-                    <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
+                    <feGaussianBlur in="SourceAlpha" stdDeviation="100" />
                     <feOffset dx="0" dy="4" result="offsetblur" />
                     <feFlood floodColor="rgba(255, 255, 255, 0.23)" />
                     <feComposite in2="offsetblur" operator="in" />
@@ -113,13 +149,27 @@ const RecordDonePage = () => {
                   filter="url(#dropShadow)"
                 ></circle>
               </svg>
+
               <TimeText>
-                {timeLeft === 0 ? "타이머 종료!" : formatTime(timeLeft)}
+                {timeLeft === 0
+                  ? "타이머 종료!"
+                  : "정상 간으로 돌아오기까지 남은 시간"}
               </TimeText>
-              <Button onClick={toggleTimer}>{isRunning ? "⏸️" : "▶️"}</Button>
+              <TimeDisplay>{formatTime(timeLeft)}</TimeDisplay>
             </TimerCircle>
-            <ResetButton onClick={resetTimer}>🔄</ResetButton>
           </TimerWrapper>
+          <ButtonWrapper>
+            <ResetButton onClick={resetTimer}>
+              <img src={InitializationImage} alt="Reset" />
+            </ResetButton>
+            <Button onClick={toggleTimer}>
+              <img
+                src={isRunning ? PauseImage : StartImage}
+                alt={isRunning ? "Pause" : "Start"}
+              />
+            </Button>
+            <div></div>
+          </ButtonWrapper>
         </Content>
         <Footer>
           <Navbar />
@@ -131,62 +181,38 @@ const RecordDonePage = () => {
 
 export default RecordDonePage;
 
-// Styled components
 const Container = styled.div`
-  width: 390px;
-  height: 100vh;
+  width: 390px; /* Fixed width */
+  height: 100vh; /* Full height of the viewport */
   margin: 0 auto;
   background-color: white;
-`;
-
-const Header = styled.header`
+  background-image: url(${BackgroundImage});
+  background-size: cover;
+  background-position: center;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: fixed;
-  width: 390px;
-  height: 54px;
-  color: #000;
-  text-align: center;
-  font-family: Pretendard;
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 22px;
-  box-shadow: 0px 4px 10px -12px black;
-  background-color: white;
-`;
-
-const BackButton = styled.button`
-  width: 25px;
-  height: 25px;
-  border: none;
-  margin-left: 20px;
-  cursor: pointer;
-  background-color: white;
-
-  img {
-    width: 100%;
-    height: 100%;
-  }
+  flex-direction: column;
 `;
 
 const Content = styled.div`
   padding: 20px;
-  padding-top: 82px;
-  height: calc(100vh - 138px); // 54px for header + 84px for footer
-  overflow-y: auto;
+  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  background: linear-gradient(180deg, #36333e 0%, #5a566a 100%);
+  justify-content: space-between;
+  overflow-y: auto;
+
+  p {
+    color: var(--Color, #fff);
+    font-family: Pretendard;
+    font-size: 18px;
+    font-weight: 700;
+  }
 `;
 
 const Footer = styled.footer`
-  position: fixed;
-  bottom: 0;
+  width: 390px; /* Fixed width */
+  height: 84px; /* Fixed height */
   display: flex;
-  width: 390px;
-  height: 84px;
   align-items: center;
   background: white;
   box-shadow: 0px 4px 8.4px 0px rgba(0, 0, 0, 0.02);
@@ -199,10 +225,9 @@ const TimerWrapper = styled.div`
 `;
 
 const TimerCircle = styled.div`
+  width: 262px; /* Fixed size */
+  height: 262px; /* Fixed size */
   position: relative;
-  width: 262px;
-  height: 262px;
-  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -213,29 +238,63 @@ const TimerCircle = styled.div`
     width: 100%;
     height: 100%;
     transform: rotate(-90deg);
+    outline: none;
+    border: none;
+  }
+
+  circle {
+    outline: none;
+    border: none;
   }
 `;
 
 const TimeText = styled.div`
   position: relative;
-  font-size: 24px;
-  font-weight: bold;
-  margin-top: 20px;
+  color: var(--Color, #fff);
+  font-family: Pretendard;
+  font-size: 10px;
+  font-weight: 500;
+`;
+
+const TimeDisplay = styled.div`
+  position: relative;
+  color: var(--Color, #fff);
+  font-family: Pretendard;
+  font-size: 46.4px;
+  font-weight: 500;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  div {
+    width: 44px;
+    height: 44px;
+  }
 `;
 
 const Button = styled.button`
-  position: relative;
   background: none;
   border: none;
-  font-size: 24px;
   cursor: pointer;
   margin-top: 20px;
+
+  img {
+    width: 70px;
+    height: 70px;
+  }
 `;
 
 const ResetButton = styled.button`
   background: none;
   border: none;
-  font-size: 24px;
   cursor: pointer;
   margin-top: 20px;
+
+  img {
+    width: 44px;
+    height: 44px;
+  }
 `;

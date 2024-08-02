@@ -149,10 +149,10 @@ export default SocialPage;
 const Container = styled.div`
   width: 390px;
   height: 100vh;
-
   margin: 0 auto;
   background-color: white;
-  height: 100vh;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Header = styled.header`
@@ -160,33 +160,39 @@ const Header = styled.header`
   align-items: center;
   justify-content: center;
   position: fixed;
+  top: 0;
   width: 390px;
   height: 54px;
-  flex-shrink: 0;
   color: #000;
   text-align: center;
   font-family: Pretendard;
   font-size: 18px;
-  font-style: normal;
   font-weight: 600;
-  line-height: 22px;
-  letter-spacing: -0.408px;
-  box-shadow: 0px 4px 10px -12px black;
   background-color: white;
+  box-shadow: 0px 4px 10px -12px black;
+  z-index: 10;
 `;
 
 const Content = styled.div`
-  font-family: Pretendard;
   padding: 20px;
-  padding-top: 70px;
-  height: 652px; // 최대 높이를 설정합니다.
-  overflow-y: auto; // 세로 스크롤을 허용합니다.
-  overflow-x: hidden; /* 스크롤바 숨기기 */
+  padding-top: 74px; /* Space for the fixed header */
+  padding-bottom: 104px; /* Space for the fixed footer */
+  flex: 1;
+  overflow-y: auto; /* Allow vertical scrolling */
+  overflow-x: hidden;
   background-color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  ::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for webkit browsers */
+  }
+
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  -ms-overflow-style: none; /* Hide scrollbar for Internet Explorer and Edge */
 `;
+
 const Goal = styled.div`
   width: 100%;
   .goalTitle {
@@ -222,6 +228,7 @@ const Goal = styled.div`
     }
   }
 `;
+
 const DrinkingGoals = styled.div`
   display: flex;
   flex-direction: column;
@@ -260,17 +267,15 @@ const Friends = styled.div`
     font-weight: bold;
   }
 `;
+
 const Footer = styled.footer`
   position: fixed;
-  bottom: 0%;
-  display: flex;
-  position: fixed;
-  bottom: 0%;
+  bottom: 0;
   width: 390px;
   height: 84px;
-  flex-direction: column;
+  display: flex;
   align-items: center;
-  gap: 19.6px;
   background: white;
   box-shadow: 0px 4px 8.4px 0px rgba(0, 0, 0, 0.02);
+  z-index: 10;
 `;
