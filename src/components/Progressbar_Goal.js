@@ -13,9 +13,10 @@ const ProgressBar = ({ percentage }) => {
       <div
         style={{
           width: `${percentage}%`,
-          backgroundColor: "#4F82F7",
+          backgroundColor: "#17D6B5",
           height: "10px",
           borderRadius: "5px ",
+          maxWidth: "215px",
         }}
       ></div>
     </div>

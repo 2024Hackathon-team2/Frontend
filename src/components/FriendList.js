@@ -47,7 +47,7 @@ const getFriendRecord = async (friendId) => {
   try {
     const response = await axios({
       method: "GET",
-      url: `${BASE_URL}goals/social/${friendId}/`,
+      url: `${BASE_URL}goals/social/${friendId}`, // URL에 friendId 추가
       headers: {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
@@ -291,8 +291,9 @@ const ProgressContainer = styled.div`
 
 const ProgressBar = styled.div`
   transition: width 0.3s ease;
-  background-color: #4f82f7;
+  background: linear-gradient(281deg, #9aeafb -1.06%, #17d6b5 88.73%);
   width: ${(props) => props.progress}%;
+
   height: 10px;
   border-radius: 5px;
 `;
@@ -359,7 +360,6 @@ const Overlay = styled.div`
 
 const CloseButton = styled.button`
   font-family: Pretendard;
-
   background: #d9d9d9;
   color: white;
   border: none;

@@ -73,7 +73,7 @@ const HomeCalendar = () => {
           }}
         />
         <div className="GotoDrinkingRecord" onClick={goToRecordPage}>
-          음주기록+
+          음주기록 +
         </div>
       </div>
       {date && ( // 날짜가 선택된 경우에만 보이기
