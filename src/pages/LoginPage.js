@@ -89,6 +89,9 @@ const LoginPage = () => {
 
 export default LoginPage;
 
+// Styled components...
+// Container, Content, Title, InputWrapper, More, Footer 정의 필요
+
 // Styled components
 const Container = styled.div`
   width: 390px;
