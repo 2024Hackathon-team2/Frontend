@@ -76,7 +76,6 @@ const HomePage = () => {
                 <div>
                   {user.drinks}잔/{user.goal}잔
                 </div>
-                <button onClick={goToGoal}>수정</button>
               </>
             ) : (
               <div className="NoRecord">
@@ -86,6 +85,7 @@ const HomePage = () => {
                 </span>
               </div>
             )}
+            <button onClick={goToGoal}>수정</button>
           </GoalReachContainer>
           <DrinkingCalendar>
             <div className="goal">
