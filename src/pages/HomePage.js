@@ -86,6 +86,7 @@ const HomePage = () => {
                 </span>
               </div>
             )}
+            <button onClick={goToGoal}>수정</button>
           </GoalReachContainer>
           <DrinkingCalendar>
             <div className="goal">
@@ -187,6 +188,7 @@ const GoalReachContainer = styled.div`
     background: #c1fef4;
     border: none;
     align-self: end;
+    cursor: pointer;
   }
   .NoRecord {
     grid-row: 2/3;

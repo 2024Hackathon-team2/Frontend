@@ -9,7 +9,6 @@ const GoalPage = () => {
   const [message, setMessage] = useState("");
 
   const drinksOptions = {
-    "": [],
     소주: [
       "1잔 (50ml)",
       "2잔",
@@ -89,6 +88,15 @@ const GoalPage = () => {
     navigate("/home");
   };
 
+  const getAvailableDrinks = (index) => {
+    const selectedDrinks = selections.map((selection) => selection.drink);
+    const availableDrinks = Object.keys(drinksOptions).filter(
+      (drink) =>
+        !selectedDrinks.includes(drink) || drink === selections[index].drink
+    );
+    return availableDrinks;
+  };
+
   return (
     <Container>
       <Header>
@@ -101,73 +109,41 @@ const GoalPage = () => {
       <Content>
         <div>
           <Question>한 달에 얼마를 목표로 하시나요?</Question>
-          <DropdownWrapper>
-            <Dropdown
-              isPrimary={true}
-              value={selections[0]?.drink || ""}
-              onChange={(e) =>
-                handleSelectionChange(0, "drink", e.target.value)
-              }
-            >
-              <option className="ex" value="">
-                주종
-              </option>
-              <option value="소주">소주</option>
-              <option value="맥주">맥주</option>
-              <option value="막걸리">막걸리</option>
-              <option value="와인">와인</option>
-            </Dropdown>
-            <Dropdown
-              isPrimary={true}
-              value={selections[0]?.amount || ""}
-              onChange={(e) =>
-                handleSelectionChange(0, "amount", e.target.value)
-              }
-            >
-              <option className="ex" value="">
-                N잔
-              </option>
-              {drinksOptions[selections[0]?.drink || ""].map((opt, i) => (
-                <option key={i} value={opt}>
-                  {opt}
-                </option>
-              ))}
-            </Dropdown>
-            <Button onClick={handleAddClick}>추가</Button>
-          </DropdownWrapper>
-          {selections.slice(1).map((selection, index) => (
-            <DropdownWrapper key={index + 1}>
+          {selections.map((selection, index) => (
+            <DropdownWrapper key={index}>
               <Dropdown
-                isPrimary={false}
+                isPrimary={index === 0}
                 value={selection.drink}
                 onChange={(e) =>
-                  handleSelectionChange(index + 1, "drink", e.target.value)
+                  handleSelectionChange(index, "drink", e.target.value)
                 }
               >
                 <option className="ex" value="">
                   주종
                 </option>
-                <option value="소주">소주</option>
-                <option value="맥주">맥주</option>
-                <option value="막걸리">막걸리</option>
-                <option value="와인">와인</option>
+                {getAvailableDrinks(index).map((drink, i) => (
+                  <option key={i} value={drink}>
+                    {drink}
+                  </option>
+                ))}
               </Dropdown>
               <Dropdown
-                isPrimary={false}
+                isPrimary={index === 0}
                 value={selection.amount}
                 onChange={(e) =>
-                  handleSelectionChange(index + 1, "amount", e.target.value)
+                  handleSelectionChange(index, "amount", e.target.value)
                 }
               >
                 <option className="ex" value="">
                   N잔
                 </option>
-                {drinksOptions[selection.drink].map((opt, i) => (
+                {(drinksOptions[selection.drink] || []).map((opt, i) => (
                   <option key={i} value={opt}>
                     {opt}
                   </option>
                 ))}
               </Dropdown>
+              {index === 0 && <Button onClick={handleAddClick}>추가</Button>}
             </DropdownWrapper>
           ))}
           {message && <ErrorMessage>{message}</ErrorMessage>}
