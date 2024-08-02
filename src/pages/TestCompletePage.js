@@ -94,7 +94,7 @@ const TestCompletePage = () => {
           </ResultTable>
           <div className="percentage">정답률: {percentage}%</div>
           <div className="status">
-            <div className="statusMent">민지님의 취한 정도는</div>
+            <div className="statusMent">00님의 취한 정도는</div>
             <Status backgroundColor={backgroundColor}>{status}</Status>
           </div>
           <BottomContainer>

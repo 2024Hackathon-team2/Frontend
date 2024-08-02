@@ -199,9 +199,15 @@ const RecordItem = styled.div`
 const StatusBox = styled.div`
   background-color: ${(props) => props.backgroundColor};
   padding: 5px;
-  border-radius: 5px;
   color: white;
   text-align: center;
+  width: 61px;
+  height: 26px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  color: white;
+  line-height: 26px;
+  font-size: 16px;
 `;
 
 const DeleteButton = styled.button`
