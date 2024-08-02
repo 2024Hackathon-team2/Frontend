@@ -3,13 +3,13 @@ import { useNavigate } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 import backButtonImage from "./images/back.png";
 import Navbar from "../components/Navbar";
-import { FriendList, getFriendList } from "../components/FriendList";
 
 const GlobalStyle = createGlobalStyle`
   html {
     background-color: whitesmoke;
   }
 `;
+const BASE_URL = "https://drinkit.pythonanywhere.com/";
 
 const FriendPage = () => {
   const navigate = useNavigate();
@@ -22,14 +22,27 @@ const FriendPage = () => {
   const [showInput, setShowInput] = useState(false);
 
   useEffect(() => {
-    const storedFriends = localStorage.getItem("friends");
-    if (storedFriends) {
-      setFriends(JSON.parse(storedFriends));
-    }
+    fetchFriends();
   }, []);
 
-  const saveFriendsToLocalStorage = (updatedFriends) => {
-    localStorage.setItem("friends", JSON.stringify(updatedFriends));
+  const fetchFriends = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}accounts/friends/`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      const result = await response.json();
+      if (response.ok) {
+        setFriends(result.friends_list);
+        localStorage.setItem("friends", JSON.stringify(result.friends_list));
+      } else {
+        setErrorMessage("친구 목록을 가져오는 중 오류가 발생했습니다.");
+      }
+    } catch (error) {
+      setErrorMessage("친구 목록을 가져오는 중 오류가 발생했습니다.");
+    }
   };
 
   const goToBack = () => {
@@ -40,24 +53,29 @@ const FriendPage = () => {
     setFriendEmail(e.target.value);
   };
 
-  const handleAddFriend = () => {
+  const handleAddFriend = async () => {
     if (friendEmail) {
-      const knownFriends = {
-        "yeangsshi@ewhain.net": { name: "예원", email: "yeangsshi@ewhain.net" },
-        "cy.kim@ewhain.net": { name: "채연", email: "cy.kim@ewhain.net" },
-      };
+      try {
+        const response = await fetch(`${BASE_URL}accounts/add-friend/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+          body: JSON.stringify({ email: friendEmail }),
+        });
+        const result = await response.json();
 
-      const newFriend = knownFriends[friendEmail];
-
-      if (newFriend) {
-        const updatedFriends = [...friends, newFriend];
-        setFriends(updatedFriends);
-        saveFriendsToLocalStorage(updatedFriends); // 로컬 스토리지에 저장
-        setFriendEmail(""); // 입력 필드 초기화
-        setErrorMessage(""); // 오류 메시지 초기화
-        setShowInput(false); // 입력 필드 숨김
-      } else {
-        setErrorMessage("해당 이메일을 사용하는 유저를 찾을 수 없습니다.");
+        if (response.ok) {
+          await fetchFriends(); // 친구 목록을 다시 가져옵니다.
+          setFriendEmail(""); // 입력 필드 초기화
+          setErrorMessage(""); // 오류 메시지 초기화
+          setShowInput(false); // 입력 필드 숨김
+        } else {
+          setErrorMessage(result.detail || "친구 추가 중 오류가 발생했습니다.");
+        }
+      } catch (error) {
+        setErrorMessage("친구 추가 중 오류가 발생했습니다.");
       }
     }
   };
@@ -67,14 +85,33 @@ const FriendPage = () => {
     setShowConfirmPopup(true);
   };
 
-  const confirmDeleteFriend = () => {
-    const updatedFriends = friends.filter(
-      (friend) => friend.email !== friendToDelete.email
-    );
-    setFriends(updatedFriends);
-    saveFriendsToLocalStorage(updatedFriends); // 로컬 스토리지에 저장
-    setShowConfirmPopup(false);
-    setShowDeletedPopup(true);
+  const confirmDeleteFriend = async () => {
+    try {
+      const response = await fetch(
+        `${BASE_URL}accounts/delete-friend/${friendToDelete.friend_pk}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      const result = await response.json();
+      if (response.ok) {
+        const updatedFriends = friends.filter(
+          (friend) => friend.email !== friendToDelete.email
+        );
+        setFriends(updatedFriends);
+        localStorage.setItem("friends", JSON.stringify(updatedFriends)); // 로컬 스토리지에 저장
+        setShowConfirmPopup(false);
+        setShowDeletedPopup(true);
+      } else {
+        setErrorMessage(result.detail || "친구 삭제 중 오류가 발생했습니다.");
+      }
+    } catch (error) {
+      setErrorMessage("친구 삭제 중 오류가 발생했습니다.");
+    }
   };
 
   const closeDeletedPopup = () => {
@@ -118,9 +155,9 @@ const FriendPage = () => {
             {showInput && <button onClick={handleAddFriend}>추가</button>}
           </AddFriendBox>
           {errorMessage && <Error>{errorMessage}</Error>}
-          {friends.map((friend, index) => (
-            <FriendBox key={index}>
-              <div className="name">{friend.name}</div>
+          {friends.map((friend) => (
+            <FriendBox key={friend.friend_pk}>
+              <div className="name">{friend.nickname}</div>
               <div className="email">{friend.email}</div>
               <DeleteButton onClick={() => handleDeleteFriend(friend)}>
                 삭제
@@ -132,8 +169,6 @@ const FriendPage = () => {
           <Navbar />
         </Footer>
       </Container>
-
-      <FriendList friends={friends} />
 
       {showConfirmPopup && (
         <PopupOverlay>
@@ -165,7 +200,7 @@ const FriendPage = () => {
         <PopupOverlay>
           <PopupContent>
             <div className="">
-              {friendToDelete.name}({friendToDelete.email})님이 <br />
+              {friendToDelete.nickname}({friendToDelete.email})님이 <br />
               친구 목록에서 삭제되었습니다.
             </div>
             <button className="close" onClick={closeDeletedPopup}>
@@ -247,6 +282,7 @@ const AddFriendBox = styled.div`
   align-items: center;
   justify-content: space-between;
   height: 50px;
+
   div {
     font-size: 20px;
     font-weight: bold;
@@ -274,10 +310,11 @@ const AddFriendBox = styled.div`
 const FriendBox = styled.div`
   margin-top: 10px;
   padding: 10px;
-  width: 100%;
+  max-width: 100%;
   display: grid;
   align-items: center;
   grid-template-columns: 5fr 18fr 5fr;
+
   .email {
     color: #cccccc;
     font-size: 12px;

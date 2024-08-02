@@ -1,86 +1,113 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import axios from "axios";
 import sendIcon from "../images/SocialPage/보내기.png";
-import mockProfileImage from "../images/SocialPage/mockProfile.png";
+import defaultProfileImage from "../pages/images/기본프로필이미지.png"; // 기본 프로필 이미지
 
-// 임시 데이터 및 API 호출 함수 (Mock Data)
-const mockFriends = [
-  { id: 1, name: "예원" },
-  { id: 2, name: "채연" },
-];
+const BASE_URL = "https://drinkit.pythonanywhere.com/";
 
-const mockProgress = {
-  1: 75,
-  2: 75,
+// 친구 목록 가져오기 API 호출 함수
+export const getFriendList = async () => {
+  try {
+    const response = await axios({
+      method: "GET",
+      url: `${BASE_URL}accounts/friends/`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // 로컬 스토리지에서 토큰을 가져옵니다.
+      },
+    });
+    const friendsList = response.data.friends_list.map((friend) => ({
+      ...friend,
+      image: friend.image ? `${BASE_URL}${friend.image}` : defaultProfileImage, // 이미지가 있는 경우 URL을 설정, 없으면 기본 이미지 사용
+    }));
+    return friendsList;
+  } catch (error) {
+    console.error("친구 목록을 가져오는 중 오류 발생:", error);
+    return [];
+  }
 };
 
-const mockProfile = {
-  1: mockProfileImage,
-  2: mockProfileImage,
-};
-
-const getFriendList = async (userId) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(mockFriends);
-    }, 1000);
-  });
-};
-
-const getDrinkingGoalProgress = async (friendId) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(mockProgress[friendId] || 0);
-    }, 1000);
-  });
-};
-
-const getFriendProfile = async (friendId) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(mockProfile[friendId] || "");
-    }, 1000);
-  });
+const getPercentageData = async () => {
+  try {
+    const response = await axios({
+      method: "GET",
+      url: `${BASE_URL}goals/social/`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    });
+    return response.data.friends;
+  } catch (error) {
+    console.error("퍼센티지 데이터를 가져오는 중 오류 발생:", error);
+    return [];
+  }
 };
 
 const getFriendRecord = async (friendId) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        targetCups: 10, // 예시 데이터, 실제 데이터로 교체 필요
-        consumedCups: 8, // 예시 데이터, 실제 데이터로 교체 필요
-      });
-    }, 1000);
-  });
+  try {
+    const response = await axios({
+      method: "GET",
+      url: `${BASE_URL}goals/social/${friendId}/`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("친구 기록을 가져오는 중 오류 발생:", error);
+    return {
+      friend_name: "",
+      soju_goal: 0,
+      beer_goal: 0,
+      mak_goal: 0,
+      wine_goal: 0,
+      soju_record: 0,
+      beer_record: 0,
+      mak_record: 0,
+      wine_record: 0,
+    };
+  }
 };
 
 // FriendList 컴포넌트
-const FriendList = ({ friends }) => {
+const FriendList = () => {
   const [progressList, setProgressList] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showFriendrecord, setShowFriendrecord] = useState(false);
   const [selectedFriendName, setSelectedFriendName] = useState("");
   const [friendRecord, setFriendRecord] = useState({
-    targetCups: 0,
-    consumedCups: 0,
+    friend_name: "",
+    soju_goal: 0,
+    beer_goal: 0,
+    mak_goal: 0,
+    wine_goal: 0,
+    soju_record: 0,
+    beer_record: 0,
+    mak_record: 0,
+    wine_record: 0,
   });
 
   useEffect(() => {
-    const fetchProgress = async () => {
-      const progressData = await Promise.all(
-        friends.map(async (friend) => {
-          const progress = await getDrinkingGoalProgress(friend.id);
-          const profile = await getFriendProfile(friend.id);
-          return { ...friend, progress, profile };
-        })
-      );
+    const fetchFriends = async () => {
+      const friendList = await getFriendList();
+      const percentageData = await getPercentageData();
+      const progressData = friendList.map((friend) => {
+        const friendPercentage = percentageData.find(
+          (item) => item.friend_id === friend.friend_pk
+        );
+        return {
+          ...friend,
+          progress: friendPercentage ? friendPercentage.percentage * 100 : 0,
+          cheer_count: friend.cheer_count || 0, // 초기 응원수 설정
+        };
+      });
       setProgressList(progressData);
     };
 
-    fetchProgress();
-  }, [friends]);
+    fetchFriends();
+  }, []);
 
-  if (friends.length === 0) {
+  if (progressList.length === 0) {
     return (
       <div
         style={{
@@ -105,35 +132,59 @@ const FriendList = ({ friends }) => {
     setShowFriendrecord(true);
   };
 
-  const sendCheering = (friendName) => {
-    setSelectedFriendName(friendName);
-    setShowModal(true);
+  const sendCheering = async (friendName, friendId) => {
+    try {
+      const response = await axios({
+        method: "POST",
+        url: `${BASE_URL}goals/social/cheer/${friendId}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+
+      const updatedCheerCount = response.data.cheer_count;
+      setProgressList((prevList) =>
+        prevList.map((friend) =>
+          friend.friend_pk === friendId
+            ? { ...friend, cheer_count: updatedCheerCount }
+            : friend
+        )
+      );
+
+      setSelectedFriendName(friendName);
+      setShowModal(true);
+    } catch (error) {
+      console.error("응원을 보내는 중 오류 발생:", error);
+    }
   };
 
   return (
     <FriendListWrapper>
       {progressList.map((friend) => (
-        <div className="FriendListContainer" key={friend.id}>
+        <div className="FriendListContainer" key={friend.friend_pk}>
           <img
             className="profile"
-            src={friend.profile}
-            alt={`${friend.name}'s profile`}
-            onClick={() => popupFriendRecord(friend.name, friend.id)}
+            src={friend.image}
+            alt={`${friend.nickname}'s profile`}
+            onClick={() => popupFriendRecord(friend.nickname, friend.friend_pk)}
           />
-          <div className="FriendProgress" key={friend.id}>
+          <div className="FriendProgress" key={friend.friend_pk}>
             <div
               className="friendName"
-              onClick={() => popupFriendRecord(friend.name, friend.id)}
+              onClick={() =>
+                popupFriendRecord(friend.nickname, friend.friend_pk)
+              }
             >
-              {friend.name}
+              {friend.nickname}
             </div>
             <ProgressContainer>
               <ProgressBar progress={friend.progress}></ProgressBar>
             </ProgressContainer>
-            <div className="percent">{friend.progress}%</div>
+            <div className="percent">{friend.progress.toFixed(2)}%</div>
+
             <div
               className="sendMessage"
-              onClick={() => sendCheering(friend.name)}
+              onClick={() => sendCheering(friend.nickname, friend.friend_pk)}
             >
               <img src={sendIcon} alt="send icon" />
               응원보내기
@@ -141,33 +192,54 @@ const FriendList = ({ friends }) => {
           </div>
         </div>
       ))}
-      <Overlay show={showModal} onClick={() => setShowModal(false)} />
-      <Modal show={showModal}>
-        <div className="cheerCompleteMessage">
-          {selectedFriendName}님에게 응원을 보냈어요
-        </div>
-        <CloseButton onClick={() => setShowModal(false)}>닫기</CloseButton>
-      </Modal>
-
-      <Overlay
-        show={showFriendrecord}
-        onClick={() => setShowFriendrecord(false)}
-      />
-      <Modal show={showFriendrecord}>
-        <div>
-          <span style={{ fontWeight: "bold" }}>{selectedFriendName}</span>님의
-        </div>
-        <div>이번 달 목표: {friendRecord.targetCups}잔</div>
-        <div>이번 달 섭취량: {friendRecord.consumedCups}잔</div>
-        <CloseButton onClick={() => setShowFriendrecord(false)}>
-          닫기
-        </CloseButton>
-      </Modal>
+      {showModal && (
+        <>
+          <Overlay onClick={() => setShowModal(false)} />
+          <Modal>
+            <div className="cheerCompleteMessage">
+              {selectedFriendName}님에게 응원을 보냈어요
+            </div>
+            <CloseButton onClick={() => setShowModal(false)}>닫기</CloseButton>
+          </Modal>
+        </>
+      )}
+      {showFriendrecord && (
+        <>
+          <Overlay onClick={() => setShowFriendrecord(false)} />
+          <Modal>
+            <div className="modalTop">
+              <span style={{ fontWeight: "bold" }}>{selectedFriendName}</span>
+              님의
+            </div>
+            <div className="ThisMonthGoal">
+              이번 달 목표
+              <div>
+                <div>소주: {friendRecord.soju_goal}잔</div>
+                <div>맥주: {friendRecord.beer_goal}잔</div>
+                <div>와인: {friendRecord.wine_goal}잔</div>
+                <div>막걸리: {friendRecord.mak_goal}잔</div>
+              </div>
+            </div>
+            <div className="ThisMonthRecord">
+              이번 달 섭취량
+              <div>
+                <div>소주: {friendRecord.soju_record}잔</div>
+                <div>맥주: {friendRecord.beer_record}잔</div>
+                <div>와인: {friendRecord.wine_record}잔</div>
+                <div>막걸리: {friendRecord.mak_record}잔</div>
+              </div>
+            </div>
+            <CloseButton onClick={() => setShowFriendrecord(false)}>
+              닫기
+            </CloseButton>
+          </Modal>
+        </>
+      )}
     </FriendListWrapper>
   );
 };
 
-export { FriendList, getFriendList };
+export default FriendList;
 
 // Styled Components
 const FriendListWrapper = styled.div`
@@ -232,15 +304,45 @@ const Modal = styled.div`
   top: 50%;
   transform: translate(-50%, -50%);
   background: white;
-  padding: 20px;
+  padding: 10px;
   border: 1px solid #ccc;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
   z-index: 1000;
   width: 230px;
   text-align: center;
   border-radius: 5px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
   .cheerCompleteMessage {
     font-weight: bold;
+    padding: 15px;
+  }
+
+  .ThisMonthGoal {
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    font-size: 14px;
+    > div {
+      font-size: 12px;
+      text-align: right;
+    }
+  }
+  .ThisMonthRecord {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    width: 90%;
+    > div {
+      font-size: 12px;
+      text-align: right;
+    }
+  }
+  .modalTop {
+    text-align: left;
+    margin-bottom: 20px;
+    align-self: self-start;
   }
 `;
 
@@ -257,13 +359,17 @@ const Overlay = styled.div`
 
 const CloseButton = styled.button`
   font-family: Pretendard;
-  font-weight: bold;
+
   background: #d9d9d9;
-  color: black;
+  color: white;
   border: none;
   padding: 10px;
   cursor: pointer;
   margin-top: 20px;
-  border-radius: 5px;
+  border-radius: 10px;
   width: 209px;
+  height: 24px;
+  line-height: 2px;
+  background-color: #17d6b5;
+  margin-bottom: 5px;
 `;

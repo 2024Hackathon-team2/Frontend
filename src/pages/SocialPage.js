@@ -7,7 +7,7 @@ import MakgeolliImage from "../images/SocialPage/막걸리.png";
 import WineImage from "../images/SocialPage/와인.png";
 import { useNavigate } from "react-router-dom";
 import ProgressBar from "../components/Progressbar_Goal";
-import { FriendList, getFriendList } from "../components/FriendList";
+import FriendList, { getFriendList } from "../components/FriendList";
 import Navbar from "../components/Navbar";
 
 const GlobalStyle = createGlobalStyle`
@@ -15,28 +15,36 @@ const GlobalStyle = createGlobalStyle`
     background-color: whitesmoke;
   }
 `;
+const BASE_URL = "https://drinkit.pythonanywhere.com/";
 
-const SocialPage = ({ userId }) => {
-  const [data, setData] = useState({ targetCups: 0, consumedCups: 0 });
-  const [percentage, setPercentage] = useState(0);
+const SocialPage = ({ userId, nickname }) => {
+  const [userData, setUserData] = useState({});
+  const [friends, setFriends] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // 임시 데이터 사용
     const fetchData = async () => {
-      // 백엔드 API를 대신할 임시 데이터
-      const tempData = {
-        targetCups: 8,
-        consumedCups: 6,
-      };
+      try {
+        const response = await fetch(`${BASE_URL}goals/social/`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // 여기에 실제 토큰 값을 넣어주세요.
+          },
+        });
 
-      setData(tempData);
-      setPercentage((tempData.consumedCups / tempData.targetCups) * 100);
+        if (response.ok) {
+          const data = await response.json();
+          setUserData(data);
+        } else {
+          console.error("Failed to fetch data");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
 
     fetchData();
   }, []);
 
-  const [friends, setFriends] = useState([]);
   useEffect(() => {
     const fetchFriends = async () => {
       const friendsData = await getFriendList(userId);
@@ -46,102 +54,99 @@ const SocialPage = ({ userId }) => {
     fetchFriends();
   }, [userId]);
 
-  const navigate = useNavigate();
+  const handleCheerUpdate = (newCheerCount) => {
+    setUserData((prevData) => ({
+      ...prevData,
+      cheer: newCheerCount,
+    }));
+  };
+
+  const { user, cheer, soju, beer, mak, wine, period } = userData;
 
   return (
     <>
-      <GlobalStyle></GlobalStyle>
+      <GlobalStyle />
       <Container>
         <Header>소셜</Header>
         <Content>
           <Goal>
             <div className="goalTitle">
-              <div className="userName">지원님</div>
+              <div className="userName">{user}님</div>
               <div className="goalAchieveMonth">
-                2개월째 목표를 달성하고 있어요
+                {period}개월째 목표를 달성하고 있어요
               </div>
             </div>
 
             <div className="CheerNumber">
-              <img src={CheerImage}></img>
-              <div>이번 달 받은 응원 수: N</div>
+              <img src={CheerImage} alt="Cheer Icon" />
+              <div>이번 달 받은 응원 수: {cheer}</div>
             </div>
 
             <DrinkingGoals>
-              <div className="Drinks" id="Beer">
-                <div className="img">
-                  <img src={BeerImage}></img>
-                </div>
-                <div className="drinksName">맥주</div>
-                <div>
-                  <ProgressBar percentage={percentage} />
-                </div>
-                <div className="cups">
-                  {data.targetCups}/{data.consumedCups}잔
-                </div>
-              </div>
-
-              <div className="Drinks" id="Soju">
-                <div className="img">
-                  <img src={SojuImage}></img>
-                </div>
-                <div className="drinksName">소주</div>
-                <div>
-                  <ProgressBar percentage={percentage} />
-                </div>
-                <div className="cups">
-                  {data.targetCups}/{data.consumedCups}잔
-                </div>
-              </div>
-
-              <div className="Drinks" id="Makgeolli">
-                <div className="img">
-                  <img src={MakgeolliImage}></img>
-                </div>
-                <div className="drinksName">막걸리</div>
-                <div>
-                  <ProgressBar percentage={percentage} />
-                </div>
-                <div className="cups">
-                  {data.targetCups}/{data.consumedCups}잔
-                </div>
-              </div>
-
-              <div className="Drinks" id="Wine">
-                <div className="img">
-                  <img src={WineImage}></img>
-                </div>
-                <div className="drinksName">와인</div>
-                <div>
-                  <ProgressBar percentage={percentage} />
-                </div>
-                <div className="cups">
-                  {data.targetCups}/{data.consumedCups}잔
-                </div>
-              </div>
+              <DrinkItem
+                image={BeerImage}
+                name="맥주"
+                goal={beer?.goal}
+                record={beer?.record}
+                percentage={beer?.percentage}
+              />
+              <DrinkItem
+                image={SojuImage}
+                name="소주"
+                goal={soju?.goal}
+                record={soju?.record}
+                percentage={soju?.percentage}
+              />
+              <DrinkItem
+                image={MakgeolliImage}
+                name="막걸리"
+                goal={mak?.goal}
+                record={mak?.record}
+                percentage={mak?.percentage}
+              />
+              <DrinkItem
+                image={WineImage}
+                name="와인"
+                goal={wine?.goal}
+                record={wine?.record}
+                percentage={wine?.percentage}
+              />
             </DrinkingGoals>
 
             <div
               className="GoalSpecificButton"
-              onClick={() => {
-                navigate("/home");
-              }}
+              onClick={() => navigate("/home")}
             >
               <div>목표 자세히 보기</div>
             </div>
           </Goal>
           <Friends>
             <div className="friendTitle">친구의 달성률</div>
-            <FriendList friends={friends} />
+            <FriendList friends={friends} onCheerUpdate={handleCheerUpdate} />
           </Friends>
         </Content>
         <Footer>
-          <Navbar></Navbar>
+          <Navbar />
         </Footer>
       </Container>
     </>
   );
 };
+
+const DrinkItem = ({ image, name, goal, record, percentage }) => (
+  <div className="Drinks">
+    <div className="img">
+      <img src={image} alt={name} />
+    </div>
+    <div className="drinksName">{name}</div>
+    <div>
+      <ProgressBar percentage={percentage * 100} />
+    </div>
+    <div className="cups">
+      {record}/{goal}잔
+    </div>
+  </div>
+);
 
 export default SocialPage;
 
