@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
+import axios from "axios";
 import backButtonImage from "./images/back.png";
 import Navbar from "../components/Navbar";
+
+const BASE_URL = "https://drinkit.pythonanywhere.com/";
 
 const GlobalStyle = createGlobalStyle`
   html {
@@ -10,105 +13,48 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const RecordDonePage = () => {
+const GoalDonePage = () => {
   const today = new Date();
 
-  const year = today.getFullYear();
-  const month = today.getMonth() + 1; //인덱스 값에 +1
-  const date = today.getDate();
+  const month = today.getMonth() + 1; // 인덱스 값에 +1
   const dayIndex = today.getDay(); // 요일의 인덱스를 가져옴 (0: 일요일, 6: 토요일)
 
   const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
-  const day = daysOfWeek[dayIndex]; // 요일을 문자열로 변환
 
-  const [selectedDrink, setSelectedDrink] = useState("");
-  const [amount, setAmount] = useState("");
-  const [records, setRecords] = useState([]);
-  const [labelColor, setLabelColor] = useState("black");
+  const [totalGoal, setTotalGoal] = useState(0); // State to store total_goal
+  const [userName, setUserName] = useState(""); // State to store user name
 
-  const drinkOptions = {
-    "": [],
-    소주: [
-      "1잔 (50ml)",
-      "2잔",
-      "3잔",
-      "4잔",
-      "5잔",
-      "6잔",
-      "7잔",
-      "1병",
-      "1병 반",
-      "2병",
-      "2병 반",
-      "3병",
-      "3병 반",
-    ],
-    맥주: [
-      "1잔 (200ml)",
-      "2잔",
-      "1병",
-      "1병 반",
-      "2병",
-      "2병 반",
-      "3병",
-      "3병 반",
-      "4병",
-      "4병 반",
-    ],
-    막걸리: [
-      "1사발 (250ml)",
-      "2사발",
-      "1병",
-      "1병 반",
-      "2병",
-      "2병 반",
-      "3병",
-      "3병 반",
-      "4병",
-      "4병 반",
-    ],
-    와인: [
-      "1잔 (150ml)",
-      "2잔",
-      "3잔",
-      "4잔",
-      "1병",
-      "1병 반",
-      "2병",
-      "2병 반",
-      "3병",
-      "3병 반",
-      "4병",
-      "4병 반",
-    ],
-  };
+  useEffect(() => {
+    const fetchGoalAndUserData = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+        if (!token) {
+          throw new Error("No access token found");
+        }
 
-  const handleDrinkSelect = (drink) => {
-    setSelectedDrink(drink);
-    setAmount(""); // Reset amount when drink type changes
-    setLabelColor("black"); // Change label color back to black
-  };
+        // Fetch goal information
+        const goalResponse = await axios.get(`${BASE_URL}goals/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const goalData = goalResponse.data.goal;
+        const userData = goalResponse.data.user;
 
-  const handleRecord = () => {
-    if (!selectedDrink) {
-      setLabelColor("#FF9B9B"); // Change label color to red if no drink selected
-      return;
-    }
-    if (selectedDrink && amount) {
-      setRecords([...records, { drink: selectedDrink, amount }]);
-      setSelectedDrink("");
-      setAmount("");
-      setLabelColor("black"); // Reset label color
-    }
-  };
+        setTotalGoal(goalData.total_goal); // Set total_goal from the API response
+        setUserName(userData); // Set user name from the API response
+      } catch (error) {
+        console.error("Failed to fetch data", error);
+      }
+    };
 
-  const handleDelete = (index) => {
-    setRecords(records.filter((_, i) => i !== index));
-  };
+    fetchGoalAndUserData();
+  }, []); // Empty dependency array to run only on component mount
+
   const navigate = useNavigate();
 
   const goToBack = () => {
-    navigate("/record");
+    navigate("/goal");
   };
 
   const goToHome = () => {
@@ -123,19 +69,17 @@ const RecordDonePage = () => {
           <BackButton onClick={goToBack}>
             <img src={backButtonImage} alt="Back" />
           </BackButton>
-          나의 음주 기록
+          음주 목표 설정
           <div></div>
         </Header>
         <Content>
           <RecordBox>
-            <DateRecord>
-              {year}년 {month}월 {date}일 {day}요일
-            </DateRecord>
-            <RecordTitle>{month}월의 N 번째 음주기록</RecordTitle>
-            <Total>총 N잔</Total>
+            <UserName>{userName}님의</UserName>
+            <RecordTitle>{month}월의 음주 목표</RecordTitle>
+            <Total>총 {totalGoal}잔</Total>
           </RecordBox>
-          <DoneMessage1>오늘의 음주 기록 완료!</DoneMessage1>
-          <DoneMessage2>잦은 음주는 피해 주세요!</DoneMessage2>
+          <DoneMessage1>{month}월 음주 목표 설정 완료!</DoneMessage1>
+          <DoneMessage2>목표를 향해 화이팅!</DoneMessage2>
         </Content>
         <Footer>
           <button onClick={goToHome}>홈으로 이동</button>
@@ -145,7 +89,7 @@ const RecordDonePage = () => {
   );
 };
 
-export default RecordDonePage;
+export default GoalDonePage;
 
 // Styled components
 const Container = styled.div`
@@ -226,7 +170,7 @@ const RecordBox = styled.div`
   flex-shrink: 0;
 `;
 
-const DateRecord = styled.div`
+const UserName = styled.div`
   color: #000;
   font-family: Pretendard;
   font-size: 15.246px;
