@@ -44,7 +44,7 @@ const ProfileSettingPage = () => {
       }
     } catch (error) {
       console.error("사용자 정보 불러오기 오류:", error);
-      alert("사용자 정보를 불러오는 중 오류가 발생했습니다.");
+      alert("로그인 후 이용 가능합니다.");
     }
   };
 
@@ -64,6 +64,7 @@ const ProfileSettingPage = () => {
 
     setIsPwMatch(true);
 
+    // Update profile data
     const formData = new FormData();
     formData.append("nickname", nickname);
 
@@ -98,6 +99,9 @@ const ProfileSettingPage = () => {
         localStorage.setItem("nickname", updatedUser.nickname);
         localStorage.setItem("image", updatedUser.image || basicImage);
         setImagePreview(updatedUser.image || basicImage);
+        if (newPassword) {
+          await handlePasswordChange();
+        }
         navigate("/mypage");
       } else {
         console.error("프로필 업데이트 실패:", response.data);
@@ -105,6 +109,32 @@ const ProfileSettingPage = () => {
     } catch (error) {
       console.error("프로필 업데이트 오류:", error);
       alert("프로필 업데이트 중 오류가 발생했습니다.");
+    }
+  };
+
+  const handlePasswordChange = async () => {
+    try {
+      const response = await axios({
+        method: "PATCH",
+        url: "https://drinkit.pythonanywhere.com/accounts/change-password/",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          "Content-Type": "application/json",
+        },
+        data: {
+          new_password: newPassword,
+          new_password2: newPassword,
+        },
+      });
+
+      if (response.status === 200) {
+        alert("비밀번호가 변경되었습니다.");
+      } else {
+        console.error("비밀번호 변경 실패:", response.data);
+      }
+    } catch (error) {
+      console.error("비밀번호 변경 오류:", error);
+      alert("비밀번호 변경 중 오류가 발생했습니다.");
     }
   };
 
@@ -171,8 +201,8 @@ const ProfileSettingPage = () => {
               <path
                 d="M1 1H351"
                 stroke="#CCCCCC"
-                stroke-opacity="0.3"
-                stroke-linecap="round"
+                strokeOpacity="0.3"
+                strokeLinecap="round"
               />
             </svg>
             <p>이름</p>
@@ -193,8 +223,8 @@ const ProfileSettingPage = () => {
               <path
                 d="M1 1H351"
                 stroke="#CCCCCC"
-                stroke-opacity="0.3"
-                stroke-linecap="round"
+                strokeOpacity="0.3"
+                strokeLinecap="round"
               />
             </svg>
           </SetName>
@@ -204,14 +234,20 @@ const ProfileSettingPage = () => {
             <input
               type="password"
               placeholder="새 비밀번호를 입력해 주세요."
-              onChange={(e) => setNewPassword(e.target.value)}
+              onChange={(e) => {
+                setNewPassword(e.target.value);
+                setIsPwMatch(true); // 새 비밀번호 입력 시 에러 메시지 초기화
+              }}
             />
             <div>비밀번호 확인</div>
             <input
               type="password"
               placeholder="새 비밀번호를 다시 입력해 주세요."
               style={{ borderColor: isPwMatch ? "#ccc" : "red" }}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              onChange={(e) => {
+                setConfirmPassword(e.target.value);
+                setIsPwMatch(true); // 비밀번호 확인 입력 시 에러 메시지 초기화
+              }}
             />
             {!isPwMatch && (
               <ErrorMessage>
