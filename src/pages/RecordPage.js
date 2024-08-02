@@ -20,7 +20,7 @@ const GlobalStyle = createGlobalStyle`
 const RecordPage = () => {
   const location = useLocation();
   const { selectedDate } = location.state || {};
-  const today = new Date(selectedDate || Date.now());
+  const today = new Date(selectedDate);
 
   const year = today.getFullYear();
   const month = today.getMonth() + 1;
@@ -120,7 +120,7 @@ const RecordPage = () => {
   const handleSubmit = async () => {
     // POST 요청을 보내는 부분
     const requestBody = {
-      date: new Date().toISOString(),
+      date: selectedDate,
       records: records.map((record) => ({
         drink: record.drink,
         amount: record.amount,
@@ -136,7 +136,17 @@ const RecordPage = () => {
         },
       });
       console.log("Response:", response.data);
-      navigate("/recorddone");
+      navigate("/recorddone", {
+        state: {
+          selectedDate: {
+            year: response.data.year,
+            month: response.data.month,
+            day: response.data.day,
+            dow: response.data.dow,
+          },
+          totalRecord: response.data.total_record,
+        },
+      });
     } catch (error) {
       console.error("Error:", error.response.data);
     }

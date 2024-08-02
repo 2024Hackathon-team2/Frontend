@@ -13,7 +13,7 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const RecordDonePage = () => {
+const TimerPage = () => {
   const [timeLeft, setTimeLeft] = useState(7200); // 2 hours in seconds
   const [isRunning, setIsRunning] = useState(false);
 
@@ -179,7 +179,7 @@ const RecordDonePage = () => {
   );
 };
 
-export default RecordDonePage;
+export default TimerPage;
 
 const Container = styled.div`
   width: 390px; /* Fixed width */
