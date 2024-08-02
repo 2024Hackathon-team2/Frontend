@@ -21,6 +21,13 @@ const HomePage = () => {
     goal: 0,
     drinks: 0,
   });
+
+  const [goalData, setGoalData] = useState({
+    totalGoal: 0.0,
+    totalRecord: 0.0,
+    percentage: 0,
+  });
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,14 +38,25 @@ const HomePage = () => {
           throw new Error("No access token found");
         }
 
-        const response = await axios.get(`${BASE_URL}accounts/mypage/`, {
+        const userResponse = await axios.get(`${BASE_URL}accounts/mypage/`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        setUser(response.data);
+        setUser(userResponse.data);
+
+        const goalResponse = await axios.get(`${BASE_URL}goals/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setGoalData({
+          totalGoal: goalResponse.data.goal.total_goal,
+          totalRecord: goalResponse.data.record.record_alcohol.total_record,
+          percentage: goalResponse.data.percentage,
+        });
       } catch (error) {
-        console.error("Failed to fetch user data", error);
+        console.error("Failed to fetch data", error);
       }
     };
 
@@ -50,7 +68,9 @@ const HomePage = () => {
   };
 
   const currentMonth = new Date().getMonth() + 1 + "월";
-  const progressPercentage = user.goal ? (user.drinks / user.goal) * 100 : 0;
+  const progressPercentage = goalData.totalGoal
+    ? (goalData.totalRecord / goalData.totalGoal) * 100
+    : 0;
 
   return (
     <>
@@ -62,7 +82,7 @@ const HomePage = () => {
           <GoalReachContainer>
             <ProfileImage src={user.image} alt="Profile" />
 
-            {user.goal ? (
+            {goalData.totalGoal ? (
               <>
                 <Nickname>
                   {user.nickname}
@@ -74,7 +94,7 @@ const HomePage = () => {
                   <Progress style={{ width: `${progressPercentage}%` }} />
                 </ProgressBar>
                 <div>
-                  {user.drinks}잔/{user.goal}잔
+                  {goalData.totalRecord}잔/{goalData.totalGoal}잔
                 </div>
               </>
             ) : (
@@ -94,7 +114,8 @@ const HomePage = () => {
                 style={{ width: "31.092px", height: "37.801px" }}
                 alt="Goal Icon"
               ></img>
-              이번 달의 목표치에 도달하려면 N회만 마셔야 해요!
+              이번 달의 목표치에 도달하려면{" "}
+              {goalData.totalGoal - goalData.totalRecord}회만 마셔야 해요!
             </div>
             <div className="calendarTitle">음주 달력</div>
             <HomeCalendar></HomeCalendar>
