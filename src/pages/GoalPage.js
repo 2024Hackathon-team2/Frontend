@@ -81,38 +81,10 @@ const GoalPage = () => {
   };
 
   const handleSubmit = () => {
-    let sojuGoal = 0;
-    let beerGoal = 0;
-    let makGoal = 0;
-    let wineGoal = 0;
-
-    selections.forEach((selection) => {
-      const amount = parseFloat(selection.amount);
-      switch (selection.drink) {
-        case "소주":
-          sojuGoal += amount;
-          break;
-        case "맥주":
-          beerGoal += amount;
-          break;
-        case "막걸리":
-          makGoal += amount;
-          break;
-        case "와인":
-          wineGoal += amount;
-          break;
-        default:
-          break;
-      }
-    });
-
     const token = localStorage.getItem("accessToken");
 
     const requestBody = {
-      soju_goal: sojuGoal,
-      beer_goal: beerGoal,
-      mak_goal: makGoal,
-      wine_goal: wineGoal,
+      selections: selections,
     };
 
     console.log("Request Body:", requestBody); // 요청 본문 확인
