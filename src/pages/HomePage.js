@@ -115,7 +115,7 @@ const HomePage = () => {
                 alt="Goal Icon"
               ></img>
               이번 달의 목표치에 도달하려면{" "}
-              {goalData.totalGoal - goalData.totalRecord}회만 마셔야 해요!
+              {goalData.totalGoal - goalData.totalRecord}잔만 마셔야 해요!
             </div>
             <div className="calendarTitle">음주 달력</div>
             <HomeCalendar></HomeCalendar>
@@ -186,7 +186,7 @@ const GoalReachContainer = styled.div`
   margin-bottom: 30px;
   display: grid;
   grid-template-columns: 2.5fr 7fr 1.5fr;
-  grid-template-rows: 1fr 1.5fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
   width: 350px;
   height: 111px;
   border-radius: 8px;
@@ -229,6 +229,7 @@ const Nickname = styled.div`
   font-weight: 600;
   grid-column: 2/3;
   grid-row: 1/2;
+  align-self: flex-end;
 `;
 
 const ProgressBar = styled.div`
@@ -236,15 +237,18 @@ const ProgressBar = styled.div`
   grid-column: 2/3;
   width: 100%;
   height: 20px;
-  background-color: #d8d8d8;
+  background: #f3f3f3;
   border-radius: 10px;
   overflow: hidden;
+  width: 144px;
+  height: 12px;
+  align-self: center;
 `;
 
 const Progress = styled.div`
   height: 100%;
-  background-color: #17d6b5;
   border-radius: 10px 0 0 10px;
+  background: linear-gradient(281deg, #9aeafb -1.06%, #17d6b5 88.73%);
 `;
 
 const DrinkingCalendar = styled.div`

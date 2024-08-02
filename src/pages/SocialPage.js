@@ -47,8 +47,12 @@ const SocialPage = ({ userId, nickname }) => {
 
   useEffect(() => {
     const fetchFriends = async () => {
-      const friendsData = await getFriendList(userId);
-      setFriends(friendsData);
+      try {
+        const friendsData = await getFriendList(userId);
+        setFriends(friendsData);
+      } catch (error) {
+        console.error("Error fetching friends data:", error);
+      }
     };
 
     fetchFriends();
@@ -117,7 +121,7 @@ const SocialPage = ({ userId, nickname }) => {
               className="GoalSpecificButton"
               onClick={() => navigate("/home")}
             >
-              <div>목표 자세히 보기</div>
+              <div>기록 자세히 보기</div>
             </div>
           </Goal>
           <Friends>

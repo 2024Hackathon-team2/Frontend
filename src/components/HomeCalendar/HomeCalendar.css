@@ -1,5 +1,6 @@
 .CalendarContainer {
-  max-width: 350px;
+  width: 349px;
+  height: 333px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,9 +10,10 @@
   position: relative;
 }
 .react-calendar {
-  font-family: Pretendard, sans-serif;
+  font-family: Pretendard;
+  font-size: 20px;
   border-radius: 14px;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  box-shadow: 0px 4px 15.4px 0px rgba(0, 0, 0, 0.08);
   border: none;
 }
 .react-calendar__navigation {
@@ -52,7 +54,8 @@
   color: #9a9a9a;
 }
 .react-calendar__navigation__label > span {
-  font-family: Pretendard, sans-serif;
+  font-family: Pretendard;
+  font-size: 17px;
 }
 .react-calendar__navigation__arrow {
   margin: 0 5px; /* 화살표 간격을 조정 */
@@ -67,12 +70,16 @@
 .GotoDrinkingRecord {
   position: absolute;
   right: 2%;
-  top: 4%;
+  top: 3%;
   font-size: 14px;
-
   cursor: pointer;
-
-  font-weight: bold; /* Adjust as needed */
+  border-radius: 10px;
+  background: #17d6b5;
+  width: 84px;
+  height: 32px;
+  text-align: center;
+  line-height: 32px;
+  color: white;
 }
 .SelectedDateWrapper {
   width: 100%;
