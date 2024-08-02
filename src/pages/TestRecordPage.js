@@ -2,13 +2,18 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 import Navbar from "../components/Navbar";
-import testIcon from "../images/TestPage/음주테스트아이콘.png";
+import testIcon1 from "../images/TestPage/음주테스트아이콘맥주.png";
+import testIcon2 from "../images/TestPage/음주테스트아이콘막걸리.png";
+import testIcon3 from "../images/TestPage/음주테스트아이콘와인.png";
+import deleteButtonImage from "../images/TestPage/삭제.png";
 
 const GlobalStyle = createGlobalStyle`
   html {
     background-color: whitesmoke;
   }
 `;
+
+const icons = [testIcon1, testIcon2, testIcon3];
 
 const TestRecordPage = () => {
   const navigate = useNavigate();
@@ -65,23 +70,25 @@ const TestRecordPage = () => {
                     status = "취함";
                     backgroundColor = "#BB3434";
                   }
+                  const icon = icons[index % icons.length]; // Rotate through icons
                   return (
                     <RecordItem key={index}>
-                      <div className="Container">
+                      <Division>
                         <div className="box">
-                          <img src={testIcon} alt="Test Icon"></img>
+                          <img src={icon} alt="Test Icon"></img>
                           <div className="test">음주테스트</div>
                         </div>
-                        <div className="details">
-                          <div>{result.percentage}%</div>
-                          <StatusBox backgroundColor={backgroundColor}>
-                            {status}
-                          </StatusBox>
-                        </div>
-                      </div>
-                      <DeleteButton onClick={() => deleteRecord(index)}>
-                        삭제
-                      </DeleteButton>
+                      </Division>
+                      <Division>
+                        <div className="percentage">{result.percentage}%</div>
+                        <StatusBox backgroundColor={backgroundColor}>
+                          {status}
+                        </StatusBox>
+
+                        <DeleteButton onClick={() => deleteRecord(index)}>
+                          <img src={deleteButtonImage} alt="삭제" />
+                        </DeleteButton>
+                      </Division>
                     </RecordItem>
                   );
                 })}
@@ -169,6 +176,8 @@ const Content = styled.div`
 const RecordContainer = styled.div`
   width: 100%;
   margin-top: 20px;
+  display: flex;
+  justify-content: center;
 `;
 
 const DateTitle = styled.div`
@@ -179,20 +188,32 @@ const DateTitle = styled.div`
 `;
 
 const RecordItem = styled.div`
-  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 325px;
+  height: 79px;
+
   .box {
     display: flex;
+    flex-direction: row;
     align-items: center;
-    width: 50%;
   }
-  .details {
-    display: flex;
-    align-items: center;
-    width: 30%;
-  }
+
   .Container {
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
+  }
+  .percentage {
+    margin-right: 11px;
+  }
+
+  img {
+    width: 48px;
+    height: 48px;
+    margin-right: 11px;
   }
 `;
 
@@ -211,12 +232,24 @@ const StatusBox = styled.div`
 `;
 
 const DeleteButton = styled.button`
-  background: #bb3434;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 5px 10px;
+  width: 11.313px;
+  height: 11.313px;
   cursor: pointer;
+  padding: 0px;
+  margin: 0px;
+  border: none;
+  margin-left: 10px;
+
+  img {
+    width: 11.313px;
+    height: 11.313px;
+  }
+`;
+
+const Division = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
 
 const Footer = styled.footer`

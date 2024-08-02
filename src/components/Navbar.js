@@ -17,7 +17,7 @@ const Navbar = () => {
   const location = useLocation();
 
   const goToHome = () => {
-    navigate("/");
+    navigate("/home");
   };
   const goToSocial = () => {
     navigate("/social");

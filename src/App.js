@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import MainPage from "./pages/MainPage";
 import HomePage from "./pages/HomePage";
 import GoalPage from "./pages/GoalPage";
+import GoalDonePage from "./pages/GoalDonePage";
 import RecordPage from "./pages/RecordPage";
 import RecordDonePage from "./pages/RecordDonePage";
 import LoginPage from "./pages/LoginPage";
@@ -29,6 +30,7 @@ function App() {
           <Route path="/" element={<LoginPage />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/goal" element={<GoalPage />} />
+          <Route path="/goaldone" element={<GoalDonePage />} />
           <Route path="/record" element={<RecordPage />} />
           <Route path="/recorddone" element={<RecordDonePage />} />
           <Route path="/signup" element={<SignupPage />} />

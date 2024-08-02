@@ -187,6 +187,7 @@ const GoalReachContainer = styled.div`
     background: #c1fef4;
     border: none;
     align-self: end;
+    cursor: pointer;
   }
   .NoRecord {
     grid-row: 2/3;
