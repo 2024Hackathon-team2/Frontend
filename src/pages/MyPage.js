@@ -49,7 +49,7 @@ const MyPage = () => {
         "사용자 정보 불러오기 오류:",
         error.response ? error.response.data : error.message
       );
-      alert("사용자 정보를 불러오는 중 오류가 발생했습니다.");
+      alert("로그인 후 이용 가능합니다.");
     }
   };
 
@@ -98,6 +98,17 @@ const MyPage = () => {
     }
   };
 
+  const handleLogout = () => {
+    // localStorage에서 토큰과 이메일 제거
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("email");
+
+    alert("로그아웃 되었습니다.");
+    console.log("로그아웃 완료");
+    navigate("/"); // 로그아웃 후 로그인 페이지로 이동
+  };
+
   return (
     <>
       <GlobalStyle />
@@ -120,8 +131,8 @@ const MyPage = () => {
               <path
                 d="M1 1H351"
                 stroke="#CCCCCC"
-                stroke-opacity="0.3"
-                stroke-linecap="round"
+                strokeOpacity="0.3"
+                strokeLinecap="round"
               />
             </svg>
             <button onClick={goToProfileSetting}>프로필 변경</button>
@@ -135,8 +146,8 @@ const MyPage = () => {
               <path
                 d="M1 1H351"
                 stroke="#CCCCCC"
-                stroke-opacity="0.3"
-                stroke-linecap="round"
+                strokeOpacity="0.3"
+                strokeLinecap="round"
               />
             </svg>
             <button onClick={goToFriend}>친구 관리</button>
@@ -150,8 +161,8 @@ const MyPage = () => {
               <path
                 d="M1 1H351"
                 stroke="#CCCCCC"
-                stroke-opacity="0.3"
-                stroke-linecap="round"
+                strokeOpacity="0.3"
+                strokeLinecap="round"
               />
             </svg>
             <button onClick={openDeleteModal}>탈퇴하기</button>
@@ -165,8 +176,23 @@ const MyPage = () => {
               <path
                 d="M1 1H351"
                 stroke="#CCCCCC"
-                stroke-opacity="0.3"
-                stroke-linecap="round"
+                strokeOpacity="0.3"
+                strokeLinecap="round"
+              />
+            </svg>
+            <button onClick={handleLogout}>로그아웃</button>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="352"
+              height="2"
+              viewBox="0 0 352 2"
+              fill="none"
+            >
+              <path
+                d="M1 1H351"
+                stroke="#CCCCCC"
+                strokeOpacity="0.3"
+                strokeLinecap="round"
               />
             </svg>
           </PageButton>
