@@ -6,19 +6,24 @@ import SocialIcon from "../images/Navbar/소셜.png";
 import TestIcon from "../images/Navbar/테스트.png";
 import TimerIcon from "../images/Navbar/타이머.png";
 import MyIcon from "../images/Navbar/마이.png";
+import HomeIcon2 from "../images/Navbar/홈2.png";
+import SocialIcon2 from "../images/Navbar/소셜2.png";
+import TestIcon2 from "../images/Navbar/테스트2.png";
+import TimerIcon2 from "../images/Navbar/타이머2.png";
+import MyIcon2 from "../images/Navbar/마이2.png";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
   const goToHome = () => {
-    navigate("/home");
+    navigate("/");
   };
   const goToSocial = () => {
     navigate("/social");
   };
   const goToTest = () => {
-    navigate("/test");
+    navigate("/testrecord");
   };
   const goToTimer = () => {
     navigate("/timer");
@@ -27,26 +32,36 @@ const Navbar = () => {
     navigate("/mypage");
   };
 
-  const getColor = (path) => {
-    return location.pathname === path ? "#4F82F7" : "#89919e";
+  const getIcon = (defaultIcon, selectedIcon, ...paths) => {
+    const currentPath = location.pathname;
+    return paths.includes(currentPath) ? selectedIcon : defaultIcon;
   };
 
   return (
     <Wrapper>
-      <NavItem onClick={goToHome} color={getColor("/home")}>
-        <img src={HomeIcon} alt="홈" />
+      <NavItem onClick={goToHome}>
+        <img src={getIcon(HomeIcon, HomeIcon2, "/")} alt="홈" />
       </NavItem>
-      <NavItem onClick={goToSocial} color={getColor("/social")}>
-        <img src={SocialIcon} alt="소셜" />
+      <NavItem onClick={goToSocial}>
+        <img src={getIcon(SocialIcon, SocialIcon2, "/social")} alt="소셜" />
       </NavItem>
-      <NavItem onClick={goToTest} color={getColor("/test")}>
-        <img src={TestIcon} alt="테스트" />
+      <NavItem onClick={goToTest}>
+        <img
+          src={getIcon(
+            TestIcon,
+            TestIcon2,
+            "/test",
+            "/testrecord",
+            "/testcomplete"
+          )}
+          alt="테스트"
+        />
       </NavItem>
-      <NavItem onClick={goToTimer} color={getColor("/timer")}>
-        <img src={TimerIcon} alt="타이머" />
+      <NavItem onClick={goToTimer}>
+        <img src={getIcon(TimerIcon, TimerIcon2, "/timer")} alt="타이머" />
       </NavItem>
-      <NavItem onClick={goToMypage} color={getColor("/mypage")}>
-        <img src={MyIcon} alt="MY" />
+      <NavItem onClick={goToMypage}>
+        <img src={getIcon(MyIcon, MyIcon2, "/mypage")} alt="MY" />
       </NavItem>
     </Wrapper>
   );
@@ -79,10 +94,6 @@ const NavItem = styled.div`
 
   img {
     width: 24px;
-    filter: ${(props) =>
-      props.color === "#4F82F7"
-        ? "invert(35%) sepia(98%) saturate(7492%) hue-rotate(200deg) brightness(100%) contrast(101%)"
-        : "none"};
   }
 `;
 
