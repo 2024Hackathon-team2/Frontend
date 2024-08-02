@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
+import axios from "axios"; // axios 라이브러리 임포트
 import backButtonImage from "./images/back.png";
 import SojuImage from "./images/소주.png";
 import BeerImage from "./images/맥주.png";
 import MakgeolliImage from "./images/막걸리.png";
 import WineImage from "./images/와인.png";
 import Navbar from "../components/Navbar";
+
+const BASE_URL = "https://drinkit.pythonanywhere.com/";
 
 const GlobalStyle = createGlobalStyle`
   html {
@@ -111,10 +114,32 @@ const RecordPage = () => {
   const handleDelete = (index) => {
     setRecords(records.filter((_, i) => i !== index));
   };
+
   const navigate = useNavigate();
 
-  const handleSubmit = () => {
-    navigate("/recorddone");
+  const handleSubmit = async () => {
+    // POST 요청을 보내는 부분
+    const requestBody = {
+      date: new Date().toISOString(),
+      records: records.map((record) => ({
+        drink: record.drink,
+        amount: record.amount,
+      })),
+    };
+
+    console.log("Request Body:", requestBody); // 콘솔에 출력
+
+    try {
+      const response = await axios.post(`${BASE_URL}records/`, requestBody, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // 토큰 값을 적절히 설정
+        },
+      });
+      console.log("Response:", response.data);
+      navigate("/recorddone");
+    } catch (error) {
+      console.error("Error:", error.response.data);
+    }
   };
 
   const goToHome = () => {
