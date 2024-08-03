@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 import axios from "axios"; // axios 라이브러리 임포트
@@ -20,8 +20,8 @@ const GlobalStyle = createGlobalStyle`
 const RecordPage = () => {
   const location = useLocation();
   const { selectedDate } = location.state || {};
-  const today = new Date(selectedDate);
 
+  const [today, setToday] = useState(new Date(selectedDate || new Date()));
   const year = today.getFullYear();
   const month = today.getMonth() + 1;
   const date = today.getDate();
@@ -32,7 +32,7 @@ const RecordPage = () => {
 
   const [selectedDrink, setSelectedDrink] = useState("");
   const [amount, setAmount] = useState("");
-  const [records, setRecords] = useState([]);
+  const [records, setRecords] = useState(location.state?.records || []);
   const [labelColor, setLabelColor] = useState("black");
 
   const drinkOptions = {
@@ -145,6 +145,7 @@ const RecordPage = () => {
             dow: response.data.dow,
           },
           totalRecord: response.data.total_record,
+          record_count: response.data.record_count,
         },
       });
     } catch (error) {
