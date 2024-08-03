@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 import backButtonImage from "./images/back.png";
 import Navbar from "../components/Navbar";
@@ -11,108 +11,39 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const RecordDonePage = () => {
-  const today = new Date();
+  const location = useLocation();
+  const { selectedDate, totalRecord, record_count, record_id } =
+    location.state || {};
+  const { year, month, day, dow } = selectedDate || {};
 
-  const year = today.getFullYear();
-  const month = today.getMonth() + 1; //인덱스 값에 +1
-  const date = today.getDate();
-  const dayIndex = today.getDay(); // 요일의 인덱스를 가져옴 (0: 일요일, 6: 토요일)
-
-  const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
-  const day = daysOfWeek[dayIndex]; // 요일을 문자열로 변환
-
-  const [selectedDrink, setSelectedDrink] = useState("");
-  const [amount, setAmount] = useState("");
-  const [records, setRecords] = useState([]);
-  const [labelColor, setLabelColor] = useState("black");
-
-  const drinkOptions = {
-    "": [],
-    소주: [
-      "1잔 (50ml)",
-      "2잔",
-      "3잔",
-      "4잔",
-      "5잔",
-      "6잔",
-      "7잔",
-      "1병",
-      "1병 반",
-      "2병",
-      "2병 반",
-      "3병",
-      "3병 반",
-    ],
-    맥주: [
-      "1잔 (200ml)",
-      "2잔",
-      "1병",
-      "1병 반",
-      "2병",
-      "2병 반",
-      "3병",
-      "3병 반",
-      "4병",
-      "4병 반",
-    ],
-    막걸리: [
-      "1사발 (250ml)",
-      "2사발",
-      "1병",
-      "1병 반",
-      "2병",
-      "2병 반",
-      "3병",
-      "3병 반",
-      "4병",
-      "4병 반",
-    ],
-    와인: [
-      "1잔 (150ml)",
-      "2잔",
-      "3잔",
-      "4잔",
-      "1병",
-      "1병 반",
-      "2병",
-      "2병 반",
-      "3병",
-      "3병 반",
-      "4병",
-      "4병 반",
-    ],
-  };
-
-  const handleDrinkSelect = (drink) => {
-    setSelectedDrink(drink);
-    setAmount(""); // Reset amount when drink type changes
-    setLabelColor("black"); // Change label color back to black
-  };
-
-  const handleRecord = () => {
-    if (!selectedDrink) {
-      setLabelColor("#FF9B9B"); // Change label color to red if no drink selected
-      return;
-    }
-    if (selectedDrink && amount) {
-      setRecords([...records, { drink: selectedDrink, amount }]);
-      setSelectedDrink("");
-      setAmount("");
-      setLabelColor("black"); // Reset label color
-    }
-  };
-
-  const handleDelete = (index) => {
-    setRecords(records.filter((_, i) => i !== index));
-  };
   const navigate = useNavigate();
 
   const goToBack = () => {
-    navigate("/record");
+    navigate("/record", {
+      state: {
+        selectedDate: {
+          year,
+          month,
+          day,
+          dow,
+        },
+      },
+    });
   };
 
   const goToHome = () => {
-    navigate("/home");
+    navigate("/home", {
+      state: {
+        totalRecord,
+        record_id,
+        selectedDate: {
+          year,
+          month,
+          day,
+          dow,
+        },
+      },
+    });
   };
 
   return (
@@ -129,10 +60,12 @@ const RecordDonePage = () => {
         <Content>
           <RecordBox>
             <DateRecord>
-              {year}년 {month}월 {date}일 {day}요일
+              {year}년 {month}월 {day}일 {dow}
             </DateRecord>
-            <RecordTitle>{month}월의 N 번째 음주기록</RecordTitle>
-            <Total>총 N잔</Total>
+            <RecordTitle>
+              {month}월의 {record_count} 번째 음주기록
+            </RecordTitle>
+            <Total>총 {totalRecord}잔</Total>
           </RecordBox>
           <DoneMessage1>오늘의 음주 기록 완료!</DoneMessage1>
           <DoneMessage2>잦은 음주는 피해 주세요!</DoneMessage2>
