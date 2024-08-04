@@ -78,6 +78,9 @@ const HomeCalendar = () => {
       });
 
       setTotalRecord(null); // Clear the record after deletion
+
+      // Fetch attend days again to refresh the calendar dots
+      fetchAttendDays(year, month);
     } catch (error) {
       console.error("Error deleting record:", error);
       if (error.response && error.response.status === 401) {
