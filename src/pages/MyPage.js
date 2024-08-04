@@ -78,7 +78,7 @@ const MyPage = () => {
     try {
       const response = await axios({
         method: "DELETE",
-        url: "https://drinkit.pythonanywhere.com/accounts/mypage/",
+        url: "https://drinkit.pythonanywhere.com/accounts/delete/",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
@@ -96,6 +96,7 @@ const MyPage = () => {
       );
       alert("계정 삭제 중 오류가 발생했습니다.");
     }
+    navigate("/");
   };
 
   const handleLogout = () => {

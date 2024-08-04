@@ -118,6 +118,14 @@ const RecordPage = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
+    // 이미 기록이 존재하는지 확인
+    if (records.length > 0) {
+      alert(
+        "해당 날짜의 기록이 이미 존재합니다. 기록 삭제 후 다시 시도해 주세요."
+      );
+      navigate("/home");
+      return;
+    }
     // POST 요청을 보내는 부분
     const requestBody = {
       date: selectedDate,
@@ -189,7 +197,7 @@ const RecordPage = () => {
               <DateRecord>
                 {year}년 {month}월 {date}일 {day}요일
               </DateRecord>
-              <RecordTitle>{month}월의 N 번째 음주기록</RecordTitle>
+              <RecordTitle>{month}월의 음주기록</RecordTitle>
             </div>
             <Label color={labelColor}>주종을 선택해 주세요.</Label>
             <DrinkButtons>

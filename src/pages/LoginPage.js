@@ -45,11 +45,24 @@ const LoginPage = () => {
         "로그인 오류:",
         error.response ? error.response.data : error.message
       );
-      alert(
-        error.response
-          ? error.response.data.detail
-          : "로그인 중 오류가 발생했습니다."
-      );
+      if (error.response) {
+        const data = error.response.data;
+
+        if (data.email) {
+          alert("이메일을 입력해 주세요.");
+        } else if (data.password) {
+          alert("비밀번호를 입력해 주세요.");
+        } else if (
+          data.error &&
+          data.error.includes("일치하는 회원 정보가 없습니다.")
+        ) {
+          alert("일치하는 회원 정보가 없습니다.");
+        } else {
+          alert(data.detail ? data.detail : "로그인 중 오류가 발생했습니다.");
+        }
+      } else {
+        alert("로그인 중 오류가 발생했습니다.");
+      }
     }
   };
 
@@ -79,9 +92,7 @@ const LoginPage = () => {
             <button onClick={() => navigate("/signup")}>회원가입</button>
           </More>
         </Content>
-        <Footer>
-          <Navbar></Navbar>
-        </Footer>
+        <Footer></Footer>
       </Container>
     </>
   );

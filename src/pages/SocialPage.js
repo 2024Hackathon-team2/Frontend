@@ -147,7 +147,7 @@ const DrinkItem = ({ image, name, goal, record, percentage }) => (
       <ProgressBar percentage={percentage * 100} />
     </div>
     <div className="cups">
-      {record}/{goal}잔
+      <div>{record}</div>/{goal}잔
     </div>
   </div>
 );
@@ -220,6 +220,12 @@ const Goal = styled.div`
     font-family: Pretendard;
     justify-content: end;
     margin-bottom: 5px;
+    align-items: center;
+
+    img {
+      width: 20px;
+      height: 20px;
+    }
   }
   .GoalSpecificButton {
     display: flex;
@@ -258,12 +264,35 @@ const DrinkingGoals = styled.div`
   }
   .img {
     grid-row: 1/3;
+    img {
+      width: 33px;
+      height: 33.383px;
+    }
   }
   .cups {
     grid-column: 3/4;
     font-family: Pretendard-Medium;
     font-size: 10px;
     justify-self: end;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: #ccc;
+    font-family: Pretendard;
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 133.8%;
+    margin-top: 5px;
+
+    div {
+      color: #000;
+      font-family: Pretendard;
+      font-size: 13px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 133.8%; /* 17.394px */
+    }
   }
 `;
 

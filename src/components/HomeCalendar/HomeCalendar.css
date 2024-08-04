@@ -82,16 +82,17 @@
   color: white;
 }
 .SelectedDateWrapper {
-  width: 100%;
+  width: 350px;
   height: 83px;
   background-color: #f9f9f9;
   border-radius: 14px;
-  margin-top: 20px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   display: flex;
   align-items: center;
   justify-content: space-around;
   font-size: 15px;
+  position: absolute;
+  top: 680px;
 }
 .SelectedDateWrapper.hidden {
   display: none;
@@ -121,4 +122,33 @@
   top: 60%;
   left: 50%;
   transform: translateX(-50%);
+}
+
+.DrinkAmount {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.DeleteRecordButton {
+  width: 32px;
+  height: 20px;
+  padding: 2px 7px;
+  gap: 8px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 8px;
+  background: gray;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 133.8%; /* 13.38px */
+  cursor: pointer;
+  margin-left: 15px;
 }
