@@ -234,10 +234,10 @@ const Goal = styled.div`
     div {
       width: 164px;
       height: 35px;
-      background-color: #4f82f7;
+      background-color: #17d6b5;
       text-align: center;
       line-height: 35px;
-      border-radius: 20px;
+      border-radius: 10px;
       color: white;
       box-shadow: rgba(99, 99, 99, 0.45) 0px 4px 4px 0px;
     }
@@ -299,7 +299,7 @@ const DrinkingGoals = styled.div`
 const Friends = styled.div`
   width: 100%;
   .friendTitle {
-    margin-top: 20px;
+    margin-top: 30px;
     margin-bottom: 20px;
     font-size: 20px;
     font-weight: bold;
