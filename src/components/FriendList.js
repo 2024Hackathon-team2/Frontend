@@ -283,6 +283,14 @@ const FriendListWrapper = styled.div`
     }
     .percent {
       grid-row: 2/3;
+      color: #000;
+      text-align: center;
+      font-family: Pretendard;
+      font-size: 15px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 133.8%; /* 20.07px */
+      margin-left: 5px;
     }
   }
 `;

@@ -169,7 +169,7 @@ const Header = styled.header`
 
 const Content = styled.div`
   padding: 20px;
-  padding-top: 74px;
+  padding-top: 90px;
   padding-bottom: 84px;
   flex: 1;
   overflow-y: auto;
@@ -302,7 +302,7 @@ const DrinkingCalendar = styled.div`
     line-height: 36px;
     font-family: Pretendard;
     margin-bottom: 26px;
-    font-weight: bold;
+    font-weight: 500;
   }
   .calendarTitle {
     font-family: Pretendard;
