@@ -117,15 +117,43 @@ const RecordPage = () => {
 
   const navigate = useNavigate();
 
+  const checkExistingRecords = async () => {
+    const token = localStorage.getItem("accessToken");
+
+    try {
+      const response = await axios.get(`${BASE_URL}records`, {
+        params: {
+          year: year,
+          month: month,
+          day: date,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const record = response.data;
+      return record.total_record !== "0.0";
+    } catch (error) {
+      console.error("Error checking existing records:", error);
+      if (error.response && error.response.status === 401) {
+        console.error("Unauthorized access - check your access token");
+      }
+      return false;
+    }
+  };
+
   const handleSubmit = async () => {
-    // 이미 기록이 존재하는지 확인
-    if (records.length > 0) {
+    // 서버에서 기존 기록이 있는지 확인
+    const hasExistingRecords = await checkExistingRecords();
+    if (hasExistingRecords) {
       alert(
         "해당 날짜의 기록이 이미 존재합니다. 기록 삭제 후 다시 시도해 주세요."
       );
       navigate("/home");
       return;
     }
+
     // POST 요청을 보내는 부분
     const requestBody = {
       date: selectedDate,
