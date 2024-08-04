@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import styled, { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle, keyframes } from "styled-components";
 import basicImage from "./images/기본프로필이미지.png";
 import Navbar from "../components/Navbar";
 import axios from "axios";
@@ -11,10 +11,20 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+const slideUp = keyframes`
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+`;
+
 const MyPage = () => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [nickname, setNickname] = useState("User");
   const [email, setEmail] = useState("user@example.com");
   const [profileImage, setProfileImage] = useState(basicImage);
@@ -99,6 +109,14 @@ const MyPage = () => {
     navigate("/");
   };
 
+  const openLogoutModal = () => {
+    setIsLogoutModalOpen(true);
+  };
+
+  const closeLogoutModal = () => {
+    setIsLogoutModalOpen(false);
+  };
+
   const handleLogout = () => {
     // localStorage에서 토큰과 이메일 제거
     localStorage.removeItem("refreshToken");
@@ -181,7 +199,7 @@ const MyPage = () => {
                 strokeLinecap="round"
               />
             </svg>
-            <button onClick={handleLogout}>로그아웃</button>
+            <button onClick={openLogoutModal}>로그아웃</button>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="352"
@@ -231,6 +249,21 @@ const MyPage = () => {
                 </div>
               </>
             )}
+          </ModalContent>
+        </ModalOverlay>
+      )}
+      {isLogoutModalOpen && (
+        <ModalOverlay>
+          <ModalContent>
+            <p>로그아웃 하시겠어요?</p>
+            <div>
+              <button className="cancel" onClick={closeLogoutModal}>
+                취소
+              </button>
+              <button className="delete" onClick={handleLogout}>
+                로그아웃
+              </button>
+            </div>
           </ModalContent>
         </ModalOverlay>
       )}
@@ -362,7 +395,7 @@ const ModalOverlay = styled.div`
   height: 100%; /* Cover the entire viewport */
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
   background-color: rgba(0, 0, 0, 0.5); /* Add a semi-transparent background */
   z-index: 20;
 `;
@@ -373,18 +406,26 @@ const ModalContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   text-align: center;
-  width: 235px;
-  padding: 20px;
-  border-radius: 10px; /* Rounded corners */
+  width: 390px;
+  height: 228px;
+  flex-shrink: 0;
+  border-radius: 9px 9px 0 0;
+  background: var(--Color, #fff);
   z-index: 30;
+  animation: ${slideUp} 0.3s ease-out;
 
   p {
-    color: #000;
+    width: 200px;
+    color: #7a7881;
+    text-align: center;
     font-family: Pretendard;
-    font-size: 12px;
+    font-size: 16px;
+    font-style: normal;
     font-weight: 500;
-    margin: 2px 0; /* Add spacing between paragraphs */
+    line-height: 100%;
+    margin: 3px; /* 16px */ /* 16px */ /* Add spacing between paragraphs */
   }
 
   div {
@@ -395,11 +436,17 @@ const ModalContent = styled.div`
 
   button {
     cursor: pointer;
-    width: 90px;
-    height: 25px;
-    border: 1px solid #d9d9d9;
-    border-radius: 5px;
-    margin-right: 4px;
+    display: flex;
+    width: 150px;
+    height: 40px;
+    padding: 12px 46px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+
+    border-radius: 9px;
+    border: 1px solid #7a7881;
 
     &:last-child {
       margin-right: 0;
@@ -408,15 +455,16 @@ const ModalContent = styled.div`
 
   .cancel {
     background-color: white;
-    color: #d9d9d9;
+    color: black;
     font-family: Pretendard;
     font-size: 12px;
     font-weight: 600;
+    margin-right: 15px;
   }
 
   .delete,
   .close {
-    background-color: #17d6b5;
+    background-color: black;
     color: white;
     font-family: Pretendard;
     font-size: 12px;
