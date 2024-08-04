@@ -3,8 +3,8 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import moment from "moment";
 import "moment/locale/ko"; // 한국어 로케일 추가
-import { useNavigate } from "react-router-dom"; // Add this import
-import axios from "axios"; // Import axios
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "../HomeCalendar/HomeCalendar.css";
 
 const BASE_URL = "https://drinkit.pythonanywhere.com/";
@@ -13,14 +13,13 @@ const HomeCalendar = () => {
   const today = new Date();
   const [date, setDate] = useState(null); // 초기값을 null로 설정
   const [activeStartDate, setActiveStartDate] = useState(new Date());
-  const [totalRecord, setTotalRecord] = useState(null); // Add state for total_record
-  const attendDay = ["2024-07-03", "2024-07-13"]; // 출석한 날짜 예시
+  const [totalRecord, setTotalRecord] = useState(null);
+  const [attendDay, setAttendDay] = useState([]); // 출석한 날짜 배열
 
-  const navigate = useNavigate(); // Initialize the navigate function
+  const navigate = useNavigate();
 
   const handleDateChange = (newDate) => {
     if (date && moment(date).isSame(newDate, "day")) {
-      // 동일한 날짜가 선택되면 상태를 초기화
       setDate(null);
       setTotalRecord(null);
     } else {
@@ -33,10 +32,8 @@ const HomeCalendar = () => {
     const token = localStorage.getItem("accessToken");
 
     const year = moment(selectedDate).year();
-    const month = moment(selectedDate).month() + 1; // 월은 0부터 시작함
+    const month = moment(selectedDate).month() + 1;
     const day = moment(selectedDate).date();
-
-    console.log(`Fetching record for ${year}-${month}-${day}`); // 날짜 확인용 로그
 
     try {
       const response = await axios.get(`${BASE_URL}records`, {
@@ -50,19 +47,10 @@ const HomeCalendar = () => {
         },
       });
 
-      console.log("API response:", response.data); // API 응답 확인용 로그
-
       const record = response.data;
-      setTotalRecord(
-        record.total_record !== "0.0" ? record : null // 전체 record 객체를 설정
-      );
+      setTotalRecord(record.total_record !== "0.0" ? record : null);
     } catch (error) {
       console.error("Error fetching record:", error);
-      if (error.response) {
-        console.error("Response data:", error.response.data);
-        console.error("Response status:", error.response.status);
-        console.error("Response headers:", error.response.headers);
-      }
       if (error.response && error.response.status === 401) {
         console.error("Unauthorized access - check your access token");
       }
@@ -74,7 +62,7 @@ const HomeCalendar = () => {
     const token = localStorage.getItem("accessToken");
 
     const year = moment(date).year();
-    const month = moment(date).month() + 1; // 월은 0부터 시작함
+    const month = moment(date).month() + 1;
     const day = moment(date).date();
 
     try {
@@ -92,11 +80,57 @@ const HomeCalendar = () => {
       setTotalRecord(null); // Clear the record after deletion
     } catch (error) {
       console.error("Error deleting record:", error);
-      if (error.response) {
-        console.error("Response data:", error.response.data);
-        console.error("Response status:", error.response.status);
-        console.error("Response headers:", error.response.headers);
+      if (error.response && error.response.status === 401) {
+        console.error("Unauthorized access - check your access token");
       }
+    }
+  };
+
+  const fetchAttendDays = async (year, month) => {
+    const token = localStorage.getItem("accessToken");
+
+    const daysInMonth = moment(`${year}-${month}`, "YYYY-MM").daysInMonth();
+    const promises = [];
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      promises.push(
+        axios
+          .get(`${BASE_URL}records`, {
+            params: {
+              year: year,
+              month: month,
+              day: day,
+            },
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .catch((error) => {
+            if (error.response && error.response.status === 404) {
+              // 404 오류는 무시하고 빈 값 반환
+              return null;
+            }
+            throw error;
+          })
+      );
+    }
+
+    try {
+      const responses = await Promise.all(promises);
+      const attendDays = responses
+        .filter((response) => response && response.data.total_record !== "0.0")
+        .map((response) => {
+          const { year, month, day } = response.config.params;
+          const dateStr = `${year}-${String(month).padStart(2, "0")}-${String(
+            day
+          ).padStart(2, "0")}`;
+          console.log("Recorded day:", dateStr); // 기록 있는 날 로그 추가
+          return dateStr;
+        });
+
+      setAttendDay(attendDays);
+    } catch (error) {
+      console.error("Error fetching attend days:", error);
       if (error.response && error.response.status === 401) {
         console.error("Unauthorized access - check your access token");
       }
@@ -105,7 +139,7 @@ const HomeCalendar = () => {
 
   const goToRecordPage = () => {
     if (date) {
-      navigate("/record", { state: { selectedDate: date } }); // Pass the selected date
+      navigate("/record", { state: { selectedDate: date } });
     } else {
       alert("날짜를 선택해주세요.");
     }
@@ -113,7 +147,10 @@ const HomeCalendar = () => {
 
   useEffect(() => {
     moment.locale("ko"); // 한국어 로케일 설정
-  }, []);
+    const year = moment(activeStartDate).year();
+    const month = moment(activeStartDate).month() + 1;
+    fetchAttendDays(year, month); // 컴포넌트가 마운트 될 때 초기 데이터 가져오기
+  }, [activeStartDate]);
 
   return (
     <div className="CalendarContainer">
@@ -131,9 +168,12 @@ const HomeCalendar = () => {
           activeStartDate={
             activeStartDate === null ? undefined : activeStartDate
           }
-          onActiveStartDateChange={({ activeStartDate }) =>
-            setActiveStartDate(activeStartDate)
-          }
+          onActiveStartDateChange={({ activeStartDate }) => {
+            setActiveStartDate(activeStartDate);
+            const year = moment(activeStartDate).year();
+            const month = moment(activeStartDate).month() + 1;
+            fetchAttendDays(year, month); // 새로 보이는 달에 대해 출석 날짜 가져오기
+          }}
           tileContent={({ date, view }) => {
             let html = [];
             if (
@@ -147,9 +187,7 @@ const HomeCalendar = () => {
                 </div>
               );
             }
-            if (
-              attendDay.find((x) => x === moment(date).format("YYYY-MM-DD"))
-            ) {
+            if (attendDay.includes(moment(date).format("YYYY-MM-DD"))) {
               html.push(
                 <div className="dot" key={moment(date).format("YYYY-MM-DD")} />
               );
@@ -161,7 +199,7 @@ const HomeCalendar = () => {
           음주기록 +
         </div>
       </div>
-      {date && ( // 날짜가 선택된 경우에만 보이기
+      {date && (
         <div className="SelectedDateWrapper visible">
           <div className="SelectedDate">
             {moment(date).format("YYYY년 MM월 DD일 dddd")}

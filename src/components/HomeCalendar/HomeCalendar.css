@@ -34,7 +34,7 @@
 }
 .react-calendar__tile--active {
   background-color: #eeecec;
-  color: #ff9b9b;
+  color: #17d6b5;
 }
 .react-calendar__tile--hasActive {
   background-color: #eeecec;
@@ -107,7 +107,7 @@
 .dot {
   height: 5px;
   width: 5px;
-  background-color: #ff9b9b;
+  background-color: #17d6b5;
   border-radius: 50%;
   text-align: center;
   margin-top: 3px;

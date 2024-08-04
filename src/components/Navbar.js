@@ -40,7 +40,7 @@ const Navbar = () => {
   return (
     <Wrapper>
       <NavItem onClick={goToHome}>
-        <img src={getIcon(HomeIcon, HomeIcon2, "/")} alt="홈" />
+        <img src={getIcon(HomeIcon, HomeIcon2, "/home")} alt="홈" />
       </NavItem>
       <NavItem onClick={goToSocial}>
         <img src={getIcon(SocialIcon, SocialIcon2, "/social")} alt="소셜" />
