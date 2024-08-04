@@ -18,19 +18,6 @@ const RecordDonePage = () => {
 
   const navigate = useNavigate();
 
-  const goToBack = () => {
-    navigate("/record", {
-      state: {
-        selectedDate: {
-          year,
-          month,
-          day,
-          dow,
-        },
-      },
-    });
-  };
-
   const goToHome = () => {
     navigate("/home", {
       state: {
@@ -50,13 +37,7 @@ const RecordDonePage = () => {
     <>
       <GlobalStyle />
       <Container>
-        <Header>
-          <BackButton onClick={goToBack}>
-            <img src={backButtonImage} alt="Back" />
-          </BackButton>
-          나의 음주 기록
-          <div></div>
-        </Header>
+        <Header>나의 음주 기록</Header>
         <Content>
           <RecordBox>
             <DateRecord>
@@ -93,7 +74,7 @@ const Container = styled.div`
 const Header = styled.header`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   position: fixed;
   top: 0;
   width: 390px;
