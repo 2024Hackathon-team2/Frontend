@@ -19,8 +19,14 @@ const HomeCalendar = () => {
   const navigate = useNavigate(); // Initialize the navigate function
 
   const handleDateChange = (newDate) => {
-    setDate(newDate);
-    fetchRecord(newDate); // Fetch the record for the new date
+    if (date && moment(date).isSame(newDate, "day")) {
+      // 동일한 날짜가 선택되면 상태를 초기화
+      setDate(null);
+      setTotalRecord(null);
+    } else {
+      setDate(newDate);
+      fetchRecord(newDate); // Fetch the record for the new date
+    }
   };
 
   const fetchRecord = async (selectedDate) => {
@@ -48,7 +54,7 @@ const HomeCalendar = () => {
 
       const record = response.data;
       setTotalRecord(
-        record.total_record !== "0.0" ? record.total_record : null
+        record.total_record !== "0.0" ? record : null // 전체 record 객체를 설정
       );
     } catch (error) {
       console.error("Error fetching record:", error);
@@ -61,6 +67,39 @@ const HomeCalendar = () => {
         console.error("Unauthorized access - check your access token");
       }
       setTotalRecord(null);
+    }
+  };
+
+  const deleteRecord = async () => {
+    const token = localStorage.getItem("accessToken");
+
+    const year = moment(date).year();
+    const month = moment(date).month() + 1; // 월은 0부터 시작함
+    const day = moment(date).date();
+
+    try {
+      await axios.delete(`${BASE_URL}records`, {
+        params: {
+          year: year,
+          month: month,
+          day: day,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setTotalRecord(null); // Clear the record after deletion
+    } catch (error) {
+      console.error("Error deleting record:", error);
+      if (error.response) {
+        console.error("Response data:", error.response.data);
+        console.error("Response status:", error.response.status);
+        console.error("Response headers:", error.response.headers);
+      }
+      if (error.response && error.response.status === 401) {
+        console.error("Unauthorized access - check your access token");
+      }
     }
   };
 
@@ -128,7 +167,14 @@ const HomeCalendar = () => {
             {moment(date).format("YYYY년 MM월 DD일 dddd")}
           </div>
           <div className="DrinkAmount">
-            {totalRecord !== null ? `${totalRecord}잔` : "기록 없음"}
+            {totalRecord !== null
+              ? `${totalRecord.total_record}잔`
+              : "기록 없음"}
+            {totalRecord !== null && (
+              <button onClick={deleteRecord} className="DeleteRecordButton">
+                삭제
+              </button>
+            )}
           </div>
         </div>
       )}

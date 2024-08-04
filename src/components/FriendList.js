@@ -272,7 +272,14 @@ const FriendListWrapper = styled.div`
     .sendMessage {
       grid-row: 3/4;
       font-size: 11px;
+      display: flex;
+      align-items: center;
       cursor: pointer;
+      img {
+        width: 15px;
+        height: 15px;
+        margin-right: 3px;
+      }
     }
     .percent {
       grid-row: 2/3;
@@ -325,12 +332,14 @@ const Modal = styled.div`
     justify-content: space-between;
     width: 90%;
     font-size: 14px;
+
     > div {
       font-size: 12px;
       text-align: right;
     }
   }
   .ThisMonthRecord {
+    margin-top: 31px;
     display: flex;
     justify-content: space-between;
     font-size: 14px;

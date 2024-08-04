@@ -5,6 +5,7 @@ import HomeCalendar from "../components/HomeCalendar/HomeCalendar";
 import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
 import HomeIcon from "../images/HomePage/홈페이지잔수아이콘.png";
+import logoImage from "./images/logo.png";
 
 const BASE_URL = "https://drinkit.pythonanywhere.com/";
 
@@ -76,7 +77,9 @@ const HomePage = () => {
     <>
       <GlobalStyle />
       <Container>
-        <Header>서비스명</Header>
+        <Header>
+          <img src={logoImage} />
+        </Header>
 
         <Content>
           <GoalReachContainer>
@@ -93,8 +96,8 @@ const HomePage = () => {
                 <ProgressBar>
                   <Progress style={{ width: `${progressPercentage}%` }} />
                 </ProgressBar>
-                <div>
-                  {goalData.totalRecord}잔/{goalData.totalGoal}잔
+                <div className="numerical">
+                  <div>{goalData.totalRecord}잔</div>/{goalData.totalGoal}잔
                 </div>
               </>
             ) : (
@@ -144,7 +147,7 @@ const Container = styled.div`
 const Header = styled.header`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   position: fixed;
   top: 0;
   width: 390px;
@@ -156,6 +159,12 @@ const Header = styled.header`
   background-color: white;
   box-shadow: 0px 4px 10px -12px black;
   z-index: 10;
+
+  img {
+    width: 69px;
+    height: 28.273px;
+    margin-left: 20px;
+  }
 `;
 
 const Content = styled.div`
@@ -185,7 +194,7 @@ const GoalReachContainer = styled.div`
   border-radius: 8px;
   margin-bottom: 30px;
   display: grid;
-  grid-template-columns: 2.5fr 7fr 1.5fr;
+  grid-template-columns: 4fr 7fr 2fr;
   grid-template-rows: 1fr 1fr 1fr;
   width: 350px;
   height: 111px;
@@ -197,7 +206,7 @@ const GoalReachContainer = styled.div`
   }
   button {
     grid-column: 3/4;
-    grid-row: 2/3;
+    grid-row: 1/3;
     width: 39px;
     height: 23px;
     padding: 2px 7px;
@@ -213,6 +222,27 @@ const GoalReachContainer = styled.div`
   .NoRecord {
     grid-row: 2/3;
   }
+
+  .numerical {
+    color: #000;
+    font-family: Pretendard;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    display: flex;
+    flex-direction: row;
+
+    div {
+      color: #17d6b5;
+      font-family: Pretendard;
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+      margin-right: 3px;
+    }
+  }
 `;
 const ProfileImage = styled.img`
   width: 65px;
@@ -225,11 +255,16 @@ const ProfileImage = styled.img`
 
 const Nickname = styled.div`
   font-family: Pretendard;
-  font-size: 20px;
+  font-size: 17.606px;
   font-weight: 600;
   grid-column: 2/3;
   grid-row: 1/2;
   align-self: flex-end;
+
+  span {
+    align-items: center;
+    margin-left: 4px;
+  }
 `;
 
 const ProgressBar = styled.div`
@@ -267,11 +302,13 @@ const DrinkingCalendar = styled.div`
     line-height: 36px;
     font-family: Pretendard;
     margin-bottom: 26px;
+    font-weight: bold;
   }
   .calendarTitle {
     font-family: Pretendard;
     font-size: 16px;
     font-weight: bold;
+    margin-bottom: 15px;
   }
   > div {
     color: #000;

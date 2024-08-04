@@ -40,7 +40,9 @@ const SignupPage = () => {
           },
         });
         console.log(response.data);
-        alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.");
+        alert(
+          "회원가입이 완료되었습니다. 로그인 후 마이페이지 > 프로필 변경에서 이름을 설정해 주세요."
+        );
         navigate("/");
       } catch (error) {
         console.error(
@@ -103,9 +105,7 @@ const SignupPage = () => {
             </button>
           </InputWrapper>
         </Content>
-        <Footer>
-          <Navbar></Navbar>
-        </Footer>
+        <Footer></Footer>
       </Container>
     </>
   );

@@ -123,6 +123,8 @@ const Container = styled.div`
   margin: 0 auto;
   background-color: white;
   font-family: Pretendard;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Header = styled.header`
@@ -153,9 +155,10 @@ const Header = styled.header`
 
 const Content = styled.div`
   padding: 20px;
-  padding-top: 82px;
-  height: 652px;
-  overflow-y: auto;
+  padding-top: 74px; /* Space for the fixed header */
+  padding-bottom: 104px; /* Space for the fixed footer */
+  flex: 1;
+  overflow-y: auto; /* Allow vertical scrolling */
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -242,9 +245,9 @@ const BottomContainer = styled.div`
 const Footer = styled.footer`
   position: fixed;
   bottom: 0;
-  display: flex;
   width: 390px;
   height: 84px;
+  display: flex;
   flex-direction: column;
   align-items: center;
   gap: 19.6px;

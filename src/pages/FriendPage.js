@@ -221,6 +221,8 @@ const Container = styled.div`
   height: 100vh;
   margin: 0 auto;
   background-color: white;
+  display: flex;
+  flex-direction: column;
   font-family: Pretendard;
 `;
 
@@ -229,20 +231,17 @@ const Header = styled.header`
   align-items: center;
   justify-content: space-between;
   position: fixed;
+  top: 0;
   width: 390px;
   height: 54px;
-  flex-shrink: 0;
   color: #000;
   text-align: center;
-
   font-family: Pretendard;
   font-size: 18px;
-  font-style: normal;
   font-weight: 600;
-  line-height: 22px;
-  letter-spacing: -0.408px;
-  box-shadow: 0px 4px 10px -12px black;
   background-color: white;
+  box-shadow: 0px 4px 10px -12px black;
+  z-index: 10;
 
   div {
     margin-right: 20px;
@@ -250,13 +249,13 @@ const Header = styled.header`
     height: 25px;
   }
 `;
+
 const BackButton = styled.button`
   width: 25px;
   height: 25px;
   border: none;
   margin-left: 20px;
   cursor: pointer;
-  flex-shrink: 0;
   background-color: white;
 
   img {
@@ -267,13 +266,21 @@ const BackButton = styled.button`
 
 const Content = styled.div`
   padding: 20px;
-  padding-top: 82px;
-  height: 652px; // 최대 높이를 설정합니다.
-  overflow-y: auto; // 세로 스크롤을 허용합니다.
+  padding-top: 74px; /* Space for the fixed header */
+  padding-bottom: 104px; /* Space for the fixed footer */
+  flex: 1;
+  overflow-y: auto; /* Allow vertical scrolling */
   background-color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  ::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for webkit browsers */
+  }
+
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  -ms-overflow-style: none; /* Hide scrollbar for Internet Explorer and Edge */
 `;
 
 const AddFriendBox = styled.div`
@@ -282,14 +289,17 @@ const AddFriendBox = styled.div`
   align-items: center;
   justify-content: space-between;
   height: 50px;
+  margin-bottom: 20px;
 
   div {
     font-size: 20px;
     font-weight: bold;
+    margin-right: 5px;
   }
+
   input {
-    width: 180px;
-    height: 30px;
+    width: 168px;
+    height: 28px;
     border-radius: 8px;
     border-color: #cccccc;
     color: #000;
@@ -297,13 +307,22 @@ const AddFriendBox = styled.div`
     font-size: 12px;
     padding-left: 10px;
   }
+
   button {
-    border: none;
+    display: flex;
     width: 70px;
     height: 30px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
-    font-weight: bold;
-    background-color: #d9d9d9;
+    color: #7a7881;
+    text-align: center;
+    font-family: Pretendard;
+    font-size: 14px;
+    font-weight: 500;
+    background-color: white;
+    border-radius: 5px;
   }
 `;
 
@@ -314,6 +333,8 @@ const FriendBox = styled.div`
   display: grid;
   align-items: center;
   grid-template-columns: 5fr 18fr 5fr;
+  border-top: 1px solid #cccccc;
+  border-bottom: 1px solid #cccccc;
 
   .email {
     color: #cccccc;
@@ -322,15 +343,17 @@ const FriendBox = styled.div`
 `;
 
 const DeleteButton = styled.button`
-  margin-top: 5px;
   padding: 5px;
   background-color: #d9d9d9;
-  color: black;
+  color: white;
   border: none;
   cursor: pointer;
   width: 70px;
   height: 30px;
   font-weight: bold;
+  background: #66646f;
+  border-radius: 5px;
+  align-items: center;
 `;
 
 const Error = styled.div`
@@ -341,15 +364,15 @@ const Error = styled.div`
 
 const Footer = styled.footer`
   position: fixed;
-  bottom: 0%;
-  display: flex;
+  bottom: 0;
   width: 390px;
   height: 84px;
+  display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 19.6px;
   background: white;
   box-shadow: 0px 4px 8.4px 0px rgba(0, 0, 0, 0.02);
+  z-index: 10;
 `;
 
 const PopupOverlay = styled.div`
@@ -376,6 +399,7 @@ const PopupContent = styled.div`
   align-items: center;
   flex-direction: column;
   justify-content: center;
+
   .close {
     width: 177px;
     height: 25px;
@@ -392,16 +416,18 @@ const PopupContent = styled.div`
 const PopupButtons = styled.div`
   display: flex;
   justify-content: center;
-
   font-family: Pretendard;
+
   .cancel {
     background-color: white;
     color: #d9d9d9;
   }
+
   .delete {
     color: white;
     background-color: #d9d9d9;
   }
+
   .cancel,
   .delete {
     cursor: pointer;

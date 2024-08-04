@@ -161,6 +161,9 @@ const Container = styled.div`
   height: 100vh;
   margin: 0 auto;
   background-color: white;
+  font-family: Pretendard;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Header = styled.header`
@@ -168,19 +171,17 @@ const Header = styled.header`
   align-items: center;
   justify-content: space-between;
   position: fixed;
+  top: 0;
   width: 390px;
   height: 54px;
-  flex-shrink: 0;
   color: #000;
   text-align: center;
   font-family: Pretendard;
   font-size: 18px;
-  font-style: normal;
   font-weight: 600;
-  line-height: 22px;
-  letter-spacing: -0.408px;
-  box-shadow: 0px 4px 10px -12px black;
   background-color: white;
+  box-shadow: 0px 4px 10px -12px black;
+  z-index: 10;
 
   div {
     margin-right: 20px;
@@ -195,7 +196,6 @@ const BackButton = styled.button`
   border: none;
   margin-left: 20px;
   cursor: pointer;
-  flex-shrink: 0;
   background-color: white;
 
   img {
@@ -206,12 +206,29 @@ const BackButton = styled.button`
 
 const Content = styled.div`
   padding: 20px;
-  padding-top: 82px;
-  height: 652px;
-  overflow-y: auto;
+  padding-top: 74px; /* Space for the fixed header */
+  padding-bottom: 104px; /* Space for the fixed footer */
+  flex: 1;
+  overflow-y: auto; /* Allow vertical scrolling */
   background-color: white;
   font-family: Pretendard;
   font-size: 20px;
+  display: flex;
+  flex-direction: column;
+
+  .title {
+    width: 100%;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+  }
+
+  ::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for webkit browsers */
+  }
+
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  -ms-overflow-style: none; /* Hide scrollbar for Internet Explorer and Edge */
 `;
 
 const TopContainer = styled.div`
@@ -244,6 +261,7 @@ const MiddleContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
   .testCorrectBox {
     font-family: Pretendard;
     font-size: 13px;
@@ -252,6 +270,7 @@ const MiddleContainer = styled.div`
     align-items: center;
     margin: 30px;
   }
+
   .continueButton {
     width: 290px;
     height: 30px;
@@ -263,8 +282,10 @@ const MiddleContainer = styled.div`
     cursor: pointer;
   }
 `;
+
 const InputContainer = styled.div`
   position: relative;
+
   input {
     width: 275px;
     height: 31px;
@@ -276,6 +297,7 @@ const InputContainer = styled.div`
     padding-left: 15px;
   }
 `;
+
 const SubmitButton = styled.button`
   width: 31px;
   height: 20px;
@@ -292,6 +314,7 @@ const SubmitButton = styled.button`
   color: white;
   cursor: pointer;
 `;
+
 const Quiz = styled.div`
   font-size: 24px;
   font-weight: 500;
@@ -301,12 +324,12 @@ const Quiz = styled.div`
 const Footer = styled.footer`
   position: fixed;
   bottom: 0;
-  display: flex;
   width: 390px;
   height: 84px;
+  display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 19.6px;
   background: white;
   box-shadow: 0px 4px 8.4px 0px rgba(0, 0, 0, 0.02);
+  z-index: 10;
 `;
