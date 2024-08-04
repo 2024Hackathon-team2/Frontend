@@ -84,6 +84,7 @@ const HomeCalendar = () => {
         console.error("Unauthorized access - check your access token");
       }
     }
+    window.location.reload(); // 페이지 새로고침
   };
 
   const fetchAttendDays = async (year, month) => {
