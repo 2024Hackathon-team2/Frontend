@@ -37,8 +37,6 @@ const LoginPage = () => {
       localStorage.setItem("refreshToken", refresh);
       localStorage.setItem("accessToken", access);
       localStorage.setItem("email", userEmail);
-
-      alert("로그인에 성공했습니다.");
       navigate("/mypage");
     } catch (error) {
       console.error(
