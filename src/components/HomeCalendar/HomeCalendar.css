@@ -92,7 +92,7 @@
   justify-content: space-around;
   font-size: 15px;
   position: absolute;
-  top: 680px;
+  top: 700px;
 }
 .SelectedDateWrapper.hidden {
   display: none;
