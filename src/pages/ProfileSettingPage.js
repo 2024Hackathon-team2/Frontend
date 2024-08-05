@@ -565,7 +565,7 @@ const SaveButton = styled.button`
   font-style: normal;
   font-weight: 600;
   line-height: 100%;
-  margin-top: 56px;
+  margin-top: 35px;
   cursor: pointer;
 `;
 

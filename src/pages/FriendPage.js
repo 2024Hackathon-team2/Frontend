@@ -140,30 +140,32 @@ const FriendPage = () => {
           <div></div>
         </Header>
         <Content>
-          <AddFriendBox>
-            <div>친구 목록</div>
-            {showInput ? (
-              <input
-                value={friendEmail}
-                onChange={handleInputChange}
-                onKeyPress={handleKeyPress}
-                placeholder="친구의 이메일을 입력하세요."
-              ></input>
-            ) : (
-              <button onClick={handleShowInput}>친구 추가</button>
-            )}
-            {showInput && <button onClick={handleAddFriend}>추가</button>}
-          </AddFriendBox>
-          {errorMessage && <Error>{errorMessage}</Error>}
-          {friends.map((friend) => (
-            <FriendBox key={friend.friend_pk}>
-              <div className="name">{friend.nickname}</div>
-              <div className="email">{friend.email}</div>
-              <DeleteButton onClick={() => handleDeleteFriend(friend)}>
-                삭제
-              </DeleteButton>
-            </FriendBox>
-          ))}
+          <div className="box">
+            <AddFriendBox>
+              <div>친구 목록</div>
+              {showInput ? (
+                <input
+                  value={friendEmail}
+                  onChange={handleInputChange}
+                  onKeyPress={handleKeyPress}
+                  placeholder="친구의 이메일을 입력하세요."
+                ></input>
+              ) : (
+                <button onClick={handleShowInput}>친구 추가</button>
+              )}
+              {showInput && <button onClick={handleAddFriend}>추가</button>}
+            </AddFriendBox>
+            {errorMessage && <Error>{errorMessage}</Error>}
+            {friends.map((friend) => (
+              <FriendBox key={friend.friend_pk}>
+                <div className="name">{friend.nickname}</div>
+                <div className="email">{friend.email}</div>
+                <DeleteButton onClick={() => handleDeleteFriend(friend)}>
+                  삭제
+                </DeleteButton>
+              </FriendBox>
+            ))}
+          </div>
         </Content>
         <Footer>
           <Navbar />
@@ -277,6 +279,10 @@ const Content = styled.div`
   width: 100%;
   height: 100%;
 
+  .box {
+    width: 350px;
+  }
+
   ::-webkit-scrollbar {
     display: none; /* Hide scrollbar for webkit browsers */
   }
@@ -286,7 +292,7 @@ const Content = styled.div`
 `;
 
 const AddFriendBox = styled.div`
-  width: 390px;
+  width: 340px;
   justify-content: space-between;
   display: flex;
   align-items: center;
