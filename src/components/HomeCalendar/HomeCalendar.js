@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import moment from "moment";
@@ -15,6 +15,7 @@ const HomeCalendar = () => {
   const [activeStartDate, setActiveStartDate] = useState(new Date());
   const [totalRecord, setTotalRecord] = useState(null);
   const [attendDay, setAttendDay] = useState([]); // 출석한 날짜 배열
+  const selectedDateRef = useRef(null); // 스크롤 이동을 위한 ref 생성
 
   const navigate = useNavigate();
 
@@ -25,6 +26,11 @@ const HomeCalendar = () => {
     } else {
       setDate(newDate);
       fetchRecord(newDate); // Fetch the record for the new date
+
+      // 새로운 날짜 선택 시 화면 아래로 스크롤
+      setTimeout(() => {
+        selectedDateRef.current?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
     }
   };
 
@@ -204,7 +210,7 @@ const HomeCalendar = () => {
         </div>
       </div>
       {date && (
-        <div className="SelectedDateWrapper visible">
+        <div className="SelectedDateWrapper visible" ref={selectedDateRef}>
           <div className="SelectedDate">
             {moment(date).format("YYYY년 MM월 DD일 dddd")}
           </div>
