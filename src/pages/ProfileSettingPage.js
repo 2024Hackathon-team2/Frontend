@@ -270,6 +270,8 @@ export default ProfileSettingPage;
 // Styled components
 const Container = styled.div`
   width: 100%;
+  max-width: 390px;
+
   height: 100vh;
   margin: 0 auto;
   display: flex;
@@ -283,6 +285,8 @@ const Header = styled.header`
   justify-content: space-between;
   position: fixed;
   width: 100%;
+  max-width: 390px;
+
   height: 54px;
   flex-shrink: 0;
   color: #000;
@@ -540,7 +544,7 @@ const SetPassword = styled.div`
 
 const Footer = styled.footer`
   position: fixed;
-  left: 0;
+  max-width: 390px;
 
   bottom: 0%;
   display: flex;

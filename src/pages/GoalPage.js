@@ -1,8 +1,14 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import backButtonImage from "./images/back.png";
 import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
+
+const GlobalStyle = createGlobalStyle`
+  html {
+    background-color: whitesmoke;
+  }
+`;
 
 const GoalPage = () => {
   const [selections, setSelections] = useState([{ drink: "", amount: "" }]);
@@ -127,61 +133,64 @@ const GoalPage = () => {
   };
 
   return (
-    <Container>
-      <Header>
-        <BackButton onClick={goToGoal}>
-          <img src={backButtonImage} alt="Back" />
-        </BackButton>
-        음주 목표 설정
-        <div></div>
-      </Header>
-      <Content>
-        <div className="box">
-          <Question>한 달에 얼마를 목표로 하시나요?</Question>
-          {selections.map((selection, index) => (
-            <DropdownWrapper key={index}>
-              <Dropdown
-                isPrimary={index === 0}
-                value={selection.drink}
-                onChange={(e) =>
-                  handleSelectionChange(index, "drink", e.target.value)
-                }
-              >
-                <option className="ex" value="">
-                  주종
-                </option>
-                {getAvailableDrinks(index).map((drink, i) => (
-                  <option key={i} value={drink}>
-                    {drink}
+    <>
+      <GlobalStyle />
+      <Container>
+        <Header>
+          <BackButton onClick={goToGoal}>
+            <img src={backButtonImage} alt="Back" />
+          </BackButton>
+          음주 목표 설정
+          <div></div>
+        </Header>
+        <Content>
+          <div className="box">
+            <Question>한 달에 얼마를 목표로 하시나요?</Question>
+            {selections.map((selection, index) => (
+              <DropdownWrapper key={index}>
+                <Dropdown
+                  isPrimary={index === 0}
+                  value={selection.drink}
+                  onChange={(e) =>
+                    handleSelectionChange(index, "drink", e.target.value)
+                  }
+                >
+                  <option className="ex" value="">
+                    주종
                   </option>
-                ))}
-              </Dropdown>
-              <Dropdown
-                isPrimary={index === 0}
-                value={selection.amount}
-                onChange={(e) =>
-                  handleSelectionChange(index, "amount", e.target.value)
-                }
-              >
-                <option className="ex" value="">
-                  N잔
-                </option>
-                {(drinksOptions[selection.drink] || []).map((opt, i) => (
-                  <option key={i} value={opt}>
-                    {opt}
+                  {getAvailableDrinks(index).map((drink, i) => (
+                    <option key={i} value={drink}>
+                      {drink}
+                    </option>
+                  ))}
+                </Dropdown>
+                <Dropdown
+                  isPrimary={index === 0}
+                  value={selection.amount}
+                  onChange={(e) =>
+                    handleSelectionChange(index, "amount", e.target.value)
+                  }
+                >
+                  <option className="ex" value="">
+                    N잔
                   </option>
-                ))}
-              </Dropdown>
-              {index === 0 && <Button onClick={handleAddClick}>추가</Button>}
-            </DropdownWrapper>
-          ))}
-          {message && <ErrorMessage>{message}</ErrorMessage>}
-        </div>
-        <div>
-          <SubmitButton onClick={handleSubmit}>목표 설정 완료</SubmitButton>
-        </div>
-      </Content>
-    </Container>
+                  {(drinksOptions[selection.drink] || []).map((opt, i) => (
+                    <option key={i} value={opt}>
+                      {opt}
+                    </option>
+                  ))}
+                </Dropdown>
+                {index === 0 && <Button onClick={handleAddClick}>추가</Button>}
+              </DropdownWrapper>
+            ))}
+            {message && <ErrorMessage>{message}</ErrorMessage>}
+          </div>
+          <div>
+            <SubmitButton onClick={handleSubmit}>목표 설정 완료</SubmitButton>
+          </div>
+        </Content>
+      </Container>
+    </>
   );
 };
 
@@ -190,6 +199,7 @@ export default GoalPage;
 // Styled components
 const Container = styled.div`
   width: 100%;
+  max-width: 390px;
   height: 100vh;
   margin: 0 auto;
   background-color: white;
@@ -204,6 +214,8 @@ const Header = styled.header`
   position: fixed;
   top: 0;
   width: 100%;
+  max-width: 390px;
+
   height: 54px;
   color: #000;
   font-family: Pretendard;
