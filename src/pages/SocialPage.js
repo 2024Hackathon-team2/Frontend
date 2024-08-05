@@ -216,6 +216,7 @@ const Content = styled.div`
 const Goal = styled.div`
   width: 100%;
   .goalTitle {
+    margin-top: 10px;
     margin-bottom: 20px;
     font-family: Pretendard;
   }
