@@ -1,8 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 import styled, { createGlobalStyle } from "styled-components";
 import backButtonImage from "./images/back.png";
 import Navbar from "../components/Navbar";
+
+const BASE_URL = "https://drinkit.pythonanywhere.com/";
 
 const GlobalStyle = createGlobalStyle`
   html {
@@ -14,6 +17,8 @@ const TestCompletePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { results } = location.state || { results: [] };
+
+  const [nickname, setNickname] = useState("사용자");
 
   const goToBack = () => {
     navigate("/testrecord");
@@ -37,6 +42,32 @@ const TestCompletePage = () => {
     status = "취함";
     backgroundColor = "#BB3434";
   }
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+        if (!token) {
+          throw new Error("No access token found");
+        }
+
+        const userResponse = await axios.get(`${BASE_URL}accounts/mypage/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setNickname(userResponse.data.nickname);
+      } catch (error) {
+        console.error("Failed to fetch user data", error);
+        if (error.response && error.response.status === 401) {
+          console.log("Unauthorized, redirecting to login page.");
+          navigate("/login"); // 로그인 페이지 경로로 수정
+        }
+      }
+    };
+
+    fetchUserData();
+  }, [navigate]);
 
   useEffect(() => {
     // Save results to local storage
@@ -95,7 +126,7 @@ const TestCompletePage = () => {
             </ResultTable>
             <div className="percentage">정답률: {percentage}%</div>
             <div className="status">
-              <div className="statusMent">00님의 취한 정도는</div>
+              <div className="statusMent">{nickname}님의 취한 정도는</div>
               <Status backgroundColor={backgroundColor}>{status}</Status>
             </div>
             <BottomContainer>
