@@ -220,89 +220,91 @@ const RecordPage = () => {
           <div></div>
         </Header>
         <Content>
-          <div className="up">
-            <div className="dayBox">
-              <DateRecord>
-                {year}년 {month}월 {date}일 {day}요일
-              </DateRecord>
-              <RecordTitle>{month}월의 음주기록</RecordTitle>
-            </div>
-            <Label color={labelColor}>주종을 선택해 주세요.</Label>
-            <DrinkButtons>
-              {Object.keys(drinkOptions)
-                .slice(1)
-                .map((drink, index) => (
-                  <DrinkButton
-                    key={index}
-                    selected={selectedDrink === drink}
-                    onClick={() => handleDrinkSelect(drink)}
-                  >
-                    <DrinkLabel>{drink}</DrinkLabel>
-                    <img
-                      src={getDrinkImage(drink)}
-                      alt={drink}
-                      style={{ width: "45px", height: "45px" }}
-                    />
-                  </DrinkButton>
-                ))}
-            </DrinkButtons>
-            <Label className="amount">얼마나 마셨나요?</Label>
-            <div className="underAmount">
-              <Select
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                defaultValue=""
-              >
-                <option value="" disabled hidden>
-                  잔 또는 병 수를 선택해 주세요.
-                </option>
-                {drinkOptions[selectedDrink]?.map((option, index) => (
-                  <Option key={index} value={option}>
-                    {option}
-                  </Option>
-                ))}
-              </Select>
-              <Button onClick={handleRecord}>기록</Button>
-            </div>
-            <RecordList>
-              {records.map((record, index) => (
-                <RecordItem key={index}>
-                  <div>
-                    <img
-                      src={getDrinkImage(record.drink)}
-                      alt={record.drink}
-                      style={{
-                        width: "30.24px",
-                        height: "30.591px",
-                        marginRight: "10px",
-                        backgroundColor: "white",
-                        border: "1px solid #AEAEAE",
-                        borderRadius: "10px",
-                        padding: "10px",
-                      }}
-                    />
-                    {record.drink} {record.amount}
-                  </div>
-                  <DeleteButton onClick={() => handleDelete(index)}>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="17"
-                      height="4"
-                      viewBox="0 0 17 4"
-                      fill="none"
+          <div className="box">
+            <div className="up">
+              <div className="dayBox">
+                <DateRecord>
+                  {year}년 {month}월 {date}일 {day}요일
+                </DateRecord>
+                <RecordTitle>{month}월의 음주기록</RecordTitle>
+              </div>
+              <Label color={labelColor}>주종을 선택해 주세요.</Label>
+              <DrinkButtons>
+                {Object.keys(drinkOptions)
+                  .slice(1)
+                  .map((drink, index) => (
+                    <DrinkButton
+                      key={index}
+                      selected={selectedDrink === drink}
+                      onClick={() => handleDrinkSelect(drink)}
                     >
-                      <path
-                        d="M2 2L15 2"
-                        stroke="#A0A0A0"
-                        strokeWidth="2.55882"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
+                      <DrinkLabel>{drink}</DrinkLabel>
+                      <img
+                        src={getDrinkImage(drink)}
+                        alt={drink}
+                        style={{ width: "45px", height: "45px" }}
                       />
-                    </svg>
-                  </DeleteButton>
-                </RecordItem>
-              ))}
-            </RecordList>
+                    </DrinkButton>
+                  ))}
+              </DrinkButtons>
+              <Label className="amount">얼마나 마셨나요?</Label>
+              <div className="underAmount">
+                <Select
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  defaultValue=""
+                >
+                  <option value="" disabled hidden>
+                    잔 또는 병 수를 선택해 주세요.
+                  </option>
+                  {drinkOptions[selectedDrink]?.map((option, index) => (
+                    <Option key={index} value={option}>
+                      {option}
+                    </Option>
+                  ))}
+                </Select>
+                <Button onClick={handleRecord}>기록</Button>
+              </div>
+              <RecordList>
+                {records.map((record, index) => (
+                  <RecordItem key={index}>
+                    <div>
+                      <img
+                        src={getDrinkImage(record.drink)}
+                        alt={record.drink}
+                        style={{
+                          width: "30.24px",
+                          height: "30.591px",
+                          marginRight: "10px",
+                          backgroundColor: "white",
+                          border: "1px solid #AEAEAE",
+                          borderRadius: "10px",
+                          padding: "10px",
+                        }}
+                      />
+                      {record.drink} {record.amount}
+                    </div>
+                    <DeleteButton onClick={() => handleDelete(index)}>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="17"
+                        height="4"
+                        viewBox="0 0 17 4"
+                        fill="none"
+                      >
+                        <path
+                          d="M2 2L15 2"
+                          stroke="#A0A0A0"
+                          strokeWidth="2.55882"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </DeleteButton>
+                  </RecordItem>
+                ))}
+              </RecordList>
+            </div>
           </div>
           <div className="bottom">
             <SubmitButton onClick={handleSubmit}>음주 기록 완료</SubmitButton>
@@ -316,7 +318,7 @@ const RecordPage = () => {
 export default RecordPage;
 
 const Container = styled.div`
-  width: 390px;
+  width: 100%;
   height: 100vh;
   margin: 0 auto;
   background-color: white;
@@ -330,7 +332,7 @@ const Header = styled.header`
   justify-content: space-between;
   position: fixed;
   top: 0;
-  width: 390px;
+  width: 100%;
   height: 54px;
   color: #000;
   text-align: center;
@@ -363,7 +365,6 @@ const BackButton = styled.button`
 `;
 
 const Content = styled.div`
-  padding: 20px;
   padding-top: 74px; /* Space for the fixed header */
   padding-bottom: 45px; /* Space for the fixed footer + extra space */
   flex: 1;
@@ -371,7 +372,10 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: center;
   background-color: white;
+  height: 100%;
+  width: 100%;
 
   .dayBox {
     width: 350px;
@@ -392,6 +396,10 @@ const Content = styled.div`
 
   ::-webkit-scrollbar {
     display: none;
+  }
+
+  .box {
+    width: 350px;
   }
 
   scrollbar-width: none;

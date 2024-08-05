@@ -89,8 +89,8 @@ const TimerPage = () => {
     <>
       <GlobalStyle />
       <Container>
+        <p>정상 간 타이머</p>
         <Content>
-          <p>정상 간 타이머</p>
           <TimerWrapper>
             <TimerCircle>
               <svg viewBox="0 0 36 36" transform="scale(-1, 1)">
@@ -182,7 +182,7 @@ const TimerPage = () => {
 export default TimerPage;
 
 const Container = styled.div`
-  width: 390px; /* Fixed width */
+  width: 100%; /* Fixed width */
   height: 100vh; /* Full height of the viewport */
   margin: 0 auto;
   background-color: white;
@@ -191,27 +191,31 @@ const Container = styled.div`
   background-position: center;
   display: flex;
   flex-direction: column;
-`;
-
-const Content = styled.div`
-  padding: 20px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  overflow-y: auto;
 
   p {
     color: var(--Color, #fff);
     font-family: Pretendard;
     font-size: 18px;
     font-weight: 700;
+    margin: 20px;
   }
 `;
 
+const Content = styled.div`
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow-y: auto;
+  align-items: center;
+`;
+
 const Footer = styled.footer`
-  width: 390px; /* Fixed width */
+  width: 100%; /* Fixed width */
   height: 84px; /* Fixed height */
+  left: 0;
   display: flex;
   align-items: center;
   background: white;
@@ -232,6 +236,8 @@ const TimerCircle = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding-top: 150px;
+  margin-bottom: 200px;
 
   svg {
     position: absolute;
@@ -268,6 +274,7 @@ const ButtonWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  width: 350px;
 
   div {
     width: 44px;
@@ -276,6 +283,7 @@ const ButtonWrapper = styled.div`
 `;
 
 const Button = styled.button`
+  margin: 20px;
   background: none;
   border: none;
   cursor: pointer;
@@ -288,6 +296,7 @@ const Button = styled.button`
 `;
 
 const ResetButton = styled.button`
+  margin: 20px;
   background: none;
   border: none;
   cursor: pointer;

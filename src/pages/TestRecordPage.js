@@ -56,61 +56,65 @@ const TestRecordPage = () => {
       <Container>
         <Header>음주 정도 테스트</Header>
         <Content>
-          <div className="title">
-            {testResults.length === 0
-              ? "지금 얼마나 취했을까?"
-              : "음주 정도 테스트 기록"}
-          </div>
-          <RecordContainer>
-            {testResults.length === 0 ? (
-              <NoRecordMessage>
-                음주 테스트를 실행한 적이 없어요.
-                <br />
-                아래 버튼을 눌러 첫 음주 테스트를 시작하세요.
-              </NoRecordMessage>
-            ) : (
-              sortedDates.map((date) => (
-                <DateSection key={date}>
-                  <DateTitle>{date}</DateTitle>
-                  {groupedResults[date].map((result, index) => {
-                    let status;
-                    let backgroundColor;
-                    if (result.percentage === 100) {
-                      status = "멀쩡";
-                      backgroundColor = "#37AB2F";
-                    } else if (result.percentage >= 50) {
-                      status = "알딸딸";
-                      backgroundColor = "#F3D03E";
-                    } else {
-                      status = "취함";
-                      backgroundColor = "#BB3434";
-                    }
-                    const icon = icons[index % icons.length]; // Rotate through icons
-                    return (
-                      <RecordItem key={`${date}-${index}`}>
-                        <Division>
-                          <div className="box">
-                            <img src={icon} alt="Test Icon"></img>
-                            <div className="test">음주테스트</div>
-                          </div>
-                        </Division>
-                        <Division>
-                          <div className="percentage">{result.percentage}%</div>
-                          <StatusBox backgroundColor={backgroundColor}>
-                            {status}
-                          </StatusBox>
+          <div className="box">
+            <div className="title">
+              {testResults.length === 0
+                ? "지금 얼마나 취했을까?"
+                : "음주 정도 테스트 기록"}
+            </div>
+            <RecordContainer>
+              {testResults.length === 0 ? (
+                <NoRecordMessage>
+                  음주 테스트를 실행한 적이 없어요.
+                  <br />
+                  아래 버튼을 눌러 첫 음주 테스트를 시작하세요.
+                </NoRecordMessage>
+              ) : (
+                sortedDates.map((date) => (
+                  <DateSection key={date}>
+                    <DateTitle>{date}</DateTitle>
+                    {groupedResults[date].map((result, index) => {
+                      let status;
+                      let backgroundColor;
+                      if (result.percentage === 100) {
+                        status = "멀쩡";
+                        backgroundColor = "#37AB2F";
+                      } else if (result.percentage >= 50) {
+                        status = "알딸딸";
+                        backgroundColor = "#F3D03E";
+                      } else {
+                        status = "취함";
+                        backgroundColor = "#BB3434";
+                      }
+                      const icon = icons[index % icons.length]; // Rotate through icons
+                      return (
+                        <RecordItem key={`${date}-${index}`}>
+                          <Division>
+                            <div className="box">
+                              <img src={icon} alt="Test Icon"></img>
+                              <div className="test">음주테스트</div>
+                            </div>
+                          </Division>
+                          <Division>
+                            <div className="percentage">
+                              {result.percentage}%
+                            </div>
+                            <StatusBox backgroundColor={backgroundColor}>
+                              {status}
+                            </StatusBox>
 
-                          <DeleteButton onClick={() => deleteRecord(index)}>
-                            <img src={deleteButtonImage} alt="삭제" />
-                          </DeleteButton>
-                        </Division>
-                      </RecordItem>
-                    );
-                  })}
-                </DateSection>
-              ))
-            )}
-          </RecordContainer>
+                            <DeleteButton onClick={() => deleteRecord(index)}>
+                              <img src={deleteButtonImage} alt="삭제" />
+                            </DeleteButton>
+                          </Division>
+                        </RecordItem>
+                      );
+                    })}
+                  </DateSection>
+                ))
+              )}
+            </RecordContainer>
+          </div>
           <div className="testStartButton" onClick={startGame}>
             새 음주 테스트 시작
           </div>
@@ -127,7 +131,7 @@ export default TestRecordPage;
 
 // Styled components
 const Container = styled.div`
-  width: 390px;
+  width: 100%;
   height: 100vh;
   margin: 0 auto;
   background-color: white;
@@ -142,7 +146,9 @@ const Header = styled.header`
   justify-content: center;
   position: fixed;
   top: 0;
-  width: 390px;
+  left: 0;
+
+  width: 100%;
   height: 54px;
   color: #000;
   text-align: center;
@@ -161,7 +167,6 @@ const Header = styled.header`
 `;
 
 const Content = styled.div`
-  padding: 20px;
   padding-top: 74px; /* Space for the fixed header */
   padding-bottom: 104px; /* Space for the fixed footer */
   flex: 1;
@@ -170,6 +175,12 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 100%;
+  width: 100%;
+
+  .box {
+    align-items: center;
+  }
 
   .title {
     width: 100%;
@@ -202,6 +213,7 @@ const Content = styled.div`
 
 const RecordContainer = styled.div`
   margin-top: 20px;
+  justify-content: center;
 `;
 
 const NoRecordMessage = styled.div`
@@ -223,6 +235,8 @@ const NoRecordMessage = styled.div`
 
 const DateSection = styled.div`
   margin-bottom: 20px;
+  justify-content: center;
+  align-items: center;
 `;
 
 const DateTitle = styled.div`
@@ -236,7 +250,6 @@ const RecordItem = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
   width: 325px;
   height: 79px;
 
@@ -249,13 +262,12 @@ const RecordItem = styled.div`
   .Container {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
   }
   .percentage {
     margin-right: 11px;
   }
 
-  img {
+  .box img {
     width: 48px;
     height: 48px;
     margin-right: 11px;
@@ -285,6 +297,8 @@ const DeleteButton = styled.button`
   margin: 0px;
   border: none;
   margin-left: 10px;
+  justify-content: center;
+  align-items: center;
 
   img {
     width: 11.313px;
@@ -296,12 +310,16 @@ const Division = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
+  width: 180px;
 `;
 
 const Footer = styled.footer`
   position: fixed;
+  left: 0;
+
   bottom: 0;
-  width: 390px;
+  width: 100%;
   height: 84px;
   display: flex;
   flex-direction: column;

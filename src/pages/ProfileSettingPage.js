@@ -269,9 +269,8 @@ export default ProfileSettingPage;
 
 // Styled components
 const Container = styled.div`
-  width: 390px;
-  height: 100vh;
-
+  width: 100%;
+  height: 100%;
   margin: 0 auto;
   background-color: white;
 `;
@@ -281,7 +280,7 @@ const Header = styled.header`
   align-items: center;
   justify-content: space-between;
   position: fixed;
-  width: 390px;
+  width: 100%;
   height: 54px;
   flex-shrink: 0;
   color: #000;
@@ -318,15 +317,16 @@ const BackButton = styled.button`
 `;
 
 const Content = styled.div`
-  padding: 20px;
-  padding-top: 82px;
-  height: 652px;
+  height: calc(100vh - 138px); // 54px for header + 84px for footer
+  width: 100%;
   overflow-y: auto;
   background-color: white;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding-bottom: 56px;
+  padding-top: 56px;
 `;
 
 const ProfileImage = styled.div`
@@ -534,9 +534,11 @@ const SetPassword = styled.div`
 
 const Footer = styled.footer`
   position: fixed;
+  left: 0;
+
   bottom: 0%;
   display: flex;
-  width: 390px;
+  width: 100%;
   height: 84px;
   flex-direction: column;
   align-items: center;

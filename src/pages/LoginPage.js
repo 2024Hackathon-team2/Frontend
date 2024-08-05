@@ -90,7 +90,6 @@ const LoginPage = () => {
             <button onClick={() => navigate("/signup")}>회원가입</button>
           </More>
         </Content>
-        <Footer></Footer>
       </Container>
     </>
   );
@@ -103,7 +102,7 @@ export default LoginPage;
 
 // Styled components
 const Container = styled.div`
-  width: 390px;
+  width: 100%;
   height: 100vh;
 
   margin: 0 auto;
@@ -111,9 +110,7 @@ const Container = styled.div`
 `;
 
 const Content = styled.div`
-  padding: 16px;
-  padding-top: 82px;
-  height: 656px; // 최대 높이를 설정합니다.
+  height: 100%; // 최대 높이를 설정합니다.
 
   /* 스크롤바 숨기기 */
   background-color: white;
@@ -254,7 +251,7 @@ const Footer = styled.footer`
   position: fixed;
   bottom: 0%;
   display: flex;
-  width: 390px;
+  width: 100%;
   height: 84px;
   flex-direction: column;
   align-items: center;

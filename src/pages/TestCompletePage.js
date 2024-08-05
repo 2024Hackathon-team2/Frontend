@@ -78,33 +78,35 @@ const TestCompletePage = () => {
           <div></div>
         </Header>
         <Content>
-          <ResultTable>
-            {results.slice(0, 4).map((result, index) => (
-              <tr key={index}>
-                <td>{index + 1}번 문제</td>
-                <td
-                  style={{
-                    color: result.correct ? "#17D6B5" : "#7A7881",
-                  }}
-                >
-                  {result.correct ? "정답" : "오답"}
-                </td>
-              </tr>
-            ))}
-          </ResultTable>
-          <div className="percentage">정답률: {percentage}%</div>
-          <div className="status">
-            <div className="statusMent">00님의 취한 정도는</div>
-            <Status backgroundColor={backgroundColor}>{status}</Status>
+          <div className="box">
+            <ResultTable>
+              {results.slice(0, 4).map((result, index) => (
+                <tr key={index}>
+                  <td>{index + 1}번 문제</td>
+                  <td
+                    style={{
+                      color: result.correct ? "#17D6B5" : "#7A7881",
+                    }}
+                  >
+                    {result.correct ? "정답" : "오답"}
+                  </td>
+                </tr>
+              ))}
+            </ResultTable>
+            <div className="percentage">정답률: {percentage}%</div>
+            <div className="status">
+              <div className="statusMent">00님의 취한 정도는</div>
+              <Status backgroundColor={backgroundColor}>{status}</Status>
+            </div>
+            <BottomContainer>
+              <div className="testagain" onClick={startGameAgain}>
+                테스트 다시 하기
+              </div>
+              <div className="gotoTestrecord" onClick={goToBack}>
+                테스트 기록 보기
+              </div>
+            </BottomContainer>
           </div>
-          <BottomContainer>
-            <div className="testagain" onClick={startGameAgain}>
-              테스트 다시 하기
-            </div>
-            <div className="gotoTestrecord" onClick={goToBack}>
-              테스트 기록 보기
-            </div>
-          </BottomContainer>
         </Content>
         <Footer>
           <Navbar />
@@ -118,7 +120,7 @@ export default TestCompletePage;
 
 // Styled components
 const Container = styled.div`
-  width: 390px;
+  width: 100%;
   height: 100vh;
   margin: 0 auto;
   background-color: white;
@@ -129,10 +131,12 @@ const Container = styled.div`
 
 const Header = styled.header`
   display: flex;
+  left: 0;
+
   align-items: center;
   justify-content: space-between;
   position: fixed;
-  width: 390px;
+  width: 100%;
   height: 54px;
   flex-shrink: 0;
   color: #000;
@@ -154,7 +158,6 @@ const Header = styled.header`
 `;
 
 const Content = styled.div`
-  padding: 20px;
   padding-top: 74px; /* Space for the fixed header */
   padding-bottom: 104px; /* Space for the fixed footer */
   flex: 1;
@@ -163,6 +166,13 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 100%;
+  width: 100%;
+
+  .box {
+    width: 350px;
+    justify-content: center;
+  }
   .percentage {
     background-color: #66646f;
     width: 290px;
@@ -213,10 +223,10 @@ const BackButton = styled.button`
 `;
 const BottomContainer = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  align-items: center;
   font-family: Pretendard;
   font-size: 13px;
-  width: 90%;
   margin: 40px;
   .testagain {
     border: 1px solid #17d6b5;
@@ -228,6 +238,7 @@ const BottomContainer = styled.div`
     flex-shrink: 0;
     border-radius: 9px;
     cursor: pointer;
+    margin-right: 10px;
   }
   .gotoTestrecord {
     background: #17d6b5;
@@ -244,8 +255,10 @@ const BottomContainer = styled.div`
 
 const Footer = styled.footer`
   position: fixed;
+  left: 0;
+
   bottom: 0;
-  width: 390px;
+  width: 100%;
   height: 84px;
   display: flex;
   flex-direction: column;
