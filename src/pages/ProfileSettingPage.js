@@ -270,9 +270,11 @@ export default ProfileSettingPage;
 // Styled components
 const Container = styled.div`
   width: 100%;
-  height: 100%;
+  height: 100vh;
   margin: 0 auto;
+  display: flex;
   background-color: white;
+  box-sizing: border-box;
 `;
 
 const Header = styled.header`
@@ -317,8 +319,9 @@ const BackButton = styled.button`
 `;
 
 const Content = styled.div`
-  height: calc(100vh - 138px); // 54px for header + 84px for footer
   width: 100%;
+  padding-top: 54px;
+  padding-bottom: 84px;
   overflow-y: auto;
   background-color: white;
   display: flex;
@@ -327,9 +330,12 @@ const Content = styled.div`
   align-items: center;
   padding-bottom: 56px;
   padding-top: 56px;
+  flex: 1;
+  box-sizing: border-box;
 `;
 
 const ProfileImage = styled.div`
+  margin-top: 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -566,6 +572,7 @@ const SaveButton = styled.button`
   font-weight: 600;
   line-height: 100%;
   margin-top: 35px;
+  margin-bottom: 30px;
   cursor: pointer;
 `;
 
