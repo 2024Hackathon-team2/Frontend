@@ -91,6 +91,7 @@ const TimerPage = () => {
       <Container>
         <p>정상 간 타이머</p>
         <Content>
+          <div></div>
           <TimerWrapper>
             <TimerCircle>
               <svg viewBox="0 0 36 36" transform="scale(-1, 1)">
@@ -207,7 +208,7 @@ const Content = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   overflow-y: auto;
   align-items: center;
 `;
@@ -236,8 +237,6 @@ const TimerCircle = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 150px;
-  margin-bottom: 200px;
 
   svg {
     position: absolute;
