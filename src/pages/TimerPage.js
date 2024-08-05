@@ -276,7 +276,7 @@ const ButtonWrapper = styled.div`
   width: 350px;
 
   div {
-    width: 80px;
+    width: 90px;
     height: 44px;
   }
 `;
