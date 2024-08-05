@@ -50,6 +50,7 @@ const TimerPage = () => {
       }, 1000);
     } else if (timeLeft <= 0) {
       setIsRunning(false);
+      setShowInput(true); // Show input when timer reaches 0
     }
 
     return () => clearInterval(timer);
@@ -85,12 +86,12 @@ const TimerPage = () => {
 
   const handleInputSubmit = () => {
     const hoursAgo = parseInt(timeInput, 10);
-    if (!isNaN(hoursAgo) && hoursAgo > 0 && hoursAgo <= 71) {
+    if (!isNaN(hoursAgo) && hoursAgo >= 0 && hoursAgo <= 71) {
       const newTimeLeft = 259200 - hoursAgo * 3600;
       setTimeLeft(newTimeLeft > 0 ? newTimeLeft : 0);
       setShowInput(false); // Hide input after submission
     } else {
-      alert("71 이하의 자연수만 입력 가능합니다");
+      alert("0 이상 71 이하의 정수만 입력 가능합니다");
     }
   };
 
@@ -114,7 +115,12 @@ const TimerPage = () => {
         <p>정상 간 타이머</p>
         <Content>
           <InputWrapper showInput={showInput}>
-            {showInput && (
+            {showInput && timeLeft === 0 && (
+              <p className="timedone">
+                정상 간 수치로 돌아왔어요. 술은 조금만 드세요~
+              </p>
+            )}
+            {showInput && timeLeft !== 0 && (
               <>
                 <p className="wait">정상 간 타이머 작동 전 잠깐!</p>
                 <label>술을 마신지 얼마나 되었나요?</label>
@@ -362,6 +368,17 @@ const InputWrapper = styled.div`
   height: ${(props) => (props.showInput ? "134px" : "0")}; /* Maintain space */
   transition: height 0.3s ease;
   overflow: hidden;
+
+  .timedone {
+    color: #000;
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 133.8%; /* 18.732px */
+    margin-left: 40px;
+    margin-bottom: 20px;
+  }
 
   .wait {
     color: #000;
