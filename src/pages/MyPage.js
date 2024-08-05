@@ -284,6 +284,7 @@ const Container = styled.div`
   background-color: white;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
 `;
 
 const Header = styled.header`
@@ -307,9 +308,11 @@ const Header = styled.header`
 `;
 
 const Content = styled.div`
-  height: 100%;
   width: 100%;
+  height: 100%;
+  padding-top: 54px;
   padding-bottom: 84px; /* Space for the fixed footer */
+  overflow-y: auto;
   flex: 1;
   overflow-y: auto; /* Allow vertical scrolling */
   background-color: white;
@@ -317,6 +320,7 @@ const Content = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center; /* Center content vertically */
+  box-sizing: border-box;
 
   .dayBox {
     width: 350px;
@@ -341,6 +345,7 @@ const Profile = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 20px;
 
   img {
     width: 175px;
