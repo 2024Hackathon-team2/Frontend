@@ -14,8 +14,10 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const TimerPage = () => {
-  const [timeLeft, setTimeLeft] = useState(259200); // 2 hours in seconds
+  const [timeLeft, setTimeLeft] = useState(259200); // 72 hours in seconds
   const [isRunning, setIsRunning] = useState(false);
+  const [timeInput, setTimeInput] = useState("");
+  const [showInput, setShowInput] = useState(true); // Show input initially
 
   useEffect(() => {
     // Retrieve saved data from local storage
@@ -68,13 +70,33 @@ const TimerPage = () => {
   const resetTimer = () => {
     setIsRunning(false);
     setTimeLeft(259200);
+    setShowInput(true); // Show input on reset
     localStorage.removeItem("startTime");
     localStorage.removeItem("timeLeft");
     localStorage.removeItem("isRunning");
   };
 
+  const handleInputChange = (event) => {
+    const value = event.target.value;
+    if (/^\d*$/.test(value)) {
+      setTimeInput(value);
+    }
+  };
+
+  const handleInputSubmit = () => {
+    const hoursAgo = parseInt(timeInput, 10);
+    if (!isNaN(hoursAgo) && hoursAgo > 0 && hoursAgo <= 71) {
+      const newTimeLeft = 259200 - hoursAgo * 3600;
+      setTimeLeft(newTimeLeft > 0 ? newTimeLeft : 0);
+      setShowInput(false); // Hide input after submission
+    } else {
+      alert("71 이하의 자연수만 입력 가능합니다");
+    }
+  };
+
   const toggleTimer = () => {
     setIsRunning((prevRunning) => !prevRunning);
+    setShowInput(false); // Hide input when timer starts
   };
 
   const formatTime = (time) => {
@@ -91,7 +113,24 @@ const TimerPage = () => {
       <Container>
         <p>정상 간 타이머</p>
         <Content>
-          <div></div>
+          <InputWrapper showInput={showInput}>
+            {showInput && (
+              <>
+                <p className="wait">정상 간 타이머 작동 전 잠깐!</p>
+                <label>술을 마신지 얼마나 되었나요?</label>
+                <div>
+                  <Input
+                    type="number"
+                    value={timeInput}
+                    onChange={handleInputChange}
+                    placeholder="숫자로 입력해 주세요"
+                  />
+                  <p>시간 전</p>
+                  <SubmitButton onClick={handleInputSubmit}>확인</SubmitButton>
+                </div>
+              </>
+            )}
+          </InputWrapper>
           <TimerWrapper>
             <TimerCircle>
               <svg viewBox="0 0 36 36" transform="scale(-1, 1)">
@@ -305,5 +344,110 @@ const ResetButton = styled.button`
   img {
     width: 44px;
     height: 44px;
+  }
+`;
+
+const InputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: 350px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  border: none;
+  opacity: 0.89;
+  background: ${(props) => (props.showInput ? "#fff" : "#36333E0%")};
+  backdrop-filter: blur(2px);
+  height: ${(props) => (props.showInput ? "134px" : "0")}; /* Maintain space */
+  transition: height 0.3s ease;
+  overflow: hidden;
+
+  .wait {
+    color: #000;
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 133.8%; /* 18.732px */
+    margin: 0px;
+    margin-left: 16px;
+  }
+
+  label {
+    color: #000;
+    font-family: Pretendard;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 133.8%; /* 21.408px */
+    margin-left: 16px;
+  }
+
+  div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  p {
+    color: var(--_, #66646f);
+    font-family: Pretendard;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 133.8%; /* 18.732px */
+    margin: 0px;
+    margin-top: 20px;
+    margin-left: 6px;
+  }
+`;
+
+const Input = styled.input`
+  margin-left: 16px;
+  margin-top: 20px;
+  width: 124px;
+  height: 31px;
+  flex-shrink: 0;
+
+  border-radius: 5px;
+  border: 1px solid #cbcbcb;
+  background: #f8f8f8;
+  padding-left: 7px;
+
+  &::placeholder {
+    color: #bcbbbd;
+    font-family: Pretendard;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 133.8%; /* 16.056px */
+  }
+`;
+
+const SubmitButton = styled.button`
+  margin-top: 20px;
+  margin-left: 90px;
+  display: flex;
+  width: 50px;
+  height: 31px;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  border: none;
+
+  border-radius: 8px;
+  background: #17d6b5;
+
+  color: var(--Color, #fff);
+  font-family: Pretendard;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 133.8%; /* 16.056px */
+  cursor: pointer;
+
+  &:hover {
+    background-color: #16b599;
   }
 `;
