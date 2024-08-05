@@ -15,6 +15,7 @@ const GlobalStyle = createGlobalStyle`
     background-color: whitesmoke;
   }
 `;
+
 const BASE_URL = "https://drinkit.pythonanywhere.com/";
 
 const SocialPage = ({ userId, nickname }) => {
@@ -27,7 +28,7 @@ const SocialPage = ({ userId, nickname }) => {
       try {
         const response = await fetch(`${BASE_URL}goals/social/`, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // 여기에 실제 토큰 값을 넣어주세요.
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
 
@@ -73,61 +74,63 @@ const SocialPage = ({ userId, nickname }) => {
       <Container>
         <Header>소셜</Header>
         <Content>
-          <Goal>
-            <div className="goalTitle">
-              <div className="userName">{user}님</div>
-              <div className="goalAchieveMonth">
-                {period}개월째 목표를 달성하고 있어요
+          <div className="box">
+            <Goal>
+              <div className="goalTitle">
+                <div className="userName">{user}님</div>
+                <div className="goalAchieveMonth">
+                  {period}개월째 목표를 달성하고 있어요
+                </div>
               </div>
-            </div>
 
-            <div className="CheerNumber">
-              <img src={CheerImage} alt="Cheer Icon" />
-              <div>이번 달 받은 응원 수: {cheer}</div>
-            </div>
+              <div className="CheerNumber">
+                <img src={CheerImage} alt="Cheer Icon" />
+                <div>이번 달 받은 응원 수: {cheer}</div>
+              </div>
 
-            <DrinkingGoals>
-              <DrinkItem
-                image={BeerImage}
-                name="맥주"
-                goal={beer?.goal}
-                record={beer?.record}
-                percentage={beer?.percentage}
-              />
-              <DrinkItem
-                image={SojuImage}
-                name="소주"
-                goal={soju?.goal}
-                record={soju?.record}
-                percentage={soju?.percentage}
-              />
-              <DrinkItem
-                image={MakgeolliImage}
-                name="막걸리"
-                goal={mak?.goal}
-                record={mak?.record}
-                percentage={mak?.percentage}
-              />
-              <DrinkItem
-                image={WineImage}
-                name="와인"
-                goal={wine?.goal}
-                record={wine?.record}
-                percentage={wine?.percentage}
-              />
-            </DrinkingGoals>
+              <DrinkingGoals>
+                <DrinkItem
+                  image={BeerImage}
+                  name="맥주"
+                  goal={beer?.goal}
+                  record={beer?.record}
+                  percentage={beer?.percentage}
+                />
+                <DrinkItem
+                  image={SojuImage}
+                  name="소주"
+                  goal={soju?.goal}
+                  record={soju?.record}
+                  percentage={soju?.percentage}
+                />
+                <DrinkItem
+                  image={MakgeolliImage}
+                  name="막걸리"
+                  goal={mak?.goal}
+                  record={mak?.record}
+                  percentage={mak?.percentage}
+                />
+                <DrinkItem
+                  image={WineImage}
+                  name="와인"
+                  goal={wine?.goal}
+                  record={wine?.record}
+                  percentage={wine?.percentage}
+                />
+              </DrinkingGoals>
 
-            <div
-              className="GoalSpecificButton"
-              onClick={() => navigate("/home")}
-            >
-              <div>기록 자세히 보기</div>
-            </div>
-          </Goal>
-          <Friends>
-            <div className="friendTitle">친구의 달성률</div>
-            <FriendList friends={friends} onCheerUpdate={handleCheerUpdate} />
-          </Friends>
+              <div
+                className="GoalSpecificButton"
+                onClick={() => navigate("/home")}
+              >
+                <div>기록 자세히 보기</div>
+              </div>
+            </Goal>
+            <Friends>
+              <div className="friendTitle">친구의 달성률</div>
+              <FriendList friends={friends} onCheerUpdate={handleCheerUpdate} />
+            </Friends>
+          </div>
         </Content>
         <Footer>
           <Navbar />
@@ -156,12 +159,13 @@ export default SocialPage;
 
 // Styled components
 const Container = styled.div`
-  width: 390px;
+  width: 100%;
   height: 100vh;
   margin: 0 auto;
   background-color: white;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
 `;
 
 const Header = styled.header`
@@ -170,7 +174,8 @@ const Header = styled.header`
   justify-content: center;
   position: fixed;
   top: 0;
-  width: 390px;
+  left: 0;
+  width: 100%;
   height: 54px;
   color: #000;
   text-align: center;
@@ -183,19 +188,25 @@ const Header = styled.header`
 `;
 
 const Content = styled.div`
-  padding: 20px;
-  padding-top: 74px; /* Space for the fixed header */
-  padding-bottom: 104px; /* Space for the fixed footer */
   flex: 1;
+  padding-top: 54px; /* Space for the fixed header */
+  padding-bottom: 84px; /* Space for the fixed footer */
   overflow-y: auto; /* Allow vertical scrolling */
   overflow-x: hidden;
   background-color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  box-sizing: border-box;
 
   ::-webkit-scrollbar {
     display: none; /* Hide scrollbar for webkit browsers */
+  }
+
+  .box {
+    width: 350px;
+    justify-content: center;
   }
 
   scrollbar-width: none; /* Hide scrollbar for Firefox */
@@ -308,8 +319,9 @@ const Friends = styled.div`
 
 const Footer = styled.footer`
   position: fixed;
+  left: 0;
   bottom: 0;
-  width: 390px;
+  width: 100%;
   height: 84px;
   display: flex;
   align-items: center;

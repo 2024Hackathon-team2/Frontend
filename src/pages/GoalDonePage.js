@@ -93,7 +93,7 @@ export default GoalDonePage;
 
 // Styled components
 const Container = styled.div`
-  width: 390px;
+  width: 100%;
   height: 100vh;
   margin: 0 auto;
   background-color: white;
@@ -107,7 +107,7 @@ const Header = styled.header`
   justify-content: space-between;
   position: fixed;
   top: 0;
-  width: 390px;
+  width: 100%;
   height: 54px;
   color: #000;
   text-align: center;
@@ -140,7 +140,6 @@ const BackButton = styled.button`
 `;
 
 const Content = styled.div`
-  padding: 20px;
   padding-bottom: 84px; /* Space for the fixed footer */
   flex: 1;
   overflow-y: auto;
@@ -149,6 +148,8 @@ const Content = styled.div`
   align-items: center;
   justify-content: center;
   background-color: white;
+  height: 100%;
+  width: 100%;
 
   ::-webkit-scrollbar {
     display: none;
@@ -213,8 +214,10 @@ const DoneMessage2 = styled.div`
 
 const Footer = styled.footer`
   position: fixed;
+  left: 0;
+
   bottom: 0;
-  width: 390px;
+  width: 100%;
   height: 84px;
   display: flex;
   align-items: center;

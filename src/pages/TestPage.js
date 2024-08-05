@@ -109,41 +109,43 @@ const TestPage = () => {
           <div></div>
         </Header>
         <Content>
-          <TopContainer>
-            <div>지금 얼마나 취했을까?</div>
-            <ProgressBar>
-              <Progress progress={progress}></Progress>
-            </ProgressBar>
-            <div>
-              <span style={{ fontSize: "16px" }}>{progress}</span>
-              <span style={{ fontSize: "14px", color: "#CCCCCC" }}>/4</span>
-            </div>
-          </TopContainer>
-
-          <MiddleContainer>
-            <Quiz>{currentQuestion.question}</Quiz>
-            <InputContainer>
-              <input
-                type="text"
-                value={userAnswer}
-                onChange={handleAnswerChange}
-                placeholder="정답을 적어주세요."
-                onKeyPress={handleKeyPress}
-              />
-              {userAnswer && (
-                <SubmitButton onClick={checkAnswer}>입력</SubmitButton>
-              )}
-            </InputContainer>
-
-            {isCorrect !== null && (
-              <div className="testCorrectBox">
-                <div>{isCorrect ? "정답입니다!" : "오답입니다!"}</div>
-                <button className="continueButton" onClick={nextQuestion}>
-                  계속
-                </button>
+          <div className="box">
+            <TopContainer>
+              <div>지금 얼마나 취했을까?</div>
+              <ProgressBar>
+                <Progress progress={progress}></Progress>
+              </ProgressBar>
+              <div>
+                <span style={{ fontSize: "16px" }}>{progress}</span>
+                <span style={{ fontSize: "14px", color: "#CCCCCC" }}>/4</span>
               </div>
-            )}
-          </MiddleContainer>
+            </TopContainer>
+
+            <MiddleContainer>
+              <Quiz>{currentQuestion.question}</Quiz>
+              <InputContainer>
+                <input
+                  type="text"
+                  value={userAnswer}
+                  onChange={handleAnswerChange}
+                  placeholder="정답을 적어주세요."
+                  onKeyPress={handleKeyPress}
+                />
+                {userAnswer && (
+                  <SubmitButton onClick={checkAnswer}>입력</SubmitButton>
+                )}
+              </InputContainer>
+
+              {isCorrect !== null && (
+                <div className="testCorrectBox">
+                  <div>{isCorrect ? "정답입니다!" : "오답입니다!"}</div>
+                  <button className="continueButton" onClick={nextQuestion}>
+                    계속
+                  </button>
+                </div>
+              )}
+            </MiddleContainer>
+          </div>
         </Content>
         <Footer>
           <Navbar />
@@ -157,7 +159,7 @@ export default TestPage;
 
 // Styled components
 const Container = styled.div`
-  width: 390px;
+  width: 100%;
   height: 100vh;
   margin: 0 auto;
   background-color: white;
@@ -172,7 +174,9 @@ const Header = styled.header`
   justify-content: space-between;
   position: fixed;
   top: 0;
-  width: 390px;
+  left: 0;
+
+  width: 100%;
   height: 54px;
   color: #000;
   text-align: center;
@@ -205,7 +209,6 @@ const BackButton = styled.button`
 `;
 
 const Content = styled.div`
-  padding: 20px;
   padding-top: 74px; /* Space for the fixed header */
   padding-bottom: 104px; /* Space for the fixed footer */
   flex: 1;
@@ -215,6 +218,15 @@ const Content = styled.div`
   font-size: 20px;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+
+  .box {
+    width: 350px;
+    align-items: center;
+    justify-content: center;
+  }
 
   .title {
     width: 100%;
@@ -324,7 +336,9 @@ const Quiz = styled.div`
 const Footer = styled.footer`
   position: fixed;
   bottom: 0;
-  width: 390px;
+  left: 0;
+
+  width: 100%;
   height: 84px;
   display: flex;
   flex-direction: column;

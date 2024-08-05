@@ -217,7 +217,7 @@ export default FriendPage;
 
 // Styled components
 const Container = styled.div`
-  width: 390px;
+  width: 100%;
   height: 100vh;
   margin: 0 auto;
   background-color: white;
@@ -232,7 +232,8 @@ const Header = styled.header`
   justify-content: space-between;
   position: fixed;
   top: 0;
-  width: 390px;
+  left: 0;
+  width: 100%;
   height: 54px;
   color: #000;
   text-align: center;
@@ -265,15 +266,16 @@ const BackButton = styled.button`
 `;
 
 const Content = styled.div`
-  padding: 20px;
-  padding-top: 74px; /* Space for the fixed header */
-  padding-bottom: 104px; /* Space for the fixed footer */
+  margin-top: 74px; /* Space for the fixed header */
+  margin-bottom: 104px; /* Space for the fixed footer */
   flex: 1;
   overflow-y: auto; /* Allow vertical scrolling */
   background-color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  height: 100%;
 
   ::-webkit-scrollbar {
     display: none; /* Hide scrollbar for webkit browsers */
@@ -284,10 +286,11 @@ const Content = styled.div`
 `;
 
 const AddFriendBox = styled.div`
-  width: 100%;
+  width: 390px;
+  justify-content: space-between;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+
   height: 50px;
   margin-bottom: 20px;
 
@@ -327,6 +330,7 @@ const AddFriendBox = styled.div`
 `;
 
 const FriendBox = styled.div`
+  padding: 20px;
   margin-top: 10px;
   padding: 10px;
   max-width: 100%;
@@ -364,8 +368,9 @@ const Error = styled.div`
 
 const Footer = styled.footer`
   position: fixed;
+  left: 0;
   bottom: 0;
-  width: 390px;
+  width: 100%;
   height: 84px;
   display: flex;
   flex-direction: column;

@@ -278,7 +278,7 @@ export default MyPage;
 
 // Styled components
 const Container = styled.div`
-  width: 390px;
+  width: 100%;
   height: 100vh;
   margin: 0 auto;
   background-color: white;
@@ -292,7 +292,9 @@ const Header = styled.header`
   justify-content: center;
   position: fixed;
   top: 0;
-  width: 390px;
+  left: 0;
+
+  width: 100%;
   height: 54px;
   color: #000;
   text-align: center;
@@ -305,8 +307,8 @@ const Header = styled.header`
 `;
 
 const Content = styled.div`
-  padding: 20px;
-
+  height: 100%;
+  width: 100%;
   padding-bottom: 84px; /* Space for the fixed footer */
   flex: 1;
   overflow-y: auto; /* Allow vertical scrolling */
@@ -479,8 +481,10 @@ const ModalContent = styled.div`
 
 const Footer = styled.footer`
   position: fixed;
+  left: 0;
+
   bottom: 0;
-  width: 390px;
+  width: 100%;
   height: 84px;
   display: flex;
   align-items: center;

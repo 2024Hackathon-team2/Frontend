@@ -105,7 +105,6 @@ const SignupPage = () => {
             </button>
           </InputWrapper>
         </Content>
-        <Footer></Footer>
       </Container>
     </>
   );
@@ -115,7 +114,7 @@ export default SignupPage;
 
 // Styled components
 const Container = styled.div`
-  width: 390px;
+  width: 100%;
   height: 100vh;
   margin: 0 auto;
   background-color: white;
@@ -124,8 +123,8 @@ const Container = styled.div`
 `;
 
 const Content = styled.div`
-  padding: 16px;
-  padding-bottom: 104px; /* Space for the fixed footer */
+  height: 100%;
+  width: 100%;
   flex: 1;
   overflow-y: auto; /* Allow vertical scrolling */
   display: flex;

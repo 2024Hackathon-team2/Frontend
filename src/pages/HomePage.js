@@ -136,12 +136,13 @@ export default HomePage;
 
 // 스타일 컴포넌트들
 const Container = styled.div`
-  width: 390px;
+  width: 100%;
   height: 100vh;
   margin: 0 auto;
   background-color: white;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
 `;
 
 const Header = styled.header`
@@ -150,7 +151,7 @@ const Header = styled.header`
   justify-content: flex-start;
   position: fixed;
   top: 0;
-  width: 390px;
+  width: 100%;
   height: 54px;
   color: #000;
   font-family: Pretendard;
@@ -168,16 +169,17 @@ const Header = styled.header`
 `;
 
 const Content = styled.div`
-  padding: 20px;
-  padding-top: 90px;
-  padding-bottom: 84px;
   flex: 1;
+  padding-top: 54px; /* Space for the fixed header */
+  padding-bottom: 84px; /* Space for the fixed footer */
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   background-color: white;
+  width: 100%;
+  box-sizing: border-box;
 
   ::-webkit-scrollbar {
     display: none;
@@ -244,6 +246,7 @@ const GoalReachContainer = styled.div`
     }
   }
 `;
+
 const ProfileImage = styled.img`
   width: 65px;
   height: 65px;
@@ -322,8 +325,9 @@ const DrinkingCalendar = styled.div`
 
 const Footer = styled.footer`
   position: fixed;
+  left: 0;
   bottom: 0;
-  width: 390px;
+  width: 100%;
   height: 84px;
   display: flex;
   align-items: center;

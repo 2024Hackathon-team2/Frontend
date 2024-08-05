@@ -136,7 +136,7 @@ const GoalPage = () => {
         <div></div>
       </Header>
       <Content>
-        <div>
+        <div className="box">
           <Question>한 달에 얼마를 목표로 하시나요?</Question>
           {selections.map((selection, index) => (
             <DropdownWrapper key={index}>
@@ -189,7 +189,7 @@ export default GoalPage;
 
 // Styled components
 const Container = styled.div`
-  width: 390px;
+  width: 100%;
   height: 100vh;
   margin: 0 auto;
   background-color: white;
@@ -203,7 +203,7 @@ const Header = styled.header`
   justify-content: space-between;
   position: fixed;
   top: 0;
-  width: 390px;
+  width: 100%;
   height: 54px;
   color: #000;
   font-family: Pretendard;
@@ -243,10 +243,16 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: center;
   background-color: white;
+  height: 100%;
 
   ::-webkit-scrollbar {
     display: none; /* Hide scrollbar for webkit browsers */
+  }
+
+  .box {
+    width: 350px;
   }
 
   scrollbar-width: none; /* Hide scrollbar for Firefox */
@@ -322,6 +328,10 @@ const SubmitButton = styled(Button)`
   height: 52px;
   border-radius: 9px;
   background: #17d6b5;
+  justify-content: center;
+  align-items: center;
+  margin: 0px;
+  padding: 0;
 `;
 
 const Footer = styled.footer`

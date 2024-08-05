@@ -74,7 +74,7 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  width: 390px;
+  width: 100%;
   height: 84px;
   border-top: 0.5px solid #d9d9d9;
   box-shadow: 0px 4px 25.3px 10px rgba(0, 0, 0, 0.02);
