@@ -14,7 +14,7 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const TimerPage = () => {
-  const [timeLeft, setTimeLeft] = useState(7200); // 2 hours in seconds
+  const [timeLeft, setTimeLeft] = useState(259200); // 2 hours in seconds
   const [isRunning, setIsRunning] = useState(false);
 
   useEffect(() => {
@@ -67,7 +67,7 @@ const TimerPage = () => {
 
   const resetTimer = () => {
     setIsRunning(false);
-    setTimeLeft(7200);
+    setTimeLeft(259200);
     localStorage.removeItem("startTime");
     localStorage.removeItem("timeLeft");
     localStorage.removeItem("isRunning");
@@ -145,7 +145,7 @@ const TimerPage = () => {
                   stroke="url(#gradient)"
                   strokeWidth="2"
                   strokeDasharray="100"
-                  strokeDashoffset={`${(100 * (7200 - timeLeft)) / 7200}`}
+                  strokeDashoffset={`${(100 * (259200 - timeLeft)) / 259200}`}
                   strokeLinecap="round"
                   filter="url(#dropShadow)"
                 ></circle>
