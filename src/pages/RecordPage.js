@@ -319,6 +319,8 @@ export default RecordPage;
 
 const Container = styled.div`
   width: 100%;
+  max-width: 390px;
+
   height: 100vh;
   margin: 0 auto;
   background-color: white;
@@ -333,6 +335,8 @@ const Header = styled.header`
   position: fixed;
   top: 0;
   width: 100%;
+  max-width: 390px;
+
   height: 54px;
   color: #000;
   text-align: center;

@@ -152,6 +152,8 @@ export default TestCompletePage;
 // Styled components
 const Container = styled.div`
   width: 100%;
+  max-width: 390px;
+
   height: 100vh;
   margin: 0 auto;
   background-color: white;
@@ -162,12 +164,12 @@ const Container = styled.div`
 
 const Header = styled.header`
   display: flex;
-  left: 0;
-
   align-items: center;
   justify-content: space-between;
   position: fixed;
   width: 100%;
+  max-width: 390px;
+
   height: 54px;
   flex-shrink: 0;
   color: #000;
@@ -286,10 +288,10 @@ const BottomContainer = styled.div`
 
 const Footer = styled.footer`
   position: fixed;
-  left: 0;
-
   bottom: 0;
   width: 100%;
+  max-width: 390px;
+
   height: 84px;
   display: flex;
   flex-direction: column;

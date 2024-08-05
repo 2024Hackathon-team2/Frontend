@@ -279,6 +279,7 @@ export default MyPage;
 // Styled components
 const Container = styled.div`
   width: 100%;
+  max-width: 390px;
   height: 100vh;
   margin: 0 auto;
   background-color: white;
@@ -293,9 +294,9 @@ const Header = styled.header`
   justify-content: center;
   position: fixed;
   top: 0;
-  left: 0;
-
   width: 100%;
+  max-width: 390px;
+
   height: 54px;
   color: #000;
   text-align: center;
@@ -486,10 +487,10 @@ const ModalContent = styled.div`
 
 const Footer = styled.footer`
   position: fixed;
-  left: 0;
-
   bottom: 0;
   width: 100%;
+  max-width: 390px;
+
   height: 84px;
   display: flex;
   align-items: center;

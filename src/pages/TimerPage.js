@@ -184,6 +184,7 @@ export default TimerPage;
 
 const Container = styled.div`
   width: 100%; /* Fixed width */
+  max-width: 390px;
   height: 100vh; /* Full height of the viewport */
   margin: 0 auto;
   background-color: white;
@@ -215,8 +216,8 @@ const Content = styled.div`
 
 const Footer = styled.footer`
   width: 100%; /* Fixed width */
+  max-width: 390px;
   height: 84px; /* Fixed height */
-  left: 0;
   display: flex;
   align-items: center;
   background: white;
