@@ -190,8 +190,8 @@ const Content = styled.div`
 `;
 
 const GoalReachContainer = styled.div`
+  margin-top: 20px;
   font-family: Pretendard;
-  width: 350px;
   background-color: #ebebeb;
   border-radius: 8px;
   margin-bottom: 30px;
@@ -200,6 +200,8 @@ const GoalReachContainer = styled.div`
   grid-template-rows: 1fr 1fr 1fr;
   width: 350px;
   height: 111px;
+  min-height: 111px; /* 최소 높이 */
+
   border-radius: 8px;
   background: #fff;
   box-shadow: 0px 4px 6.7px 0px rgba(0, 0, 0, 0.08);
